@@ -28,6 +28,9 @@ class LandingActivity : AppCompatActivity(), View.OnClickListener {
             R.id.but_signup -> {
                 Utils.moveNextActivity(this, SignupLandingActivity::class.java)
             }
+            R.id.but_forget -> {
+                Utils.moveNextActivity(this, ForgetActivity::class.java)
+            }
         }
     }
 }

@@ -4,16 +4,15 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.brainyapps.simplyfree.R
-import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.activity_signup_profile.*
 
-class SignupProfileActivity : BaseActivity(), View.OnClickListener {
+class ForgetActivity : BaseActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_signup_profile)
+        setContentView(R.layout.activity_forget)
 
-        setNavbar("Profile Set Up", true)
+        setNavbar("Reset Password", true)
 
         this.but_done.setOnClickListener(this)
     }

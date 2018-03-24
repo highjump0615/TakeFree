@@ -33,8 +33,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.HomeActivity"
-            android:label="@string/app_name" />
-        <activity android:name=".activities.SignupProfileActivity"></activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.SignupProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.ForgetActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
