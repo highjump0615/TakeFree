@@ -15,10 +15,6 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val iconFont = FontManager.getTypeface(this, FontManager.FONTAWESOME)
-        FontManager.markAsIconContainer(message, iconFont)
-
-
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 

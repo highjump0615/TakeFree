@@ -30,7 +30,7 @@ object FontManager {
                 markAsIconContainer(child, typeface)
             }
         } else if (v is TextView) {
-            (v as TextView).typeface = typeface
+            v.typeface = typeface
         }
     }
 }
