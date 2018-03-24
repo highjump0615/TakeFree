@@ -1,11 +1,26 @@
-package com.brainyapps.simplyfree
+package com.brainyapps.simplyfree.activities
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import com.brainyapps.simplyfree.R
 import kotlinx.android.synthetic.main.activity_home.*
+import android.graphics.Typeface
+import com.brainyapps.simplyfree.utils.FontManager
+
 
 class HomeActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_home)
+
+        val iconFont = FontManager.getTypeface(this, FontManager.FONTAWESOME)
+        FontManager.markAsIconContainer(message, iconFont)
+
+
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+    }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -23,12 +38,5 @@ class HomeActivity : AppCompatActivity() {
             }
         }
         false
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
-
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 }
