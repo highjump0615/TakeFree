@@ -4,6 +4,118 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context="com.brainyapps.simplyfree.activities.LandingActivity">
+
+    <!-- background -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_bg_landing" />
+
+    <!-- logo -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/logo_main"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- login button -->
+    <Button
+        android:id="@+id/but_login"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/landing_button_height"
+        android:layout_marginLeft="@dimen/landing_button_margin"
+        android:layout_marginRight="@dimen/landing_button_margin"
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/ripple_but_white_round"
+        android:textAllCaps="false"
+        android:text="Login with Email"
+        android:textColor="@color/colorTheme" />
+
+    <!-- signup button -->
+    <Button
+        android:id="@+id/but_signup"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/landing_button_height"
+        android:layout_marginTop="14dp"
+        app:layout_constraintLeft_toLeftOf="@id/but_login"
+        app:layout_constraintRight_toRightOf="@id/but_login"
+        app:layout_constraintTop_toBottomOf="@id/but_login"
+        android:background="@drawable/ripple_but_white_round"
+        android:textAllCaps="false"
+        android:text="Create New Account"
+        android:textColor="@color/colorTheme" />
+
+    <!-- forget button -->
+    <Button
+        android:id="@+id/but_forget"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/landing_button_height"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/ripple_but_theme"
+        android:text="Forgot Password?"
+        android:textSize="13sp"
+        android:textColor="@android:color/white" />
+
+    <!-- social login -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/layout_social"
+        android:layout_marginBottom="8dp"
+        android:text="USE YOUR SOCIAL NETWORKS TO LOGIN"
+        android:textSize="12sp"
+        android:textColor="@color/colorTheme"/>
+
+    <LinearLayout
+        android:id="@+id/layout_social"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/but_forget"
+        android:layout_marginBottom="30dp">
+
+        <!-- facebook -->
+        <RelativeLayout
+            android:id="@+id/layout_but_fb"
+            android:layout_width="@dimen/landing_social_button_size"
+            android:layout_height="@dimen/landing_social_button_size"
+            android:background="@drawable/ripple_but_fb">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/login_fb"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+
+        <!-- google plus -->
+        <RelativeLayout
+            android:id="@+id/layout_but_gplus"
+            android:layout_width="@dimen/landing_social_button_size"
+            android:layout_height="@dimen/landing_social_button_size"
+            android:background="@drawable/ripple_but_gplus"
+            android:layout_marginLeft="20dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/login_gplus"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

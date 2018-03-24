@@ -3,4 +3,16 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorTheme">#109893</color>
+    <color name="colorThemeSelected">#d0109893</color>
+
+    <color name="colorFacebook">#094de7</color>
+    <color name="colorFacebookSelected">#d0094de7</color>
+    <color name="colorGplus">#e70861</color>
+    <color name="colorGplusSelected">#d0e70861</color>
+    <color name="colorBackground">#e5efef</color>
+
+    <color name="colorButBgSelected">#d0e5efef</color>
+
 </resources>
