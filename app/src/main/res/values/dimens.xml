@@ -32,4 +32,7 @@
     <dimen name="signup_edit_text_margin">12dp</dimen>
     <dimen name="signup_edit_margin_top">8dp</dimen>
 
+    <!-- login page -->
+    <dimen name="login_but_margin_horiz">54dp</dimen>
+
 </resources>

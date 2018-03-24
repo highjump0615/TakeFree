@@ -22,6 +22,9 @@ class LandingActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.id) {
+            R.id.but_login -> {
+                Utils.moveNextActivity(this, LoginActivity::class.java)
+            }
             R.id.but_signup -> {
                 Utils.moveNextActivity(this, SignupLandingActivity::class.java)
             }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context="com.brainyapps.simplyfree.activities.SignupActivity">
+    tools:context="com.brainyapps.simplyfree.activities.LoginActivity">
 
     <!-- background -->
     <ImageView
@@ -79,90 +79,29 @@
 
     </LinearLayout>
 
-    <!-- reenter password -->
-    <LinearLayout
-        android:id="@+id/layout_repassword"
-        style="@style/SignupEditStyle"
-        android:layout_marginTop="@dimen/signup_edit_margin_top"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_password">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/signup_password"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/signup_edit_text_margin"
-            android:background="@null"
-            android:inputType="textPassword"
-            android:hint="Re-enter a password"/>
-
-    </LinearLayout>
-
-    <!-- social login -->
-    <TextView
-        android:id="@+id/text_social_title"
+    <!-- forget button -->
+    <Button
+        android:id="@+id/but_forget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_repassword"
-        android:text="USE YOUR SOCIAL NETWORKS TO SIGN UP"
-        android:layout_marginTop="20dp"
-        android:textSize="12sp"
-        android:textColor="@color/colorTheme"/>
-
-    <LinearLayout
-        android:id="@+id/layout_social"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_social_title"
-        android:layout_marginTop="12dp">
-
-        <!-- facebook -->
-        <RelativeLayout
-            android:id="@+id/layout_but_fb"
-            android:layout_width="@dimen/landing_social_button_size"
-            android:layout_height="@dimen/landing_social_button_size"
-            android:background="@drawable/ripple_but_fb">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/login_fb"
-                android:layout_centerInParent="true"/>
-        </RelativeLayout>
-
-        <!-- google plus -->
-        <RelativeLayout
-            android:id="@+id/layout_but_gplus"
-            android:layout_width="@dimen/landing_social_button_size"
-            android:layout_height="@dimen/landing_social_button_size"
-            android:background="@drawable/ripple_but_gplus"
-            android:layout_marginLeft="20dp">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/login_gplus"
-                android:layout_centerInParent="true"/>
-        </RelativeLayout>
-
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/layout_password"
+        android:textAllCaps="false"
+        android:textColor="@color/colorTheme"
+        android:background="@null"
+        android:text="Forgot your password" />
 
     <!-- next button -->
     <Button
         android:id="@+id/but_next"
         style="@style/ButtonWhiteRound"
-        android:paddingLeft="@dimen/signup_but_next_padding_horiz"
-        android:paddingRight="@dimen/signup_but_next_padding_horiz"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="@dimen/login_but_margin_horiz"
+        android:layout_marginRight="@dimen/login_but_margin_horiz"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="@dimen/signup_but_next_margin"
-        android:layout_marginRight="@dimen/signup_but_margin"
-        android:text="Next" />
+        app:layout_constraintTop_toBottomOf="@id/but_forget"
+        android:layout_marginTop="@dimen/signup_but_next_margin"
+        android:text="Sign in" />
 
 </android.support.constraint.ConstraintLayout>
