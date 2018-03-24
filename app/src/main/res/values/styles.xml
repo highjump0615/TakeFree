@@ -1,16 +1,11 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
     <!-- Splash activity -->
@@ -32,6 +27,20 @@
         <item name="android:background">@drawable/ripple_but_white_round</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/colorTheme</item>
+    </style>
+
+    <!-- signup page -->
+    <style name="SignupEditStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/signup_edit_margin</item>
+        <item name="android:layout_marginRight">@dimen/signup_edit_margin</item>
+        <item name="android:paddingLeft">@dimen/signup_edit_padding_horiz</item>
+        <item name="android:paddingRight">@dimen/signup_edit_padding_horiz</item>
+        <item name="android:paddingTop">@dimen/signup_edit_padding_vert</item>
+        <item name="android:paddingBottom">@dimen/signup_edit_padding_vert</item>
+        <item name="android:background">@drawable/bg_white_round</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
 </resources>

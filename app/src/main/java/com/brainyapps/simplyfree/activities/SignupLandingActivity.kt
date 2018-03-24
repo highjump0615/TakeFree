@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.utils.FontManager
+import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.activity_signup_landing.*
 
 class SignupLandingActivity : AppCompatActivity(), View.OnClickListener {
@@ -24,6 +25,9 @@ class SignupLandingActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.id) {
+            R.id.layout_but_premium, R.id.layout_but_free -> {
+                Utils.moveNextActivity(this, SignupActivity::class.java)
+            }
         }
     }
 }

@@ -20,11 +20,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.LandingActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.LandingActivity" />
         <activity
-            android:name=".activities.SignupLandingActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.SignupLandingActivity" />
+        <activity
+            android:name=".activities.SignupActivity" />
         <activity
             android:name=".activities.HomeActivity"
             android:label="@string/app_name" />

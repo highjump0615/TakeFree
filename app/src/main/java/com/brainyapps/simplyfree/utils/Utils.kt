@@ -1,6 +1,7 @@
 package com.brainyapps.simplyfree.utils
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 
 /**
@@ -9,6 +10,8 @@ import android.content.Intent
 class Utils {
 
     companion object {
+
+        var progressDlg: ProgressDialog? = null
 
         /**
          * Move to destination activity class with animate transition.
@@ -25,6 +28,10 @@ class Utils {
             if (removeSource) {
                 source.finish()
             }
+        }
+
+        fun closeProgressDialog() {
+            progressDlg?.dismiss()
         }
     }
 }

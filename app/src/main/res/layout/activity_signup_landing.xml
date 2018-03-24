@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context="com.brainyapps.simplyfree.activities.LandingActivity">
+    tools:context="com.brainyapps.simplyfree.activities.SignupLandingActivity">
 
     <!-- background -->
     <ImageView
@@ -166,6 +166,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginBottom="@dimen/signup_but_next_margin"
         android:layout_marginRight="@dimen/signup_but_margin"
-        android:text="Next"/>
+        android:text="Next"
+        android:visibility="gone"/>
 
 </android.support.constraint.ConstraintLayout>

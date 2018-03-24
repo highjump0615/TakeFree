@@ -11,7 +11,7 @@
 
     <dimen name="landing_circle_corner_radius">50dp</dimen>
 
-    <!-- signup page -->
+    <!-- signup landing page -->
     <dimen name="signup_but_padding_top">10dp</dimen>
     <dimen name="signup_but_padding_bottom">22dp</dimen>
     <dimen name="signup_but_padding_horiz">12dp</dimen>
@@ -24,5 +24,12 @@
     <dimen name="signup_but_currency_size">18sp</dimen>
     <dimen name="signup_but_next_padding_horiz">36dp</dimen>
     <dimen name="signup_but_next_margin">20dp</dimen>
+
+    <!-- signup page -->
+    <dimen name="signup_edit_margin">20dp</dimen>
+    <dimen name="signup_edit_padding_vert">10dp</dimen>
+    <dimen name="signup_edit_padding_horiz">12dp</dimen>
+    <dimen name="signup_edit_text_margin">12dp</dimen>
+    <dimen name="signup_edit_margin_top">8dp</dimen>
 
 </resources>
