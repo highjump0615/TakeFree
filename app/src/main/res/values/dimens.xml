@@ -9,7 +9,7 @@
     <dimen name="landing_button_corner_radius">12dp</dimen>
     <dimen name="landing_social_button_size">38dp</dimen>
 
-    <dimen name="landing_circle_corner_radius">50dp</dimen>
+    <dimen name="landing_circle_corner_radius">120dp</dimen>
 
     <!-- signup landing page -->
     <dimen name="signup_but_padding_top">10dp</dimen>
@@ -34,5 +34,8 @@
 
     <!-- login page -->
     <dimen name="login_but_margin_horiz">54dp</dimen>
+
+    <!-- profile setup page -->
+    <dimen name="profile_photo_size">96dp</dimen>
 
 </resources>
