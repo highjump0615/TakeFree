@@ -17,6 +17,7 @@ object FontManager {
 
     val ROOT = "fonts/"
     val FONTAWESOME = ROOT + "fontawesome-webfont.ttf"
+    val ENCHANTING = ROOT + "enchanting-celebrations.ttf"
 
     fun getTypeface(context: Context, font: String): Typeface {
         return Typeface.createFromAsset(context.getAssets(), font)

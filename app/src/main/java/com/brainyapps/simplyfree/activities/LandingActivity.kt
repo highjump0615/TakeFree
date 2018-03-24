@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.activity_landing.*
 
 class LandingActivity : AppCompatActivity(), View.OnClickListener {
@@ -20,5 +21,10 @@ class LandingActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(view: View?) {
+        when (view?.id) {
+            R.id.but_signup -> {
+                Utils.moveNextActivity(this, SignupLandingActivity::class.java)
+            }
+        }
     }
 }

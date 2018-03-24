@@ -27,8 +27,7 @@
     <!-- login button -->
     <Button
         android:id="@+id/but_login"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/landing_button_height"
+        style="@style/ButtonWhiteRound"
         android:layout_marginLeft="@dimen/landing_button_margin"
         android:layout_marginRight="@dimen/landing_button_margin"
         android:layout_marginTop="40dp"
@@ -36,24 +35,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/ripple_but_white_round"
-        android:textAllCaps="false"
-        android:text="Login with Email"
-        android:textColor="@color/colorTheme" />
+        android:text="Login with Email" />
 
     <!-- signup button -->
     <Button
         android:id="@+id/but_signup"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/landing_button_height"
+        style="@style/ButtonWhiteRound"
         android:layout_marginTop="14dp"
         app:layout_constraintLeft_toLeftOf="@id/but_login"
         app:layout_constraintRight_toRightOf="@id/but_login"
         app:layout_constraintTop_toBottomOf="@id/but_login"
-        android:background="@drawable/ripple_but_white_round"
-        android:textAllCaps="false"
-        android:text="Create New Account"
-        android:textColor="@color/colorTheme" />
+        android:text="Create New Account" />
 
     <!-- forget button -->
     <Button

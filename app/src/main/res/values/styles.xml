@@ -26,5 +26,12 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="colorButtonNormal">@color/colorTheme</item>
     </style>
+    <style name="ButtonWhiteRound">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/landing_button_height</item>
+        <item name="android:background">@drawable/ripple_but_white_round</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/colorTheme</item>
+    </style>
 
 </resources>
