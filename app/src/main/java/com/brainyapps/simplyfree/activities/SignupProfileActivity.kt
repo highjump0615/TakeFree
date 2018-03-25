@@ -21,6 +21,7 @@ class SignupProfileActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.but_done -> {
+                Utils.moveNextActivity(this, SignupBoardActivity::class.java)
             }
         }
     }
