@@ -91,9 +91,9 @@
         android:background="@null"
         android:text="Forgot your password" />
 
-    <!-- next button -->
+    <!-- sign in button -->
     <Button
-        android:id="@+id/but_next"
+        android:id="@+id/but_signin"
         style="@style/ButtonWhiteRound"
         android:layout_marginLeft="@dimen/login_but_margin_horiz"
         android:layout_marginRight="@dimen/login_but_margin_horiz"

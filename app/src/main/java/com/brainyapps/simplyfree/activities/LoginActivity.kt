@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.utils.Utils
-import kotlinx.android.synthetic.main.activity_landing.*
+import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
 
@@ -16,10 +16,14 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         setNavbar("Sign In", true)
 
         this.but_forget.setOnClickListener(this)
+        this.but_signin.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
         when (view?.id) {
+            R.id.but_signin -> {
+                Utils.moveNextActivity(this, AdminHomeActivity::class.java)
+            }
             R.id.but_forget -> {
                 Utils.moveNextActivity(this, ForgetActivity::class.java)
             }

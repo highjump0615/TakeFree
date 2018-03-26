@@ -42,6 +42,7 @@
         <activity
             android:name=".activities.SignupBoardActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".activities.AdminHomeActivity"></activity>
     </application>
 
 </manifest>

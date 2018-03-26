@@ -38,4 +38,10 @@
     <!-- profile setup page -->
     <dimen name="profile_photo_size">96dp</dimen>
 
+    <!-- admin home page -->
+    <dimen name="admin_home_item_padding_horiz">20dp</dimen>
+    <dimen name="admin_home_item_padding_vert">14dp</dimen>
+    <dimen name="admin_home_item_text_margin">20dp</dimen>
+    <dimen name="admin_home_item_text_title_size">18sp</dimen>
+
 </resources>

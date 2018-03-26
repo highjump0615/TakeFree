@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="colorTheme">#109893</color>
+    <color name="colorThemeDark">#03807b</color>
     <color name="colorThemeSelected">#d0109893</color>
 
     <color name="colorGreenSelected">#d00b7672</color>
@@ -13,6 +14,8 @@
     <color name="colorFacebookSelected">#d0094de7</color>
     <color name="colorGplus">#e70861</color>
     <color name="colorGplusSelected">#d0e70861</color>
+
+    <color name="colorGreen">#7f8fa4</color>
 
     <color name="colorBackground">#e5efef</color>
 
