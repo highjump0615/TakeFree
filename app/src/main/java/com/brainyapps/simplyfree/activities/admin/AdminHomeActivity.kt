@@ -1,9 +1,10 @@
-package com.brainyapps.simplyfree.activities
+package com.brainyapps.simplyfree.activities.admin
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.BaseActivity
+import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.activity_admin_home.*
 
 class AdminHomeActivity : BaseActivity(), View.OnClickListener {
@@ -21,6 +22,9 @@ class AdminHomeActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.id) {
+            R.id.layout_users -> {
+                Utils.moveNextActivity(this, AdminUserActivity::class.java)
+            }
         }
     }
 }

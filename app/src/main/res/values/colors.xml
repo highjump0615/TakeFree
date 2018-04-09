@@ -18,7 +18,11 @@
     <color name="colorGreen">#7f8fa4</color>
 
     <color name="colorBackground">#e5efef</color>
+    <color name="colorTabItemBackground">#efeff4</color>
 
     <color name="colorButBgSelected">#d0e5efef</color>
+    <color name="colorBorder">#d8dee0</color>
+
+    <color name="colorGrey">#b0b0b0</color>
 
 </resources>

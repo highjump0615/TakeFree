@@ -43,4 +43,10 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
+    <!-- admin users page -->
+    <style name="AdminUserAppearence" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

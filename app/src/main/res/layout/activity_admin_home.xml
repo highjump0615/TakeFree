@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.brainyapps.simplyfree.activities.AdminHomeActivity">
+    tools:context="com.brainyapps.simplyfree.activities.admin.AdminHomeActivity">
 
     <!-- background -->
     <ImageView
@@ -22,7 +22,6 @@
         app:layout_constraintRight_toRightOf="parent"/>
 
     <LinearLayout
-        android:id="@+id/layout_users"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -35,6 +34,7 @@
 
         <!-- users -->
         <LinearLayout
+            android:id="@+id/layout_users"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/admin_home_item_padding_horiz"

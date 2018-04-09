@@ -44,4 +44,17 @@
     <dimen name="admin_home_item_text_margin">20dp</dimen>
     <dimen name="admin_home_item_text_title_size">18sp</dimen>
 
+    <!-- admin users page -->
+    <dimen name="admin_users_search_item_margin">10dp</dimen>
+    <dimen name="admin_users_search_item_padding_horiz">14dp</dimen>
+    <dimen name="admin_users_search_item_padding_vert">12dp</dimen>
+    <dimen name="admin_users_item_padding">12dp</dimen>
+
+    <dimen name="admin_user_list_margin">10dp</dimen>
+
+    <!-- loading list layout -->
+    <dimen name="loading_progress_size">30dp</dimen>
+
+    <dimen name="notice_top_margin">50dp</dimen>
+
 </resources>
