@@ -25,6 +25,14 @@ class AdminHomeActivity : BaseActivity(), View.OnClickListener {
             R.id.layout_users -> {
                 Utils.moveNextActivity(this, AdminUserActivity::class.java)
             }
+
+            R.id.layout_reported_users -> {
+                Utils.moveNextActivity(this, AdminReportedUserActivity::class.java)
+            }
+
+            R.id.layout_settings -> {
+                Utils.moveNextActivity(this, AdminSettingsActivity::class.java)
+            }
         }
     }
 }

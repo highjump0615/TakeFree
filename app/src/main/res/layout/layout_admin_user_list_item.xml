@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingLeft="20dp"
+    android:paddingLeft="@dimen/admin_users_item_margin_left"
     android:paddingRight="10dp"
     android:foreground="?attr/selectableItemBackground">
 
@@ -13,7 +13,7 @@
         android:paddingTop="@dimen/admin_users_item_padding"
         android:paddingBottom="@dimen/admin_users_item_padding"
         android:text="Bill Watson"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textColor="@android:color/black"/>
 
     <View

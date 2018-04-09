@@ -38,17 +38,17 @@ open class BaseModel()/* : Comparable<BaseModel>*/ {
             0
         }
     }
-
+*/
     fun readFromParcelBase(parcel: Parcel) {
         id = parcel.readString()
-        createdAt = parcel.readLong()
+//        createdAt = parcel.readLong()
     }
 
     fun writeToParcelBase(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
-        parcel.writeLong(createdAt)
+//        parcel.writeLong(createdAt)
     }
-
+/*
     fun saveToDatabaseBase(node: DatabaseReference) {
         node.child(FIELD_DATE).setValue(this.createdAt)
     }

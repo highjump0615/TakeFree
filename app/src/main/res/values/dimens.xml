@@ -49,6 +49,7 @@
     <dimen name="admin_users_search_item_padding_horiz">14dp</dimen>
     <dimen name="admin_users_search_item_padding_vert">12dp</dimen>
     <dimen name="admin_users_item_padding">12dp</dimen>
+    <dimen name="admin_users_item_margin_left">20dp</dimen>
 
     <dimen name="admin_user_list_margin">10dp</dimen>
 
