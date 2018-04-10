@@ -58,4 +58,7 @@
 
     <dimen name="notice_top_margin">50dp</dimen>
 
+    <!-- admin edit profile page -->
+    <dimen name="user_profile_but_margin">46dp</dimen>
+
 </resources>

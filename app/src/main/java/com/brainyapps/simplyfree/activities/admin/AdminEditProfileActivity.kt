@@ -6,23 +6,23 @@ import android.view.View
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.utils.Utils
-import kotlinx.android.synthetic.main.activity_admin_settings.*
+import kotlinx.android.synthetic.main.activity_admin_edit_profile.*
 
-class AdminSettingsActivity : BaseActivity(), View.OnClickListener {
+class AdminEditProfileActivity : BaseActivity(), View.OnClickListener  {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_admin_settings)
+        setContentView(R.layout.activity_admin_edit_profile)
 
-        setNavbar("Settings", true)
+        setNavbar("Edit Profile", true)
 
-        this.text_edit_profile.setOnClickListener(this)
+        this.but_save.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            R.id.text_edit_profile -> {
-                Utils.moveNextActivity(this, AdminEditProfileActivity::class.java)
+            R.id.but_save -> {
+                finish()
             }
         }
     }

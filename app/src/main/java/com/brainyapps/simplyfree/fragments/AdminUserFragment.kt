@@ -73,7 +73,11 @@ class AdminUserFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 //                    bEmpty = true
 //                }
 //
+                if (bAnimation) {
+                    this@AdminUserFragment.adapter!!.notifyItemRangeRemoved(0, aryUser.count())
+                }
                 aryUser.clear()
+
                 for (i in 0..10) {
                     aryUser.add(User())
                 }

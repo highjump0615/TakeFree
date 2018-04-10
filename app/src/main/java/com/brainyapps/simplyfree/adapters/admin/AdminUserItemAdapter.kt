@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.UserDetailHelper
+import com.brainyapps.simplyfree.activities.admin.AdminUserDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import com.brainyapps.simplyfree.views.admin.ViewHolderUserItem
 import com.brainyapps.simplyfree.models.User
@@ -68,12 +70,10 @@ class AdminUserItemAdapter(val ctx: Context, private val aryUser: ArrayList<User
     }
 
     override fun onItemClick(view: View?, position: Int) {
-        val id = view!!.id
+//        val user = aryUser[position]
 
-        val user = aryUser[position]
-
-//        val intent = Intent(this.context, AdminUserDetailActivity::class.java)
+        val intent = Intent(this.context, AdminUserDetailActivity::class.java)
 //        intent.putExtra(UserDetailHelper.KEY_USER, user)
-//        this.context!!.startActivity(intent)
+        this.context!!.startActivity(intent)
     }
 }

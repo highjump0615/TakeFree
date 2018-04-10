@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.brainyapps.simplyfree.activities.admin.AdminEditProfileActivity">
+
+    <!-- background -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_bg_signup" />
+
+    <!-- toolbar -->
+    <include
+        layout="@layout/layout_app_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <!-- notice -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="40dp"
+        android:text="Put your new password below\nand save the changes"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="18sp"/>
+
+    <!-- email -->
+    <LinearLayout
+        android:id="@+id/layout_email"
+        style="@style/SignupEditStyle"
+        android:layout_marginBottom="@dimen/signup_edit_margin_top"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/layout_password">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="E-mail"/>
+    </LinearLayout>
+
+    <!-- password -->
+    <RelativeLayout
+        android:id="@+id/layout_password"
+        style="@style/SignupEditStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="Password"
+            android:inputType="textPassword"/>
+    </RelativeLayout>
+
+    <!-- confirm password -->
+    <LinearLayout
+        android:id="@+id/layout_cpassword"
+        style="@style/SignupEditStyle"
+        android:layout_marginTop="@dimen/signup_edit_margin_top"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_password">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"/>
+    </LinearLayout>
+
+    <!-- done button -->
+    <Button
+        android:id="@+id/but_save"
+        style="@style/ButtonWhiteRound"
+        android:layout_marginLeft="@dimen/user_profile_but_margin"
+        android:layout_marginRight="@dimen/user_profile_but_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_cpassword"
+        android:layout_marginTop="50dp"
+        android:text="Save" />
+
+</android.support.constraint.ConstraintLayout>
