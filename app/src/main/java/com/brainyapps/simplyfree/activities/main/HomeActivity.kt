@@ -9,7 +9,7 @@ import android.graphics.Typeface
 import android.net.Uri
 import android.util.Log
 import com.brainyapps.simplyfree.fragments.main.MainHomeFragment
-import com.brainyapps.simplyfree.utils.FontManager
+import com.brainyapps.simplyfree.utils.Utils
 
 
 class HomeActivity : AppCompatActivity(), MainHomeFragment.OnFragmentInteractionListener {
@@ -77,7 +77,8 @@ class HomeActivity : AppCompatActivity(), MainHomeFragment.OnFragmentInteraction
     /**
      * home fragment
      */
-    override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onHomeClickMap() {
+        // go to map page
+        Utils.moveNextActivity(this, HomeMapActivity::class.java)
     }
 }

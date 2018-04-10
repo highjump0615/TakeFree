@@ -122,13 +122,6 @@ class MainHomeFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.On
         this.swiperefresh.isRefreshing = false
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        if (mListener != null) {
-            mListener!!.onFragmentInteraction(uri)
-        }
-    }
-
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
@@ -153,8 +146,7 @@ class MainHomeFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.On
      * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
      */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onHomeClickMap()
     }
 
     companion object {
@@ -185,6 +177,9 @@ class MainHomeFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.On
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.imgview_map -> {
+                if (mListener != null) {
+                    mListener!!.onHomeClickMap()
+                }
             }
         }
     }
