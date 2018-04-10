@@ -12,11 +12,7 @@
             android:name=".activities.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.LandingActivity"
@@ -29,9 +25,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.LoginActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SignupProfileActivity"
@@ -60,7 +53,20 @@
         <activity
             android:name=".activities.admin.AdminEditProfileActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.admin.AdminReportDetailActivity"></activity>
+        <activity
+            android:name=".activities.admin.AdminReportDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activities.main.HomeActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

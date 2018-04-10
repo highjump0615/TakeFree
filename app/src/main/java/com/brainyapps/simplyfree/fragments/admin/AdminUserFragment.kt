@@ -1,4 +1,4 @@
-package com.brainyapps.simplyfree.fragments
+package com.brainyapps.simplyfree.fragments.admin
 
 import android.support.v4.app.Fragment
 import android.os.Bundle
@@ -118,7 +118,7 @@ class AdminUserFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     companion object {
         /**
-         * The fragment argument representing the section number for this
+         * The fragment argument representing thee section number for this
          * fragment.
          */
         private val ARG_USER_LIST_TYPE = "user_list_type"

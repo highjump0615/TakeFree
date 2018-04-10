@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.view.View
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
-import com.brainyapps.simplyfree.fragments.AdminUserFragment
+import com.brainyapps.simplyfree.fragments.admin.AdminUserFragment
 import com.brainyapps.simplyfree.utils.FontManager
 import kotlinx.android.synthetic.main.activity_admin_users.*
 

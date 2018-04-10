@@ -10,4 +10,7 @@
         <item>Upon posting your item\nyou can choose one\nor more category</item>
         <item>Categories make your items\neasier to find! Start now!</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -61,4 +61,13 @@
     <!-- admin edit profile page -->
     <dimen name="user_profile_but_margin">46dp</dimen>
 
+    <!-- home page -->
+    <dimen name="bottom_nav_padding">6dp</dimen>
+    <dimen name="home_search_margin">16dp</dimen>
+    <dimen name="home_map_but_padding">12dp</dimen>
+    <dimen name="home_cateogry_item_padding">5dp</dimen>
+    <dimen name="home_cateogry_item_cateogry_padding_vert">4dp</dimen>
+    <dimen name="home_cateogry_item_cateogry_padding_horiz">8dp</dimen>
+    <dimen name="home_item_list_item_size">130dp</dimen>
+
 </resources>

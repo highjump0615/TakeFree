@@ -16,7 +16,7 @@
 
     <!-- toolbar -->
     <include
-        layout="@layout/layout_app_bar"
+        layout="@layout/layout_admin_app_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
