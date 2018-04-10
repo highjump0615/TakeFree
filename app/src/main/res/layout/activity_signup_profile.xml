@@ -52,7 +52,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:hint="First Name"/>
+            android:hint="First Name"
+            android:maxLines="1"
+            android:singleLine="true"/>
     </RelativeLayout>
 
     <!-- last name -->
@@ -66,7 +68,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:hint="Last Name"/>
+            android:hint="Last Name"
+            android:maxLines="1"
+            android:singleLine="true"/>
     </LinearLayout>
 
     <!-- done button -->

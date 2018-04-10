@@ -51,7 +51,9 @@
             android:layout_marginLeft="@dimen/signup_edit_text_margin"
             android:background="@null"
             android:inputType="textEmailAddress"
-            android:hint="E-mail"/>
+            android:hint="E-mail"
+            android:maxLines="1"
+            android:singleLine="true"/>
 
     </LinearLayout>
 
@@ -74,7 +76,9 @@
             android:layout_marginLeft="@dimen/signup_edit_text_margin"
             android:background="@null"
             android:inputType="textPassword"
-            android:hint="Password"/>
+            android:hint="Password"
+            android:maxLines="1"
+            android:singleLine="true"/>
 
     </LinearLayout>
 

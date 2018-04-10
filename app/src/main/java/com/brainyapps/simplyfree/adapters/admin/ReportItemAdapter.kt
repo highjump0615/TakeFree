@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.admin.AdminReportDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import java.util.ArrayList
 import com.brainyapps.simplyfree.models.Report
@@ -74,9 +75,9 @@ class ReportItemAdapter(val ctx: Context, private val aryReport: ArrayList<Repor
     override fun onItemClick(view: View?, position: Int) {
         val report = aryReport[position]
 
-//        val intent = Intent(this.context, AdminReportDetailActivity::class.java)
+        val intent = Intent(this.context, AdminReportDetailActivity::class.java)
 //        intent.putExtra(AdminReportDetailActivity.KEY_REPORT, report)
-//        val activity = this.context as Activity
-//        activity.startActivityForResult(intent, AdminReportDetailActivity.REPORT_DETAIL_CODE)
+        val activity = this.context as Activity
+        activity.startActivityForResult(intent, AdminReportDetailActivity.REPORT_DETAIL_CODE)
     }
 }

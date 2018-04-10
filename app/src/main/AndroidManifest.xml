@@ -60,6 +60,7 @@
         <activity
             android:name=".activities.admin.AdminEditProfileActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".activities.admin.AdminReportDetailActivity"></activity>
     </application>
 
 </manifest>

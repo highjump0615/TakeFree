@@ -52,7 +52,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/admin_users_search_item_padding_horiz"
             android:background="@null"
-            android:hint="Search"/>
+            android:hint="Search"
+            android:maxLines="1"
+            android:singleLine="true"/>
 
     </LinearLayout>
 
