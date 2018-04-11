@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.admin.AdminReportDetailActivity
+import com.brainyapps.simplyfree.activities.main.ItemDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import com.brainyapps.simplyfree.models.Item
 import java.util.ArrayList
@@ -36,6 +37,7 @@ class HomeCategoryItemAdapter(val ctx: Context, private val aryCategory: ArrayLi
             // set the view's size, margins, paddings and layout parameters
 
             val vh = ViewHolderHomeItem(v, ctx)
+            vh.setOnItemClickListener(this)
             vhRes = vh
         }
 
@@ -58,5 +60,11 @@ class HomeCategoryItemAdapter(val ctx: Context, private val aryCategory: ArrayLi
 
     override fun getItemViewType(position: Int): Int {
         return ITEM_VIEW_TYPE_ITEM
+    }
+
+    override fun onItemClick(view: View?, position: Int) {
+        val intent = Intent(this.context, ItemDetailActivity::class.java)
+//        intent.putExtra(UserDetailHelper.KEY_USER, user)
+        this.context!!.startActivity(intent)
     }
 }

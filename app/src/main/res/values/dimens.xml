@@ -70,4 +70,16 @@
     <dimen name="home_cateogry_item_cateogry_padding_horiz">8dp</dimen>
     <dimen name="home_item_list_item_size">130dp</dimen>
 
+    <!-- item detail page -->
+    <dimen name="item_detail_content_margin">12dp</dimen>
+    <dimen name="item_detail_content_title_margin">4dp</dimen>
+    <dimen name="item_detail_content_font_size">11sp</dimen>
+    <dimen name="item_detail_content_small_img_margin">4dp</dimen>
+    <dimen name="item_detail_content_user_img_size">20dp</dimen>
+    <dimen name="item_detail_content_msg_but_margin_horiz">20dp</dimen>
+    <dimen name="item_detail_content_msg_but_margin_vert">12dp</dimen>
+    <dimen name="item_detail_comment_user_img_size">32dp</dimen>
+    <dimen name="item_detail_comment_input_margin">8dp</dimen>
+    <dimen name="item_detail_comment_input_padding">12dp</dimen>
+
 </resources>

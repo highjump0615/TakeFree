@@ -27,10 +27,13 @@ open class BaseActivity : AppCompatActivity() {
         Utils.closeProgressDialog()
     }
 
-    fun setNavbar(title: String? = null, withBackButton: Boolean = false) {
+    fun setNavbar(title: String? = null, withBackButton: Boolean = false, hideDefaultTitle: Boolean = true) {
         val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
+
+        if (hideDefaultTitle) {
+            supportActionBar!!.setDisplayShowTitleEnabled(false)
+        }
 
         // set title
         if (!TextUtils.isEmpty(title)) {
