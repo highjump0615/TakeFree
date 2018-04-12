@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_report"
+        android:id="@+id/menu_edit"
         android:icon="@drawable/ic_profile_edit"
         android:title="Report"
         android:visible="true"

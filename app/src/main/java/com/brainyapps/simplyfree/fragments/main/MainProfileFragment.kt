@@ -15,6 +15,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.main.ProfileEditActivity
+import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.fragment_main_profile.*
 import kotlinx.android.synthetic.main.fragment_main_profile.view.*
 
@@ -73,6 +75,17 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
         super.onCreateOptionsMenu(menu, inflater)
 
         inflater!!.inflate(R.menu.edit, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            // edit profile
+            R.id.menu_edit -> {
+                Utils.moveNextActivity(activity, ProfileEditActivity::class.java)
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onRefresh() {
