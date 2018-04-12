@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,16 +28,18 @@ import kotlinx.android.synthetic.main.fragment_main_home.view.*
  * Use the [MainHomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MainHomeFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+
+    private val TAG = MainHomeFragment::class.java.getSimpleName()
 
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
     private var mParam2: String? = null
 
-    private var mListener: OnFragmentInteractionListener? = null
-
     var aryCategory = ArrayList<Category>()
     var adapter: HomeCategoryAdapter? = null
+
+    var mListener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +75,10 @@ class MainHomeFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.On
 
         // Inflate the layout for this fragment
         return viewMain
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     override fun onRefresh() {
@@ -145,7 +152,7 @@ class MainHomeFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.On
      *
      * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
      */
-    interface OnFragmentInteractionListener {
+    interface OnFragmentInteractionListener : MainBaseFragment.OnFragmentInteractionListener {
         fun onHomeClickMap()
     }
 
@@ -183,5 +190,7 @@ class MainHomeFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.On
             }
         }
     }
+
+    override fun getInteractionListener() = mListener
 
 }// Required empty public constructor

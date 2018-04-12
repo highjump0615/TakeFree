@@ -7,15 +7,21 @@ import com.brainyapps.simplyfree.R
 import kotlinx.android.synthetic.main.activity_home.*
 import android.graphics.Typeface
 import android.net.Uri
+import android.support.v4.app.Fragment
 import android.util.Log
+import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.fragments.main.MainHomeFragment
+import com.brainyapps.simplyfree.fragments.main.MainProfileFragment
 import com.brainyapps.simplyfree.utils.Utils
 
 
-class HomeActivity : AppCompatActivity(), MainHomeFragment.OnFragmentInteractionListener {
+class HomeActivity : BaseActivity(), MainHomeFragment.OnFragmentInteractionListener {
 
     private val TAG = HomeActivity::class.java.getSimpleName()
     val FRAG_HOME = "home_frag"
+    val FRAG_PROFILE = "profile_frag"
+
+    var fragCurrent: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +35,8 @@ class HomeActivity : AppCompatActivity(), MainHomeFragment.OnFragmentInteraction
         // set home tab as default
         loadFragByTag(FRAG_HOME)
         navigation.menu.getItem(2).setChecked(true)
+
+        setNavbar()
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -44,6 +52,7 @@ class HomeActivity : AppCompatActivity(), MainHomeFragment.OnFragmentInteraction
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_profile -> {
+                loadFragByTag(FRAG_PROFILE)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_setting -> {
@@ -55,6 +64,13 @@ class HomeActivity : AppCompatActivity(), MainHomeFragment.OnFragmentInteraction
 
     private fun loadFragByTag(tag: String) {
         var frag = supportFragmentManager.findFragmentByTag(tag)
+        val transaction = supportFragmentManager.beginTransaction()
+
+        // hide current fragment
+        fragCurrent?.let {
+            transaction.hide(fragCurrent)
+        }
+
         if (frag == null) {
             Log.d(TAG, "$tag not found, creating a new one.")
 
@@ -62,16 +78,24 @@ class HomeActivity : AppCompatActivity(), MainHomeFragment.OnFragmentInteraction
                 FRAG_HOME -> {
                     frag = MainHomeFragment()
                 }
+                FRAG_PROFILE -> {
+                    frag = MainProfileFragment()
+                }
             }
+
+            // add new fragment
+            transaction.add(R.id.layout_main, frag, tag)
         }
         else {
             Log.d(TAG, "$tag found")
+
+            // show fragments
+            transaction.show(frag)
         }
 
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.layout_main, frag, tag)
-                .commit()
+        transaction.commit()
+
+        fragCurrent = frag
     }
 
     /**

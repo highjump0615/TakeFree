@@ -82,4 +82,11 @@
     <dimen name="item_detail_comment_input_margin">8dp</dimen>
     <dimen name="item_detail_comment_input_padding">12dp</dimen>
 
+    <!-- profile page -->
+    <dimen name="main_profile_photo_size">130dp</dimen>
+    <dimen name="main_profile_tab_height">46dp</dimen>
+    <dimen name="profile_item_margin_margin">10dp</dimen>
+    <dimen name="profile_item_button_width">60dp</dimen>
+    <dimen name="profile_item_button_font_size">10sp</dimen>
+
 </resources>
