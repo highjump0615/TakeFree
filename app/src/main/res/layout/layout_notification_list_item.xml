@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:paddingLeft="@dimen/notification_item_padding_horiz"
+        android:paddingRight="@dimen/notification_item_padding_horiz"
+        android:paddingTop="@dimen/notification_item_padding_vert"
+        android:paddingBottom="@dimen/notification_item_padding_vert">
+
+        <!-- icon -->
+        <TextView
+            android:id="@+id/text_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="&#xf005;"
+            android:textColor="@color/colorTheme"/>
+
+        <!-- content -->
+        <TextView
+            android:id="@+id/text_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/notification_item_padding_horiz"
+            android:text="Mark Anthony left you a rating" />
+
+        <!-- right arrow -->
+        <TextView
+            android:id="@+id/text_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="&#xf054;"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/colorTheme"/>
+    </LinearLayout>
+
+</RelativeLayout>

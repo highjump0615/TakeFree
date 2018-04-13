@@ -92,4 +92,8 @@
     <!-- item post page -->
     <dimen name="item_post_edit_height">42dp</dimen>
 
+    <!-- notification page -->
+    <dimen name="notification_item_padding_horiz">12dp</dimen>
+    <dimen name="notification_item_padding_vert">10dp</dimen>
+
 </resources>

@@ -9,17 +9,23 @@ import android.graphics.Typeface
 import android.net.Uri
 import android.support.v4.app.Fragment
 import android.util.Log
+import android.view.View
 import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.fragments.main.MainHomeFragment
+import com.brainyapps.simplyfree.fragments.main.MainNotificationFragment
 import com.brainyapps.simplyfree.fragments.main.MainProfileFragment
 import com.brainyapps.simplyfree.utils.Utils
+import kotlinx.android.synthetic.main.layout_main_app_bar.*
 
 
-class HomeActivity : BaseActivity(), MainHomeFragment.OnFragmentInteractionListener {
+class HomeActivity : BaseActivity(),
+        MainHomeFragment.OnFragmentInteractionListener,
+        MainNotificationFragment.OnFragmentInteractionListener {
 
     private val TAG = HomeActivity::class.java.getSimpleName()
     val FRAG_HOME = "home_frag"
     val FRAG_PROFILE = "profile_frag"
+    val FRAG_NOTIFICATION = "notification_frag"
 
     var fragCurrent: Fragment? = null
 
@@ -42,6 +48,7 @@ class HomeActivity : BaseActivity(), MainHomeFragment.OnFragmentInteractionListe
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_notification -> {
+                loadFragByTag(FRAG_NOTIFICATION)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_message -> {
@@ -81,6 +88,9 @@ class HomeActivity : BaseActivity(), MainHomeFragment.OnFragmentInteractionListe
                 FRAG_PROFILE -> {
                     frag = MainProfileFragment()
                 }
+                FRAG_NOTIFICATION -> {
+                    frag = MainNotificationFragment()
+                }
             }
 
             // add new fragment
@@ -94,6 +104,12 @@ class HomeActivity : BaseActivity(), MainHomeFragment.OnFragmentInteractionListe
         }
 
         transaction.commit()
+
+        // show activity tool bar in profile page only
+        this.toolbar.visibility = View.GONE
+        if (tag == FRAG_PROFILE) {
+            this.toolbar.visibility = View.VISIBLE
+        }
 
         fragCurrent = frag
     }
