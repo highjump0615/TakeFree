@@ -89,4 +89,7 @@
     <dimen name="profile_item_button_width">60dp</dimen>
     <dimen name="profile_item_button_font_size">10sp</dimen>
 
+    <!-- item post page -->
+    <dimen name="item_post_edit_height">42dp</dimen>
+
 </resources>

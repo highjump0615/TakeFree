@@ -49,4 +49,16 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <!-- item post page -->
+    <style name="ItemPostEditStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/item_post_edit_height</item>
+        <item name="android:layout_marginLeft">@dimen/signup_edit_margin</item>
+        <item name="android:layout_marginRight">@dimen/signup_edit_margin</item>
+        <item name="android:paddingLeft">@dimen/signup_edit_padding_horiz</item>
+        <item name="android:paddingRight">@dimen/signup_edit_padding_horiz</item>
+        <item name="android:background">@drawable/bg_white_round</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
 </resources>

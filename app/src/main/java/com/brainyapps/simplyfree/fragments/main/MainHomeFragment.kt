@@ -14,9 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.main.ItemPostActivity
 import com.brainyapps.simplyfree.adapters.main.HomeCategoryAdapter
 import com.brainyapps.simplyfree.models.Category
 import com.brainyapps.simplyfree.utils.FontManager
+import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.fragment_main_home.*
 import kotlinx.android.synthetic.main.fragment_main_home.view.*
 
@@ -69,6 +71,8 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
         viewMain.list.setItemAnimator(DefaultItemAnimator())
 
         viewMain.swiperefresh.setOnRefreshListener(this)
+
+        viewMain.but_new.setOnClickListener(this)
 
         // load data
         Handler().postDelayed({ getItems(true, true) }, 500)
@@ -187,6 +191,10 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
                 if (mListener != null) {
                     mListener!!.onHomeClickMap()
                 }
+            }
+
+            R.id.but_new -> {
+                Utils.moveNextActivity(activity, ItemPostActivity::class.java)
             }
         }
     }

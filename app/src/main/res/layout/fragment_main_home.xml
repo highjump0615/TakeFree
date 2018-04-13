@@ -110,7 +110,7 @@
             android:layout_height="1dp"
             android:background="@color/colorGrey" />
         <Button
-            android:id="@+id/but_forget"
+            android:id="@+id/but_new"
             android:layout_width="match_parent"
             android:layout_height="@dimen/landing_button_height"
             android:background="?attr/selectableItemBackground"
