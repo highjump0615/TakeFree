@@ -67,7 +67,7 @@ class HomeActivity : BaseActivity(),
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_setting -> {
-                return@OnNavigationItemSelectedListener true
+                Utils.moveNextActivity(this, SettingActivity::class.java)
             }
         }
         false

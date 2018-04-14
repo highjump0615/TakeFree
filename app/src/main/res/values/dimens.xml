@@ -102,4 +102,9 @@
     <dimen name="message_item_padding_vert">12dp</dimen>
     <dimen name="message_item_photo_size">50dp</dimen>
 
+    <!-- settings page -->
+    <dimen name="setting_menu_height">44dp</dimen>
+    <dimen name="setting_menu_margin">16dp</dimen>
+    <dimen name="line_height">0.5dp</dimen>
+
 </resources>
