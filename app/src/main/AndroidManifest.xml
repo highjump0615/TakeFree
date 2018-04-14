@@ -95,7 +95,8 @@
         <activity
             android:name=".activities.main.ItemPostActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.main.SettingActivity"></activity>
+        <activity android:name=".activities.main.SettingActivity" />
+        <activity android:name=".activities.main.UserDetailActivity"></activity>
     </application>
 
 </manifest>

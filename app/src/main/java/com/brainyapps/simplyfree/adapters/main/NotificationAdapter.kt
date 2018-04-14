@@ -9,11 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.admin.AdminReportDetailActivity
+import com.brainyapps.simplyfree.activities.main.UserDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import com.brainyapps.simplyfree.models.Category
 import com.brainyapps.simplyfree.models.Notification
 import java.util.ArrayList
 import com.brainyapps.simplyfree.models.Report
+import com.brainyapps.simplyfree.utils.Utils
 import com.brainyapps.simplyfree.views.admin.ViewHolderUserItem
 import com.brainyapps.simplyfree.views.main.ViewHolderHomeCategoryItem
 import com.brainyapps.simplyfree.views.main.ViewHolderNotification
@@ -75,5 +77,7 @@ class NotificationAdapter(val ctx: Context, private val aryData: ArrayList<Notif
     }
 
     override fun onItemClick(view: View?, position: Int) {
+        val intent = Intent(context, UserDetailActivity::class.java)
+        context!!.startActivity(intent)
     }
 }

@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="@color/colorTheme"
-            app:toolbarId="@+id/toolbar">
+            app:toolbarId="@+id/toolbar_collapse">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -41,66 +41,65 @@
                     app:civ_border_color="@android:color/white"
                     app:civ_border_width="2dp"
                     app:layout_collapseMode="pin"/>
-
-                <!-- name -->
-                <TextView
+                
+                <LinearLayout
+                    android:id="@+id/layout_review"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:text="Fernando Gimenez"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+                    <!-- name -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:text="Fernando Gimenez"
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
 
-                <!-- rate -->
-                <com.brainyapps.simplyfree.views.ViewRateStar
-                    android:layout_width="100dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="6dp"
-                    app:starValue="5.0"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:textColor="@android:color/white"
-                    android:text="5.0/5.0" />
+                    <!-- rate -->
+                    <com.brainyapps.simplyfree.views.ViewRateStar
+                        android:layout_width="100dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="6dp"
+                        app:starValue="5.0"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
+                        android:textColor="@android:color/white"
+                        android:text="5.0/5.0" />
+                </LinearLayout>
 
             </LinearLayout>
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/toolbar_collapse"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_marginBottom="@dimen/main_profile_tab_height"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tabs"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_profile_tab_height"
                 android:layout_gravity="bottom"
-                app:tabTextColor="@color/colorBackground"
-                app:tabSelectedTextColor="@android:color/white"
-                app:tabBackground="@color/colorTheme"
-                app:tabIndicatorColor="@android:color/white">
-
-                <android.support.design.widget.TabItem
-                    android:id="@+id/ti_all_user"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="AVAILABLE" />
-
-                <android.support.design.widget.TabItem
-                    android:id="@+id/ti_banned_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TAKEN" />
-
-            </android.support.design.widget.TabLayout>
+                android:background="@color/colorTheme"
+                android:gravity="center"
+                android:text="Items"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
+
+    <!-- toolbar -->
+    <include
+        layout="@layout/layout_admin_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -109,11 +108,39 @@
         android:fillViewport="true"
         android:background="@color/colorBackground">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/pager_item"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorBackground">
+
+                <TextView
+                    android:id="@+id/text_empty_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/notice_top_margin"
+                    android:layout_centerHorizontal="true"
+                    android:text="This user has no items yet"
+                    android:textColor="@color/colorGrey"
+                    android:visibility="gone"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list"
+                    android:scrollbars="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/profile_item_margin_margin"
+                    android:clipToPadding="false"/>
+
+            </RelativeLayout>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </android.support.v4.widget.NestedScrollView>
+
 
 </android.support.design.widget.CoordinatorLayout>

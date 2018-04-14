@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_main_profile.view.*
  * Use the [MainProfileFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MainProfileFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+class MainProfileFragment : MainBaseFragment(), View.OnClickListener {
 
     private var mListener: OnFragmentInteractionListener? = null
 
@@ -86,39 +86,6 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onRefresh() {
-        getItems(true, false)
-    }
-
-    /**
-     * get User data
-     */
-    private fun getItems(bRefresh: Boolean, bAnimation: Boolean) {
-//        if (bAnimation) {
-//            if (!this.swiperefresh.isRefreshing) {
-//                this.swiperefresh.isRefreshing = true
-//            }
-//        }
-//
-//        // clear
-//        if (bAnimation) {
-//            this@MainProfileFragment.adapter!!.notifyItemRangeRemoved(0, aryCategory.count())
-//        }
-//        aryCategory.clear()
-//
-//
-//        // add
-//        for (i in 0..10) {
-//            aryCategory.add(Category())
-//        }
-//
-//        updateList(bAnimation)
-//
-//        if (aryCategory.isEmpty()) {
-//            this@MainProfileFragment.text_empty_notice.visibility = View.VISIBLE
-//        }
     }
 
     override fun onAttach(context: Context?) {
