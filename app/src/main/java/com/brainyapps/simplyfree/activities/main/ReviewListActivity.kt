@@ -6,56 +6,43 @@ import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
-import android.view.Menu
-import android.view.View
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
-import com.brainyapps.simplyfree.adapters.main.ProfileItemAdapter
-import com.brainyapps.simplyfree.models.Item
+import com.brainyapps.simplyfree.adapters.main.ReviewListAdapter
 import com.brainyapps.simplyfree.models.Review
-import com.brainyapps.simplyfree.utils.Utils
-import kotlinx.android.synthetic.main.activity_user_detail.*
+import kotlinx.android.synthetic.main.activity_review_list.*
 
-class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+class ReviewListActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
-    var aryItem = ArrayList<Item>()
+    var aryReview = ArrayList<Review>()
 
-    var adapter: ProfileItemAdapter? = null
+    var adapter: ReviewListAdapter? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_detail)
+        setContentView(R.layout.activity_review_list)
 
-        setNavbar("Fernando Gimenez", true)
-
-        layout_review.setOnClickListener(this)
+        setNavbar("Reviews", true)
 
         // init list
         val layoutManager = LinearLayoutManager(this)
         list.setLayoutManager(layoutManager)
 
-        this.adapter = ProfileItemAdapter(this, aryItem)
+        this.adapter = ReviewListAdapter(this, aryReview)
         list.setAdapter(this.adapter)
         list.setItemAnimator(DefaultItemAnimator())
 
         this.swiperefresh.setOnRefreshListener(this)
 
         // load data
-        Handler().postDelayed({ getItems(true, true) }, 500)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        super.onCreateOptionsMenu(menu)
-
-        menuInflater.inflate(R.menu.report, menu)
-
-        return true
+        Handler().postDelayed({ getReviews(true, true) }, 500)
     }
 
     /**
-     * get Item data
+     * get review data
      */
-    fun getItems(bRefresh: Boolean, bAnimation: Boolean) {
+    fun getReviews(bRefresh: Boolean, bAnimation: Boolean) {
 
         if (bAnimation) {
             if (!this.swiperefresh.isRefreshing) {
@@ -81,12 +68,12 @@ class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLay
 //                }
 //
         if (bAnimation) {
-            this@UserDetailActivity.adapter!!.notifyItemRangeRemoved(0, aryItem.count())
+            this@ReviewListActivity.adapter!!.notifyItemRangeRemoved(0, aryReview.count())
         }
-        aryItem.clear()
+        aryReview.clear()
 
         for (i in 0..10) {
-            aryItem.add(Item())
+            aryReview.add(Review())
         }
 //
 //                if (!dataSnapshot.exists()) {
@@ -104,10 +91,10 @@ class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLay
 //                }
 //
         if (bAnimation) {
-            this@UserDetailActivity.adapter!!.notifyItemRangeInserted(0, aryItem.count())
+            this@ReviewListActivity.adapter!!.notifyItemRangeInserted(0, aryReview.count())
         }
         else {
-            this@UserDetailActivity.adapter!!.notifyDataSetChanged()
+            this@ReviewListActivity.adapter!!.notifyDataSetChanged()
         }
 //            }
 //
@@ -122,14 +109,6 @@ class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLay
     }
 
     override fun onRefresh() {
-        getItems(true, false)
-    }
-
-    override fun onClick(view: View?) {
-        when (view?.id) {
-            R.id.layout_review -> {
-                Utils.moveNextActivity(this, ReviewListActivity::class.java)
-            }
-        }
+        getReviews(true, false)
     }
 }

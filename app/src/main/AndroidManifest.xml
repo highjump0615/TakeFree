@@ -96,7 +96,8 @@
             android:name=".activities.main.ItemPostActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activities.main.SettingActivity" />
-        <activity android:name=".activities.main.UserDetailActivity"></activity>
+        <activity android:name=".activities.main.UserDetailActivity" />
+        <activity android:name=".activities.main.ReviewListActivity"></activity>
     </application>
 
 </manifest>

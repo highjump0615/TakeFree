@@ -41,7 +41,7 @@
                     app:civ_border_color="@android:color/white"
                     app:civ_border_width="2dp"
                     app:layout_collapseMode="pin"/>
-                
+
                 <LinearLayout
                     android:id="@+id/layout_review"
                     android:layout_width="wrap_content"
