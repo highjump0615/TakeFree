@@ -1,7 +1,6 @@
 package com.brainyapps.simplyfree.fragments.main
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -14,32 +13,32 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.brainyapps.simplyfree.R
-import com.brainyapps.simplyfree.adapters.main.NotificationAdapter
-import com.brainyapps.simplyfree.models.Notification
-import kotlinx.android.synthetic.main.fragment_main_notification.*
-import kotlinx.android.synthetic.main.fragment_main_notification.view.*
+import com.brainyapps.simplyfree.adapters.main.MessageListAdapter
+import com.brainyapps.simplyfree.models.Message
+import kotlinx.android.synthetic.main.fragment_main_message.*
+import kotlinx.android.synthetic.main.fragment_main_message.view.*
 
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [MainNotificationFragment.OnFragmentInteractionListener] interface
+ * [MainMessageFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [MainNotificationFragment.newInstance] factory method to
+ * Use the [MainMessageFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private val TAG = MainNotificationFragment::class.java.getSimpleName()
+    private val TAG = MainMessageFragment::class.java.getSimpleName()
 
-    var aryNotification = ArrayList<Notification>()
-    var adapter: NotificationAdapter? = null
+    var aryMessage = ArrayList<Message>()
+    var adapter: MessageListAdapter? = null
 
     var mListener: OnFragmentInteractionListener? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val viewMain = inflater!!.inflate(R.layout.fragment_main_notification, container, false)
+        val viewMain = inflater!!.inflate(R.layout.fragment_main_message, container, false)
 
         // init list
         val layoutManager = LinearLayoutManager(activity)
@@ -47,14 +46,14 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
 
         viewMain.list.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
 
-        this.adapter = NotificationAdapter(activity, this.aryNotification)
+        this.adapter = MessageListAdapter(activity, this.aryMessage)
         viewMain.list.setAdapter(this.adapter)
         viewMain.list.setItemAnimator(DefaultItemAnimator())
 
         viewMain.swiperefresh.setOnRefreshListener(this)
 
         // load data
-        Handler().postDelayed({ getNotifications(true, true) }, 500)
+        Handler().postDelayed({ getMessages(true, true) }, 500)
 
         // Inflate the layout for this fragment
         return viewMain
@@ -65,13 +64,13 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
     }
 
     override fun onRefresh() {
-        getNotifications(true, false)
+        getMessages(true, false)
     }
 
     /**
      * get User data
      */
-    private fun getNotifications(bRefresh: Boolean, bAnimation: Boolean) {
+    private fun getMessages(bRefresh: Boolean, bAnimation: Boolean) {
         if (bAnimation) {
             if (!this.swiperefresh.isRefreshing) {
                 this.swiperefresh.isRefreshing = true
@@ -80,22 +79,21 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
 
         // clear
         if (bAnimation) {
-            this@MainNotificationFragment.adapter!!.notifyItemRangeRemoved(0, aryNotification.count())
+            this@MainMessageFragment.adapter!!.notifyItemRangeRemoved(0, aryMessage.count())
         }
-        aryNotification.clear()
+        aryMessage.clear()
 
         // add
-        for (i in 0..2) {
-            val data = Notification()
-            data.type = i
+        for (i in 0..10) {
+            val data = Message()
 
-            aryNotification.add(data)
+            aryMessage.add(data)
         }
 
         updateList(bAnimation)
 
-        if (aryNotification.isEmpty()) {
-            this@MainNotificationFragment.text_empty_notice.visibility = View.VISIBLE
+        if (aryMessage.isEmpty()) {
+            this@MainMessageFragment.text_empty_notice.visibility = View.VISIBLE
         }
     }
 
@@ -103,10 +101,10 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
         stopRefresh()
 
         if (bAnimation) {
-            this@MainNotificationFragment.adapter!!.notifyItemRangeInserted(0, aryNotification.count())
+            this@MainMessageFragment.adapter!!.notifyItemRangeInserted(0, aryMessage.count())
         }
         else {
-            this@MainNotificationFragment.adapter!!.notifyDataSetChanged()
+            this@MainMessageFragment.adapter!!.notifyDataSetChanged()
         }
     }
 

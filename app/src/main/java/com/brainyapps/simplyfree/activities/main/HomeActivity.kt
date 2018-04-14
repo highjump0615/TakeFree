@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.View
 import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.fragments.main.MainHomeFragment
+import com.brainyapps.simplyfree.fragments.main.MainMessageFragment
 import com.brainyapps.simplyfree.fragments.main.MainNotificationFragment
 import com.brainyapps.simplyfree.fragments.main.MainProfileFragment
 import com.brainyapps.simplyfree.utils.Utils
@@ -20,12 +21,14 @@ import kotlinx.android.synthetic.main.layout_main_app_bar.*
 
 class HomeActivity : BaseActivity(),
         MainHomeFragment.OnFragmentInteractionListener,
-        MainNotificationFragment.OnFragmentInteractionListener {
+        MainNotificationFragment.OnFragmentInteractionListener,
+        MainMessageFragment.OnFragmentInteractionListener {
 
     private val TAG = HomeActivity::class.java.getSimpleName()
     val FRAG_HOME = "home_frag"
     val FRAG_PROFILE = "profile_frag"
     val FRAG_NOTIFICATION = "notification_frag"
+    val FRAG_MESSAGE = "message_frag"
 
     var fragCurrent: Fragment? = null
 
@@ -52,6 +55,7 @@ class HomeActivity : BaseActivity(),
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_message -> {
+                loadFragByTag(FRAG_MESSAGE)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_home -> {
@@ -90,6 +94,9 @@ class HomeActivity : BaseActivity(),
                 }
                 FRAG_NOTIFICATION -> {
                     frag = MainNotificationFragment()
+                }
+                FRAG_MESSAGE -> {
+                    frag = MainMessageFragment()
                 }
             }
 

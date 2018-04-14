@@ -96,4 +96,10 @@
     <dimen name="notification_item_padding_horiz">12dp</dimen>
     <dimen name="notification_item_padding_vert">10dp</dimen>
 
+    <!-- message page -->
+    <dimen name="message_item_height">74dp</dimen>
+    <dimen name="message_item_padding_horiz">12dp</dimen>
+    <dimen name="message_item_padding_vert">12dp</dimen>
+    <dimen name="message_item_photo_size">50dp</dimen>
+
 </resources>
