@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.brainyapps.simplyfree.activities.main.RateActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_bg_onboard" />
+
+    <!-- toolbar -->
+    <include
+        layout="@layout/layout_admin_app_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- photo -->
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="@dimen/main_profile_photo_size"
+            android:layout_height="@dimen/main_profile_photo_size"
+            android:layout_margin="10dp"
+            android:src="@drawable/user_default"
+            app:civ_border_color="@android:color/white"
+            app:civ_border_width="2dp"
+            app:layout_collapseMode="pin"/>
+
+        <LinearLayout
+            android:id="@+id/layout_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <!-- name -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="Fernando Gimenez"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <!-- rate -->
+            <com.brainyapps.simplyfree.views.ViewRateStar
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="6dp"
+                app:starValue="5.0"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:textColor="@android:color/white"
+                android:text="5.0/5.0" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/main_profile_tab_height"
+            android:layout_gravity="bottom"
+            android:background="@color/colorTheme"
+            android:gravity="center"
+            android:text="RATING AND REVIEWS"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorBackground"
+            android:orientation="vertical">
+
+            <!-- star -->
+            <com.brainyapps.simplyfree.views.ViewRateStar
+                android:layout_width="180dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/rate_review_margin"
+                app:starSelectable="true" />
+
+            <!-- email -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/rate_review_margin"
+                style="@style/SignupEditStyle"
+                android:orientation="vertical">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="Write a review..." />
+
+            </LinearLayout>
+
+            <!-- submit button -->
+            <Button
+                android:id="@+id/but_next"
+                android:layout_width="wrap_content"
+                style="@style/ButtonWhiteRound"
+                android:layout_gravity="right"
+                android:paddingLeft="@dimen/signup_but_next_padding_horiz"
+                android:paddingRight="@dimen/signup_but_next_padding_horiz"
+                android:layout_marginBottom="@dimen/signup_but_next_margin"
+                android:layout_marginRight="@dimen/signup_but_margin"
+                android:text="Submit" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

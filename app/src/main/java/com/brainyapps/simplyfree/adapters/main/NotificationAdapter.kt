@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.admin.AdminReportDetailActivity
+import com.brainyapps.simplyfree.activities.main.RateActivity
 import com.brainyapps.simplyfree.activities.main.UserDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import com.brainyapps.simplyfree.models.Category
@@ -77,7 +78,13 @@ class NotificationAdapter(val ctx: Context, private val aryData: ArrayList<Notif
     }
 
     override fun onItemClick(view: View?, position: Int) {
-        val intent = Intent(context, UserDetailActivity::class.java)
-        context!!.startActivity(intent)
+        if (position == 1) {
+            val intent = Intent(context, RateActivity::class.java)
+            context!!.startActivity(intent)
+        }
+        else {
+            val intent = Intent(context, UserDetailActivity::class.java)
+            context!!.startActivity(intent)
+        }
     }
 }

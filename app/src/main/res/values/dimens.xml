@@ -107,4 +107,11 @@
     <dimen name="setting_menu_margin">16dp</dimen>
     <dimen name="line_height">0.5dp</dimen>
 
+    <!-- rate page -->
+    <dimen name="rate_review_margin">14dp</dimen>
+
+    <!-- message page -->
+    <dimen name="message_item_img_size">90dp</dimen>
+    <dimen name="message_item_img_margin">12dp</dimen>
+
 </resources>

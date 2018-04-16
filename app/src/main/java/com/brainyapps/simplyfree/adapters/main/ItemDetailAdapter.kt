@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.admin.AdminReportDetailActivity
+import com.brainyapps.simplyfree.activities.main.ItemMessageActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import java.util.ArrayList
 import com.brainyapps.simplyfree.models.Comment
@@ -38,6 +39,7 @@ class ItemDetailAdapter(val ctx: Context, private val aryComment: ArrayList<Comm
                 // set the view's size, margins, paddings and layout parameters
 
                 val vh = ViewHolderItemDetailItem(v, ctx)
+                vh.setOnItemClickListener(this)
                 vhRes = vh
             }
             else if (viewType == ITEM_VIEW_TYPE_COMMENT) {
@@ -87,6 +89,15 @@ class ItemDetailAdapter(val ctx: Context, private val aryComment: ArrayList<Comm
         }
         else {
             ITEM_VIEW_TYPE_FOOTER
+        }
+    }
+
+    override fun onItemClick(view: View?, position: Int) {
+        when (view!!.id) {
+            R.id.but_message -> {
+                val intent = Intent(this.context, ItemMessageActivity::class.java)
+                this.context!!.startActivity(intent)
+            }
         }
     }
 }

@@ -95,9 +95,21 @@
         <activity
             android:name=".activities.main.ItemPostActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.main.SettingActivity" />
-        <activity android:name=".activities.main.UserDetailActivity" />
-        <activity android:name=".activities.main.ReviewListActivity"></activity>
+        <activity
+            android:name=".activities.main.SettingActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.main.UserDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.main.ReviewListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.main.RateActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.main.ItemMessageActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
