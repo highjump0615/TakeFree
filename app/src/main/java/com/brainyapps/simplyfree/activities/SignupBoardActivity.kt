@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.View
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.main.HomeActivity
 import com.brainyapps.simplyfree.fragments.SignupOnboardFragment
 import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.activity_board.*
@@ -62,6 +63,10 @@ class SignupBoardActivity : BaseActivity(), View.OnClickListener {
     inner class PageChangeListener: ViewPager.SimpleOnPageChangeListener() {
         override fun onPageSelected(position: Int) {
             currentIndex = position
+
+            if (currentIndex == MAX_PAGE - 1) {
+                but_continue.text = "Done"
+            }
         }
     }
 
@@ -72,6 +77,7 @@ class SignupBoardActivity : BaseActivity(), View.OnClickListener {
                     container.setCurrentItem(currentIndex + 1, true)
                 }
                 else {
+                    Utils.moveNextActivity(this, HomeActivity::class.java)
                 }
             }
         }
