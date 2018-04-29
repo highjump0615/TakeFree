@@ -46,20 +46,24 @@ class SignupActivity : BaseActivity(), View.OnClickListener {
         // email
         if (!Utils.isValidEmail(strEmail)) {
             Utils.createErrorAlertDialog(this, "Invalid Email", "Please input valid email address").show()
+            edit_email.requestFocus()
             return
         }
 
         // password
         if (TextUtils.isEmpty(strPassword)) {
             Utils.createErrorAlertDialog(this, "Input Password", "Password cannot be empty").show()
+            edit_password.requestFocus()
             return
         }
         if (strPassword.length < 6) {
             Utils.createErrorAlertDialog(this, "Invalid Password", "Password should be at least 6 characters").show()
+            edit_password.requestFocus()
             return
         }
         if (!strPassword.equals(strCPassword)) {
             Utils.createErrorAlertDialog(this, "Password Mismatch", "Please confirm your password").show()
+            edit_cpassword.requestFocus()
             return
         }
 
@@ -87,6 +91,7 @@ class SignupActivity : BaseActivity(), View.OnClickListener {
                         }
 
                         Utils.createErrorAlertDialog(this@SignupActivity, "Invalid Email", "Email address is existing").show()
+                        edit_email.requestFocus()
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {

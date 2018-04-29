@@ -10,6 +10,14 @@ import kotlinx.android.synthetic.main.activity_signup_landing.*
 
 class SignupLandingActivity : AppCompatActivity(), View.OnClickListener {
 
+    companion object {
+        val KEY_LOGIN_TYPE = "loginType"
+
+        val LOGIN_TYPE_EMAIL = 0
+        val LOGIN_TYPE_FACEBOOK = 1
+        val LOGIN_TYPE_GOOGLE = 2
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup_landing)

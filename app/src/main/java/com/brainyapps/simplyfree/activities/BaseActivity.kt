@@ -7,8 +7,10 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.admin.AdminHomeActivity
 import com.brainyapps.simplyfree.activities.main.HomeActivity
 import com.brainyapps.simplyfree.models.User
+import com.brainyapps.simplyfree.utils.FirebaseManager
 import com.brainyapps.simplyfree.utils.Utils
 
 /**
@@ -58,7 +60,7 @@ open class BaseActivity : AppCompatActivity() {
     fun goToMain() {
         when (User.currentUser!!.type) {
             User.USER_TYPE_ADMIN -> {
-//                Utils.moveNextActivity(this, AdminMainActivity::class.java, true, true)
+                Utils.moveNextActivity(this, AdminHomeActivity::class.java, true, true)
             }
             User.USER_TYPE_CUSTOMER -> {
                 Utils.moveNextActivity(this, HomeActivity::class.java, true, true)
@@ -70,6 +72,7 @@ open class BaseActivity : AppCompatActivity() {
      * sign out & clear data
      */
     fun signOutClear() {
+        FirebaseManager.mAuth.signOut()
         User.currentUser = null
     }
 

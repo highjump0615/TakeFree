@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
+import com.brainyapps.simplyfree.activities.LandingActivity
+import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.activity_setting.*
 
 class SettingActivity : BaseActivity(), View.OnClickListener {
@@ -24,7 +26,10 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
             R.id.layout_about -> {
             }
 
+            // log out
             R.id.but_logout -> {
+                signOutClear()
+                Utils.moveNextActivity(this, LandingActivity::class.java, true, true)
             }
         }
     }
