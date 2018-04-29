@@ -1,7 +1,6 @@
 package com.brainyapps.simplyfree.activities
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -67,14 +66,19 @@ class SignupActivity : BaseActivity(), View.OnClickListener {
             return
         }
 
+        val onEmailExisting: () -> Unit = {
+            Utils.createErrorAlertDialog(this@SignupActivity, "Invalid Email", "Email address is existing").show()
+            edit_email.requestFocus()
+        }
+
         // check existence
-        checkUsedEmail(strEmail)
+        checkUsedEmail(strEmail, onEmailExisting)
     }
 
     /**
      * check if email has been used
      */
-    private fun checkUsedEmail(email: String) {
+    private fun checkUsedEmail(email: String, onEmailExisting: () -> Unit) {
         val database = FirebaseDatabase.getInstance().reference
         val query = database.child(User.TABLE_NAME)
 
@@ -90,8 +94,7 @@ class SignupActivity : BaseActivity(), View.OnClickListener {
                             return
                         }
 
-                        Utils.createErrorAlertDialog(this@SignupActivity, "Invalid Email", "Email address is existing").show()
-                        edit_email.requestFocus()
+                        onEmailExisting()
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
