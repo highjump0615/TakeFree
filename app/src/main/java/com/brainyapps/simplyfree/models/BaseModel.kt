@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Parcel
 import android.os.Parcelable
 import android.text.TextUtils
+import com.google.firebase.database.FirebaseDatabase
 import java.util.*
 
 /**
@@ -48,10 +49,10 @@ open class BaseModel()/* : Comparable<BaseModel>*/ {
         parcel.writeString(id)
 //        parcel.writeLong(createdAt)
     }
-/*
-    fun saveToDatabaseBase(node: DatabaseReference) {
-        node.child(FIELD_DATE).setValue(this.createdAt)
-    }
+
+//    fun saveToDatabaseBase(node: DatabaseReference) {
+//        node.child(FIELD_DATE).setValue(this.createdAt)
+//    }
 
     fun saveToDatabase(withId: String? = null) {
         val database = FirebaseDatabase.getInstance().reference.child(tableName())
@@ -70,5 +71,5 @@ open class BaseModel()/* : Comparable<BaseModel>*/ {
         val database = FirebaseDatabase.getInstance().reference.child(tableName())
         database.child(this.id).removeValue()
     }
-*/
+
 }

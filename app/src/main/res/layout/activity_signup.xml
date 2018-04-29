@@ -46,6 +46,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/signup_email"/>
         <EditText
+            android:id="@+id/edit_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/signup_edit_text_margin"
@@ -71,6 +72,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/signup_password"/>
         <EditText
+            android:id="@+id/edit_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/signup_edit_text_margin"
@@ -96,6 +98,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/signup_password"/>
         <EditText
+            android:id="@+id/edit_cpassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/signup_edit_text_margin"
