@@ -72,6 +72,12 @@
         android:textSize="12sp"
         android:textColor="@color/colorTheme"/>
 
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/but_fb_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/layout_social"
         android:layout_width="wrap_content"

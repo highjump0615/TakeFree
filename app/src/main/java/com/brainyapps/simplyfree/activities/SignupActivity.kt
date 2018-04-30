@@ -30,12 +30,19 @@ class SignupActivity : LoginBaseActivity(), View.OnClickListener {
         if (bundle != null) {
             paymentType= bundle.getInt(KEY_PAYMENT_TYPE)
         }
+
+        initFbButton()
     }
 
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.but_next -> {
                 onButSignup()
+            }
+
+            // facebook
+            R.id.layout_but_fb -> {
+                onButFacebook()
             }
 
             // google plus

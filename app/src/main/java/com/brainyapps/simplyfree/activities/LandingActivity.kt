@@ -33,6 +33,8 @@ class LandingActivity : LoginBaseActivity(), View.OnClickListener {
         this.but_forget.setOnClickListener(this)
         this.layout_but_fb.setOnClickListener(this)
         this.layout_but_gplus.setOnClickListener(this)
+
+        initFbButton()
     }
 
     override fun onClick(view: View?) {
@@ -45,6 +47,11 @@ class LandingActivity : LoginBaseActivity(), View.OnClickListener {
             }
             R.id.but_forget -> {
                 Utils.moveNextActivity(this, ForgetActivity::class.java)
+            }
+
+            // facebook
+            R.id.layout_but_fb -> {
+                onButFacebook()
             }
 
             // Google login

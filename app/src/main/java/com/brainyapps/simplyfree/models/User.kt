@@ -67,8 +67,6 @@ class User() : BaseModel(), Parcelable {
 
     var email = ""
 
-    var facebookId = ""
-
     var firstName = ""
     var lastName = ""
     var photoUrl = ""
@@ -77,6 +75,12 @@ class User() : BaseModel(), Parcelable {
 
     constructor(parcel: Parcel) : this() {
         type = parcel.readInt()
+
+        banned = parcel.readByte().toInt() != 0
+        email = parcel.readString()
+        firstName = parcel.readString()
+        lastName = parcel.readString()
+        photoUrl = parcel.readString()
     }
 
     constructor(id: String) : this() {
@@ -85,6 +89,13 @@ class User() : BaseModel(), Parcelable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(type)
+        parcel.writeByte((if (banned) 1 else 0).toByte())
+        parcel.writeString(email)
+        parcel.writeString(firstName)
+        parcel.writeString(lastName)
+        parcel.writeString(photoUrl)
+
+        writeToParcelBase(parcel, flags)
     }
 
     override fun describeContents(): Int {

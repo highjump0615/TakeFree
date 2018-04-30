@@ -8,6 +8,12 @@ import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.FirebaseManager
 import com.brainyapps.simplyfree.utils.Utils
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -17,6 +23,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
@@ -47,6 +54,9 @@ open class LoginBaseActivity : BaseActivity(), GoogleApiClient.OnConnectionFaile
     private var googleApiClient: GoogleApiClient? = null
     private var RC_SIGN_IN = 2000
 
+    private var butFbLogin: LoginButton? = null
+    private var mFbCallbackManager: CallbackManager? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -60,6 +70,34 @@ open class LoginBaseActivity : BaseActivity(), GoogleApiClient.OnConnectionFaile
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build()
+
+    }
+
+    /**
+     * initialize facebook button
+     */
+    protected fun initFbButton() {
+        //
+        // Initialize Facebook Login button
+        //
+        butFbLogin = findViewById<LoginButton>(R.id.but_fb_login)
+        mFbCallbackManager = CallbackManager.Factory.create()
+        butFbLogin?.setReadPermissions("email", "public_profile");
+        butFbLogin?.registerCallback(mFbCallbackManager, object: FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult?) {
+                Log.d(TAG, "facebook:onSuccess: $result")
+                handleFacebookAccessToken(result?.accessToken!!);
+            }
+
+            override fun onCancel() {
+                Log.d(TAG, "facebook:onCancel")
+            }
+
+            override fun onError(error: FacebookException?) {
+                Log.d(TAG, "facebook:onError", error)
+            }
+
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -80,6 +118,9 @@ open class LoginBaseActivity : BaseActivity(), GoogleApiClient.OnConnectionFaile
                 // ...
             }
         }
+
+        // Pass the activity result back to the Facebook SDK
+        mFbCallbackManager!!.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
@@ -113,6 +154,33 @@ open class LoginBaseActivity : BaseActivity(), GoogleApiClient.OnConnectionFaile
                     }
 
                     fetchUserInfo(task.result.user, onFetchFailed, onFetchCompleted)
+                })
+    }
+
+    /**
+     * facebook log in
+     */
+    fun handleFacebookAccessToken(token: AccessToken) {
+        Log.d(TAG, "handleFacebookAccessToken:$token")
+
+        Utils.createProgressDialog(this, "Loggin in...", "Submitting user credentials")
+
+        val credential = FacebookAuthProvider.getCredential(token.getToken());
+        FirebaseManager.mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, OnCompleteListener<AuthResult> { task ->
+                    if (!task.isSuccessful) {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithCredential:failure", task.exception)
+                        Utils.createErrorAlertDialog(this, "Authentication failed.", task.exception?.localizedMessage!!).show()
+                        Utils.closeProgressDialog()
+
+                        return@OnCompleteListener
+                    }
+
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithCredential:success")
+
+                    fetchUserInfo(task.result.user)
                 })
     }
 
@@ -171,10 +239,21 @@ open class LoginBaseActivity : BaseActivity(), GoogleApiClient.OnConnectionFaile
         })
     }
 
+    /**
+     * google signup button
+     */
     protected fun onButGPlus() {
         this.loginType = LoginBaseActivity.LOGIN_TYPE_GOOGLE
         val signInIntent = Auth.GoogleSignInApi.getSignInIntent(this.googleApiClient)
         startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    /**
+     * facebook button
+     */
+    protected fun onButFacebook() {
+        this.loginType = LoginBaseActivity.LOGIN_TYPE_FACEBOOK
+        butFbLogin?.performClick()
     }
 
     /**
