@@ -34,7 +34,7 @@ class NotificationAdapter(val ctx: Context, private val aryData: ArrayList<Notif
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        var vhRes = super.onCreateViewHolder(parent, viewType)
+        var vhRes = makeViewHolder(parent, viewType)
 
         if (vhRes == null) {
             // create a new view
@@ -49,7 +49,7 @@ class NotificationAdapter(val ctx: Context, private val aryData: ArrayList<Notif
         return vhRes
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolderNotification) {
             holder.fillContent(this.aryData[position])
         }

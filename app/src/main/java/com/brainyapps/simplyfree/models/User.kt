@@ -62,7 +62,7 @@ class User() : BaseModel(), Parcelable {
         val FIELD_BANNED = "banned"
     }
 
-    var type: Int = USER_TYPE_ADMIN
+    var type: Int = USER_TYPE_CUSTOMER
     var banned: Boolean = false
 
     var email = ""

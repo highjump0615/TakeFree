@@ -14,7 +14,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_signup.*
 
-class SignupActivity : BaseActivity(), View.OnClickListener {
+class SignupActivity : LoginBaseActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,12 +23,24 @@ class SignupActivity : BaseActivity(), View.OnClickListener {
         setNavbar("Sign Up", true)
 
         this.but_next.setOnClickListener(this)
+        this.layout_but_gplus.setOnClickListener(this)
+
+        // get payment type from intent
+        val bundle = intent.extras
+        if (bundle != null) {
+            paymentType= bundle.getInt(KEY_PAYMENT_TYPE)
+        }
     }
 
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.but_next -> {
                 onButSignup()
+            }
+
+            // google plus
+            R.id.layout_but_gplus -> {
+                onButGPlus()
             }
         }
     }

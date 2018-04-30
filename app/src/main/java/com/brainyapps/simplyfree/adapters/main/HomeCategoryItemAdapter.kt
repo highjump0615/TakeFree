@@ -29,7 +29,7 @@ class HomeCategoryItemAdapter(val ctx: Context, private val aryCategory: ArrayLi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        var vhRes = super.onCreateViewHolder(parent, viewType)
+        var vhRes = makeViewHolder(parent, viewType)
 
         if (vhRes == null) {
             // create a new view
@@ -44,7 +44,7 @@ class HomeCategoryItemAdapter(val ctx: Context, private val aryCategory: ArrayLi
         return vhRes
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 //            holder.fillContent(this.aryReport[position].userReported!!)
     }
 

@@ -2,6 +2,7 @@ package com.brainyapps.simplyfree.activities
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.DialogInterface
 import android.content.Intent
@@ -19,6 +20,8 @@ import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.utils.SFUpdateImageListener
 import com.brainyapps.simplyfree.utils.Utils
 import com.cocosw.bottomsheet.BottomSheet
+import com.yanzhenjie.permission.AndPermission
+import com.yanzhenjie.permission.Permission
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
@@ -58,8 +61,31 @@ class PhotoActivityHelper(val owner: SFUpdateImageListener) {
                         return@OnClickListener
                     }
 
-                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    this.activity.startActivityForResult(intent, REQUEST_CAMERA_CONTENT)
+                    AndPermission.with(activity)
+                            .permission(
+                                    Permission.CAMERA
+                            )
+                            .rationale { context, permissions, executor ->
+                                // show confirm dialog
+                                AlertDialog.Builder(context)
+                                        .setTitle("Will you grant camera permission?")
+                                        .setMessage("Camera is needed for taking user photo")
+                                        .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, which ->
+                                            executor.execute()
+                                        })
+                                        .setNegativeButton(android.R.string.no, DialogInterface.OnClickListener { dialog, which ->
+                                            executor.cancel()
+                                        })
+                                        .create()
+                            }
+                            .onGranted {
+                                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                                this.activity.startActivityForResult(intent, REQUEST_CAMERA_CONTENT)
+                            }
+                            .onDenied {
+                            }
+                            .start()
+
                 }
                 R.id.profile_menu_photo -> {
                     if (ActivityCompat.checkSelfPermission(this.activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -156,7 +182,7 @@ class PhotoActivityHelper(val owner: SFUpdateImageListener) {
         var cropped: Bitmap? = null
         if (file.exists()) {
             val matrix = Matrix()
-            var exif: ExifInterface? = null
+            var exif: ExifInterface?
             var rotateangle = 0
 
             try {

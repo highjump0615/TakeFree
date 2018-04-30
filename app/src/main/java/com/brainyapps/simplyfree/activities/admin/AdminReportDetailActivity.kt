@@ -12,7 +12,7 @@ class AdminReportDetailActivity : BaseActivity(), View.OnClickListener {
 
     companion object {
         val KEY_REPORT = "report"
-        val REPORT_DETAIL_CODE = 100
+        const val REPORT_DETAIL_CODE = 100
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

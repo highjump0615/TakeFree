@@ -9,6 +9,7 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Build
 import android.support.v4.app.ActivityCompat
 import android.text.TextUtils
@@ -33,6 +34,12 @@ class Utils {
                 android.util.Patterns.EMAIL_ADDRESS.matcher(target)
                         .matches()
             }
+        }
+
+        fun isNetworkAvailable(context: Context): Boolean {
+            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetworkInfo = connectivityManager.activeNetworkInfo
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected
         }
 
         /**
@@ -84,6 +91,11 @@ class Utils {
             } else {
                 return true
             }
+        }
+
+        fun getServerLongTime(): Long {
+            val estimatedServerTimeMs = System.currentTimeMillis() + Utils.ServerOffset
+            return estimatedServerTimeMs.toLong()
         }
     }
 }

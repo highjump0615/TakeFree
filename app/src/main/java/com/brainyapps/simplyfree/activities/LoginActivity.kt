@@ -15,12 +15,10 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : BaseActivity(), View.OnClickListener {
+class LoginActivity : LoginBaseActivity(), View.OnClickListener {
 
     private val TAG = LoginActivity::class.java.getSimpleName()
     var progressDlg: ProgressDialog? = null
-
-    private var loginType:Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +34,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         when (view?.id) {
             // Log in button
             R.id.but_signin -> {
-                loginType = SignupLandingActivity.LOGIN_TYPE_EMAIL
+                loginType = LoginBaseActivity.LOGIN_TYPE_EMAIL
                 onButSignin()
             }
             // Forget password button
@@ -97,54 +95,15 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
 
-                    fetchUserInfo()
+                    val onFetchFailed: () -> Unit = {
+                        this@LoginActivity.but_signin.isEnabled = true
+                    }
+                    val onFetchCompleted: () -> Unit = {
+                        closeProgressDialog()
+                    }
+
+                    fetchUserInfo(null, onFetchFailed, onFetchCompleted)
                 })
-    }
-
-    private fun fetchUserInfo(userInfo: FirebaseUser? = null) {
-        val userId = FirebaseManager.mAuth.currentUser!!.uid
-
-        User.readFromDatabase(userId, object: User.FetchDatabaseListener {
-            override fun onFetchedReviews() {
-            }
-
-            override fun onFetchedUser(user: User?, success: Boolean) {
-                User.currentUser = user
-
-                if (!success) {
-                    signOutClear()
-                    this@LoginActivity.but_signin.isEnabled = true
-                }
-                else {
-                    if (User.currentUser == null) {
-                        // get user info, from facebook account info
-                        if (userInfo != null) {
-                            val newUser = User(userId)
-                            if (!TextUtils.isEmpty(userInfo.displayName)) {
-                                val names = userInfo.displayName!!.split(" ")
-                                newUser.firstName = names[0]
-                                newUser.lastName = names[1]
-                            }
-
-                            newUser.email = userInfo.email!!
-                            newUser.photoUrl = userInfo.photoUrl.toString()
-
-                            User.currentUser = newUser
-                        }
-
-                        // social login, go to user type page
-                        val intent = Intent(this@LoginActivity, SignupLandingActivity::class.java)
-                        intent.putExtra(SignupLandingActivity.KEY_LOGIN_TYPE, this@LoginActivity.loginType)
-                        startActivity(intent)
-                    }
-                    else {
-                        goToMain()
-                    }
-                }
-
-                closeProgressDialog()
-            }
-        })
     }
 
     private fun closeProgressDialog() {

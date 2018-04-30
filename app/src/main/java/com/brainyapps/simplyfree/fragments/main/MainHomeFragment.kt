@@ -46,19 +46,17 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            mParam1 = arguments.getString(ARG_PARAM1)
-            mParam2 = arguments.getString(ARG_PARAM2)
-        }
+
+        mParam1 = arguments?.getString(ARG_PARAM1)
+        mParam2 = arguments?.getString(ARG_PARAM2)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val viewMain = inflater!!.inflate(R.layout.fragment_main_home, container, false)
+        val viewMain = inflater.inflate(R.layout.fragment_main_home, container, false)
 
         // set search font
-        val iconFont = FontManager.getTypeface(activity, FontManager.FONTAWESOME)
+        val iconFont = FontManager.getTypeface(activity!!, FontManager.FONTAWESOME)
         FontManager.markAsIconContainer(viewMain.text_search_mark, iconFont)
 
         viewMain.imgview_map.setOnClickListener(this)
@@ -67,7 +65,7 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
         val layoutManager = LinearLayoutManager(activity)
         viewMain.list.setLayoutManager(layoutManager)
 
-        this.adapter = HomeCategoryAdapter(activity, this.aryCategory)
+        this.adapter = HomeCategoryAdapter(activity!!, this.aryCategory)
         viewMain.list.setAdapter(this.adapter)
         viewMain.list.setItemAnimator(DefaultItemAnimator())
 
@@ -195,7 +193,7 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
             }
 
             R.id.but_new -> {
-                Utils.moveNextActivity(activity, ItemPostActivity::class.java)
+                Utils.moveNextActivity(activity!!, ItemPostActivity::class.java)
             }
         }
     }

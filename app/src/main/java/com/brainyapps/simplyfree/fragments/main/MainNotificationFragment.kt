@@ -36,8 +36,7 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
 
     var mListener: OnFragmentInteractionListener? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val viewMain = inflater!!.inflate(R.layout.fragment_main_notification, container, false)
 
@@ -47,7 +46,7 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
 
         viewMain.list.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
 
-        this.adapter = NotificationAdapter(activity, this.aryNotification)
+        this.adapter = NotificationAdapter(activity!!, this.aryNotification)
         viewMain.list.setAdapter(this.adapter)
         viewMain.list.setItemAnimator(DefaultItemAnimator())
 

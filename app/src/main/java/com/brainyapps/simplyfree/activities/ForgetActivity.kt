@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_forget.*
 
 class ForgetActivity : BaseActivity(), View.OnClickListener {
 
-    private val TAG = ForgetActivity::class.java!!.getSimpleName()
+    private val TAG = ForgetActivity::class.java.getSimpleName()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

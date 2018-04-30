@@ -77,7 +77,7 @@ class SignupBoardActivity : BaseActivity(), View.OnClickListener {
                     container.setCurrentItem(currentIndex + 1, true)
                 }
                 else {
-                    Utils.moveNextActivity(this, HomeActivity::class.java)
+                    Utils.moveNextActivity(this, HomeActivity::class.java, true)
                 }
             }
         }

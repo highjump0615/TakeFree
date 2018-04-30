@@ -4,13 +4,15 @@ import android.annotation.SuppressLint
 import android.os.Parcel
 import android.os.Parcelable
 import android.text.TextUtils
+import com.brainyapps.simplyfree.utils.Utils
+import com.google.firebase.database.Exclude
 import com.google.firebase.database.FirebaseDatabase
 import java.util.*
 
 /**
  * Created by Administrator on 2/27/18.
  */
-open class BaseModel()/* : Comparable<BaseModel>*/ {
+open class BaseModel() : Comparable<BaseModel> {
 
     companion object {
         //
@@ -19,17 +21,17 @@ open class BaseModel()/* : Comparable<BaseModel>*/ {
         const val FIELD_DATE = "createdAt"
     }
 
-//    @get:Exclude
+    @get:Exclude
     var id = ""
 
-//    var createdAt: Long
-//
-//    init {
-//        this.createdAt = Utils.getServerLongTime()
-//    }
+    var createdAt: Long
+
+    init {
+        this.createdAt = Utils.getServerLongTime()
+    }
 
     open fun tableName() = "base"
-/*
+
     override operator fun compareTo(other: BaseModel): Int {
         return if (this.createdAt > other.createdAt) {
             1
@@ -39,15 +41,15 @@ open class BaseModel()/* : Comparable<BaseModel>*/ {
             0
         }
     }
-*/
+
     fun readFromParcelBase(parcel: Parcel) {
         id = parcel.readString()
-//        createdAt = parcel.readLong()
+        createdAt = parcel.readLong()
     }
 
     fun writeToParcelBase(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
-//        parcel.writeLong(createdAt)
+        parcel.writeLong(createdAt)
     }
 
 //    fun saveToDatabaseBase(node: DatabaseReference) {

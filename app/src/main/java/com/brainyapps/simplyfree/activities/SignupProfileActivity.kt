@@ -13,6 +13,8 @@ import com.brainyapps.simplyfree.utils.FirebaseManager
 import com.brainyapps.simplyfree.utils.SFUpdateImageListener
 import com.brainyapps.simplyfree.utils.Utils
 import com.bumptech.glide.Glide
+import com.bumptech.glide.annotation.GlideModule
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
@@ -53,6 +55,20 @@ class SignupProfileActivity : BaseActivity(), View.OnClickListener, SFUpdateImag
         this.but_done.setOnClickListener(this)
 
         this.helper = PhotoActivityHelper(this)
+
+        //
+        // fill user info
+        //
+        this.edit_firstname.setText(User.currentUser?.firstName)
+        this.edit_lastname.setText(User.currentUser?.lastName)
+
+        if (!TextUtils.isEmpty(User.currentUser?.photoUrl)) {
+            Glide.with(this)
+                    .load(User.currentUser?.photoUrl)
+                    .apply(RequestOptions.placeholderOf(R.drawable.user_default).fitCenter())
+                    .into(this.imgview_photo)
+            imgview_photo.visibility = View.VISIBLE
+        }
     }
 
     override fun onClick(view: View?) {
@@ -90,6 +106,12 @@ class SignupProfileActivity : BaseActivity(), View.OnClickListener, SFUpdateImag
         // last name
         if (TextUtils.isEmpty(strLastName)) {
             Utils.createErrorAlertDialog(this, "Invalid Name", "Last name cannot be empty").show()
+            return
+        }
+
+        // social log in, make it success directly
+        User.currentUser?.let {
+            saveUserData(it)
             return
         }
 
@@ -159,7 +181,7 @@ class SignupProfileActivity : BaseActivity(), View.OnClickListener, SFUpdateImag
     private fun saveUserData(user: User) {
         user.saveToDatabase(user.id)
 
-        Utils.moveNextActivity(this, SignupBoardActivity::class.java)
+        Utils.moveNextActivity(this, SignupBoardActivity::class.java, true, true)
     }
 
     /**

@@ -13,7 +13,7 @@ class AdminHomeActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_home)
 
-        setNavbar("Main Menu", true)
+        setNavbar("Main Menu")
 
         this.layout_users.setOnClickListener(this)
         this.layout_reported_users.setOnClickListener(this)

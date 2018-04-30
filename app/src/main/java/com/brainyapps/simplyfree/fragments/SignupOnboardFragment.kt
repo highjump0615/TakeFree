@@ -18,7 +18,7 @@ class SignupOnboardFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_signup_board, container, false)
-        rootView.text_content.typeface = FontManager.getTypeface(context, FontManager.ENCHANTING)
+        rootView.text_content.typeface = FontManager.getTypeface(context!!, FontManager.ENCHANTING)
 
         rootView.text_title.text = ""
 

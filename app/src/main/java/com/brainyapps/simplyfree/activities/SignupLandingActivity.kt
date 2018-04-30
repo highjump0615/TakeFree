@@ -1,5 +1,6 @@
 package com.brainyapps.simplyfree.activities
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,19 +9,17 @@ import com.brainyapps.simplyfree.utils.FontManager
 import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.activity_signup_landing.*
 
-class SignupLandingActivity : AppCompatActivity(), View.OnClickListener {
-
-    companion object {
-        val KEY_LOGIN_TYPE = "loginType"
-
-        val LOGIN_TYPE_EMAIL = 0
-        val LOGIN_TYPE_FACEBOOK = 1
-        val LOGIN_TYPE_GOOGLE = 2
-    }
+class SignupLandingActivity : LoginBaseActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup_landing)
+
+        // get payment type from intent
+        val bundle = intent.extras
+        if (bundle != null) {
+            loginType = bundle.getInt(KEY_PAYMENT_TYPE)
+        }
 
         // font
         this.text_premium.typeface = FontManager.getTypeface(this, FontManager.ENCHANTING)
@@ -34,7 +33,21 @@ class SignupLandingActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.layout_but_premium, R.id.layout_but_free -> {
-                Utils.moveNextActivity(this, SignupActivity::class.java)
+                var intent = Intent(this@SignupLandingActivity, SignupActivity::class.java)
+
+                // if social login, go to sign up info page directly
+                if (this.loginType > LOGIN_TYPE_EMAIL) {
+                    intent = Intent(this@SignupLandingActivity, SignupProfileActivity::class.java)
+                }
+
+                if (view.id == R.id.layout_but_premium) {
+                    intent.putExtra(LoginBaseActivity.KEY_PAYMENT_TYPE, LoginBaseActivity.PAYMENT_TYPE_PAY)
+                }
+                else {
+                    intent.putExtra(LoginBaseActivity.KEY_PAYMENT_TYPE, LoginBaseActivity.PAYMENT_TYPE_NONE)
+                }
+
+                startActivity(intent)
             }
         }
     }

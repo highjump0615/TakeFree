@@ -29,7 +29,7 @@ class ReportItemAdapter(val ctx: Context, private val aryReport: ArrayList<Repor
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        var vhRes = super.onCreateViewHolder(parent, viewType)
+        var vhRes = makeViewHolder(parent, viewType)
 
         if (vhRes == null) {
             // create a new view
@@ -44,7 +44,7 @@ class ReportItemAdapter(val ctx: Context, private val aryReport: ArrayList<Repor
         return vhRes
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolderUserItem) {
 //            holder.fillContent(this.aryReport[position].userReported!!)
         }

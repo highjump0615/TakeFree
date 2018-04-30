@@ -15,21 +15,21 @@ import java.util.ArrayList
  * Created by Administrator on 2/19/18.
  */
 
-open class BaseItemAdapter(ctx: Context)
+abstract class BaseItemAdapter(ctx: Context)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>(), SFItemClickListener {
 
     var context: Context? = null
     var mbNeedMore = false
 
     companion object {
-        val ITEM_VIEW_TYPE_FOOTER = 10
+        const val ITEM_VIEW_TYPE_FOOTER = 10
     }
 
     init {
         this.context = ctx
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
+    fun makeViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
 
         var vhRes: RecyclerView.ViewHolder? = null
 
@@ -41,14 +41,6 @@ open class BaseItemAdapter(ctx: Context)
         }
 
         return vhRes
-    }
-
-    override fun getItemCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onItemClick(view: View?, position: Int) {

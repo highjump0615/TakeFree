@@ -41,7 +41,7 @@ class MessageListAdapter(val ctx: Context, private val aryData: ArrayList<Messag
         return R.id.swipe
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolderMessageListItem) {
         }
         else {

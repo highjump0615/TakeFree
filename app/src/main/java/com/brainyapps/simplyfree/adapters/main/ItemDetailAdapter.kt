@@ -30,32 +30,30 @@ class ItemDetailAdapter(val ctx: Context, private val aryComment: ArrayList<Comm
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        var vhRes = super.onCreateViewHolder(parent, viewType)
+        var vhRes = makeViewHolder(parent, viewType)
 
-        if (vhRes == null) {
-            if (viewType == ITEM_VIEW_TYPE_ITEM) {
-                // create a new view
-                val v = LayoutInflater.from(parent.context).inflate(R.layout.layout_item_detail_content, parent, false)
-                // set the view's size, margins, paddings and layout parameters
+        if (viewType == ITEM_VIEW_TYPE_ITEM) {
+            // create a new view
+            val v = LayoutInflater.from(parent.context).inflate(R.layout.layout_item_detail_content, parent, false)
+            // set the view's size, margins, paddings and layout parameters
 
-                val vh = ViewHolderItemDetailItem(v, ctx)
-                vh.setOnItemClickListener(this)
-                vhRes = vh
-            }
-            else if (viewType == ITEM_VIEW_TYPE_COMMENT) {
-                // create a new view
-                val v = LayoutInflater.from(parent.context).inflate(R.layout.layout_item_comment_item, parent, false)
-                // set the view's size, margins, paddings and layout parameters
+            val vh = ViewHolderItemDetailItem(v, ctx)
+            vh.setOnItemClickListener(this)
+            vhRes = vh
+        }
+        else if (viewType == ITEM_VIEW_TYPE_COMMENT) {
+            // create a new view
+            val v = LayoutInflater.from(parent.context).inflate(R.layout.layout_item_comment_item, parent, false)
+            // set the view's size, margins, paddings and layout parameters
 
-                val vh = ViewHolderItemDetailComment(v, ctx)
-                vhRes = vh
-            }
+            val vh = ViewHolderItemDetailComment(v, ctx)
+            vhRes = vh
         }
 
         return vhRes!!
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolderItemDetailItem) {
         }
         else if (holder is ViewHolderItemDetailComment) {

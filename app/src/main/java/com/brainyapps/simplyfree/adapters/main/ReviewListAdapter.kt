@@ -27,7 +27,7 @@ class ReviewListAdapter(val ctx: Context, private val aryUser: ArrayList<Review>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        var vhRes = super.onCreateViewHolder(parent, viewType)
+        var vhRes = makeViewHolder(parent, viewType)
 
         if (vhRes == null) {
             // create a new view
@@ -43,7 +43,7 @@ class ReviewListAdapter(val ctx: Context, private val aryUser: ArrayList<Review>
         return vhRes
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolderProfileItem) {
         }
         else {

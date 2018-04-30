@@ -42,8 +42,7 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener {
 
     private var currentTab = -1
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val viewMain = inflater!!.inflate(R.layout.fragment_main_profile, container, false)
 
@@ -53,7 +52,7 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener {
         return viewMain
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // Create the adapter that will return a fragment for each of the three
@@ -81,7 +80,7 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener {
         when (item?.itemId) {
             // edit profile
             R.id.menu_edit -> {
-                Utils.moveNextActivity(activity, ProfileEditActivity::class.java)
+                Utils.moveNextActivity(activity!!, ProfileEditActivity::class.java)
             }
         }
 

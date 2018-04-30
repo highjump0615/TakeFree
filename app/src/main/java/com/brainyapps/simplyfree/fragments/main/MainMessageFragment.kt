@@ -35,10 +35,9 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
 
     var mListener: OnFragmentInteractionListener? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val viewMain = inflater!!.inflate(R.layout.fragment_main_message, container, false)
+        val viewMain = inflater.inflate(R.layout.fragment_main_message, container, false)
 
         // init list
         val layoutManager = LinearLayoutManager(activity)
@@ -46,7 +45,7 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
 
         viewMain.list.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
 
-        this.adapter = MessageListAdapter(activity, this.aryMessage)
+        this.adapter = MessageListAdapter(activity!!, this.aryMessage)
         viewMain.list.setAdapter(this.adapter)
         viewMain.list.setItemAnimator(DefaultItemAnimator())
 
