@@ -24,6 +24,7 @@
 
     <!-- photo button -->
     <RelativeLayout
+        android:id="@+id/layout_photo"
         android:layout_width="@dimen/profile_photo_size"
         android:layout_height="@dimen/profile_photo_size"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -38,6 +39,15 @@
             android:src="@drawable/but_profile_photo"
             android:scaleType="center"/>
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgview_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/user_default"
+            app:civ_border_color="@android:color/white"
+            app:civ_border_width="2dp"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 
     <!-- first name -->
@@ -49,6 +59,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
         <EditText
+            android:id="@+id/edit_firstname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -66,6 +77,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_firstname">
         <EditText
+            android:id="@+id/edit_lastname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"

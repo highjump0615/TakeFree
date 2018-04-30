@@ -136,24 +136,10 @@ class SignupProfileActivity : BaseActivity(), View.OnClickListener, SFUpdateImag
                     val user = initUser()
                     user.id = FirebaseManager.mAuth.currentUser!!.uid
 
-                    if (this.helper!!.byteData != null) {
-                        // save photo image
-                        val metadata = StorageMetadata.Builder()
-                                .setContentType("image/jpeg")
-                                .build()
-                        val storageReference = FirebaseStorage.getInstance().getReference(User.TABLE_NAME).child(user.id + ".jpg")
-                        val uploadTask = storageReference.putBytes(this.helper!!.byteData!!, metadata)
-                        uploadTask.addOnSuccessListener(this@SignupProfileActivity, OnSuccessListener<UploadTask.TaskSnapshot> { taskSnapshot ->
-                            user.photoUrl = taskSnapshot.downloadUrl.toString()
-                        }).addOnFailureListener(this@SignupProfileActivity, OnFailureListener {
-                            Log.d(TAG, it.toString())
-                        }).addOnCompleteListener({
-                            saveUserData(user)
-                        })
-                    }
-                    else {
+                    // save photo image
+                    user.updateProfilePhoto(this, this.helper!!.byteData, {
                         saveUserData(user)
-                    }
+                    })
                 })
     }
 

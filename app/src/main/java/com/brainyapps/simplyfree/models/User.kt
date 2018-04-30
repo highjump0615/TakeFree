@@ -1,9 +1,15 @@
 package com.brainyapps.simplyfree.models
 
+import android.app.Activity
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageMetadata
+import com.google.firebase.storage.UploadTask
 
 /**
  * Created by Administrator on 3/24/18.
@@ -108,5 +114,37 @@ class User() : BaseModel(), Parcelable {
     interface FetchDatabaseListener {
         fun onFetchedUser(user: User?, success: Boolean)
         fun onFetchedReviews()
+    }
+
+    /**
+     * returns full name
+     */
+    fun userFullName(): String {
+        return "${this.firstName} ${this.lastName}"
+    }
+
+    /**
+     * update profile photo
+     */
+    fun updateProfilePhoto(activity: Activity, data: ByteArray?, onCompleted:() -> Unit) {
+        if (data != null) {
+            // save photo image
+            val metadata = StorageMetadata.Builder()
+                    .setContentType("image/jpeg")
+                    .build()
+            val storageReference = FirebaseStorage.getInstance().getReference(User.TABLE_NAME).child(id + ".jpg")
+            val uploadTask = storageReference.putBytes(data, metadata)
+
+            uploadTask.addOnSuccessListener(activity, OnSuccessListener<UploadTask.TaskSnapshot> { taskSnapshot ->
+                photoUrl = taskSnapshot.downloadUrl.toString()
+            }).addOnFailureListener(activity, OnFailureListener {
+                Log.d(TAG, it.toString())
+            }).addOnCompleteListener({
+                onCompleted()
+            })
+        }
+        else {
+            onCompleted()
+        }
     }
 }

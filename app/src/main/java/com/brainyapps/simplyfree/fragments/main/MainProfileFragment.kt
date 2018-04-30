@@ -12,11 +12,15 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.text.TextUtils
 import android.view.*
 
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.main.ProfileEditActivity
+import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Utils
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_main_profile.*
 import kotlinx.android.synthetic.main.fragment_main_profile.view.*
 
@@ -44,7 +48,7 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val viewMain = inflater!!.inflate(R.layout.fragment_main_profile, container, false)
+        val viewMain = inflater.inflate(R.layout.fragment_main_profile, container, false)
 
         setHasOptionsMenu(true)
 
@@ -93,6 +97,22 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener {
 
     override fun onDetach() {
         super.onDetach()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        //
+        // fill user info
+        //
+        text_name.text = User.currentUser?.userFullName()
+
+        if (!TextUtils.isEmpty(User.currentUser?.photoUrl)) {
+            Glide.with(this)
+                    .load(User.currentUser?.photoUrl)
+                    .apply(RequestOptions.placeholderOf(R.drawable.user_default).fitCenter())
+                    .into(imgview_photo)
+        }
     }
 
     /**
