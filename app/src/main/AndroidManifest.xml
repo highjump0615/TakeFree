@@ -53,7 +53,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.SplashActivity"
             android:screenOrientation="portrait"
@@ -136,18 +135,24 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.main.SettingActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.main.UserDetailActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.main.ReviewListActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.main.RateActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.main.ItemMessageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.main.TermActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.main.AboutActivity"
             android:screenOrientation="portrait" />
     </application>
 
