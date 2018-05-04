@@ -36,8 +36,17 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="center"
-            android:src="@drawable/but_profile_photo" />
+            android:src="@drawable/but_profile_photo"
+            android:scaleType="center"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgview_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/user_default"
+            app:civ_border_color="@android:color/white"
+            app:civ_border_width="2dp"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
@@ -64,32 +73,17 @@
         android:id="@+id/layout_category"
         style="@style/ItemPostEditStyle"
         android:layout_marginTop="@dimen/signup_edit_margin_top"
-        android:layout_marginRight="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/but_category"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_name">
 
-        <EditText
+        <Spinner
+            android:id="@+id/spinner_category"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="Category"
-            android:maxLines="1"
-            android:singleLine="true" />
-    </RelativeLayout>
+            android:layout_height="match_parent"
+            android:foreground="?attr/selectableItemBackground" />
 
-    <Button
-        android:id="@+id/but_category"
-        android:layout_width="@dimen/item_post_edit_height"
-        android:layout_height="@dimen/item_post_edit_height"
-        android:layout_marginRight="@dimen/signup_edit_margin"
-        android:background="@drawable/bg_but_theme_circle"
-        android:text="+"
-        android:textColor="@android:color/white"
-        android:textSize="26sp"
-        app:layout_constraintBottom_toBottomOf="@+id/layout_category"
-        app:layout_constraintTop_toTopOf="@+id/layout_category"
-        app:layout_constraintRight_toRightOf="parent"/>
+    </RelativeLayout>
 
     <!-- condition -->
     <RelativeLayout
@@ -101,7 +95,7 @@
         app:layout_constraintTop_toBottomOf="@id/layout_category">
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/spinner_condition"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:foreground="?attr/selectableItemBackground" />

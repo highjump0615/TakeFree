@@ -6,9 +6,12 @@ import android.view.View
 import android.widget.ArrayAdapter
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
+import com.brainyapps.simplyfree.activities.PhotoActivityHelper
 import kotlinx.android.synthetic.main.activity_item_post.*
 
 class ItemPostActivity : BaseActivity(), View.OnClickListener {
+
+    var helper: PhotoActivityHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,10 +19,15 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener {
 
         setNavbar("Post New Item", true)
 
-        // init spinner
-        val adapter = ArrayAdapter.createFromResource(this, R.array.item_condition_array, android.R.layout.simple_spinner_item)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        this.spinner.adapter = adapter
+        // init category spinner
+        val adapterCategory = ArrayAdapter.createFromResource(this, R.array.item_category_array, android.R.layout.simple_spinner_item)
+        adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        this.spinner_category.adapter = adapterCategory
+
+        // init condition spinner
+        val adapterCondition = ArrayAdapter.createFromResource(this, R.array.item_condition_array, android.R.layout.simple_spinner_item)
+        adapterCondition.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        this.spinner_condition.adapter = adapterCondition
 
         this.but_post.setOnClickListener(this)
     }

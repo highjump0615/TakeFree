@@ -11,6 +11,16 @@
         <item>Categories make your items\neasier to find! Start now!</item>
     </string-array>
 
+    <string-array name="item_category_array">
+        <item>Arts &amp; Crafts</item>
+        <item>Project Supplies</item>
+        <item>Furniture</item>
+        <item>Household Goods</item>
+        <item>Outdoor &amp; Garden</item>
+        <item>Local Advertisement</item>
+        <item>Other</item>
+    </string-array>
+
     <string-array name="item_condition_array">
         <item>Good as new</item>
     </string-array>
