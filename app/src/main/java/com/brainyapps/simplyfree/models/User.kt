@@ -10,6 +10,7 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.UploadTask
+import java.util.ArrayList
 
 /**
  * Created by Administrator on 3/24/18.
@@ -76,6 +77,9 @@ class User() : BaseModel(), Parcelable {
     var firstName = ""
     var lastName = ""
     var photoUrl = ""
+
+    @get:Exclude
+    var posts = ArrayList<Item>()
 
     override fun tableName() = TABLE_NAME
 

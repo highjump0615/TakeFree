@@ -6,10 +6,13 @@ import android.os.Parcelable
 /**
  * Created by Administrator on 4/10/18.
  */
-
 class Item() : BaseModel(), Parcelable {
 
     companion object {
+        //
+        // table info
+        //
+        const val TABLE_NAME = "items"
 
         @JvmField
         val CREATOR = object : Parcelable.Creator<Item> {
@@ -24,6 +27,12 @@ class Item() : BaseModel(), Parcelable {
     }
 
     var name = ""
+    var description = ""
+    var photoUrl = ""
+    var category = 0
+    var condition = 0
+
+    override fun tableName() = TABLE_NAME
 
     constructor(parcel: Parcel) : this() {
         name = parcel.readString()

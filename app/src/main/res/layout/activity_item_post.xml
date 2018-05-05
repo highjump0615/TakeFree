@@ -60,6 +60,7 @@
         app:layout_constraintTop_toBottomOf="@id/layout_photo">
 
         <EditText
+            android:id="@+id/edit_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -126,6 +127,7 @@
         app:layout_constraintBottom_toTopOf="@id/but_post">
 
         <EditText
+            android:id="@+id/edit_desc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
