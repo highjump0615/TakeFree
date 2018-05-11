@@ -1,6 +1,7 @@
 package com.brainyapps.simplyfree.activities.main
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -14,9 +15,12 @@ import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.activities.PhotoActivityHelper
 import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.models.User
+import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.SFUpdateImageListener
 import com.brainyapps.simplyfree.utils.Utils
 import com.bumptech.glide.Glide
+import com.firebase.geofire.GeoFire
+import com.firebase.geofire.GeoLocation
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.FirebaseDatabase
@@ -30,6 +34,8 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageList
     private val TAG = ItemPostActivity::class.java.getSimpleName()
 
     var helper: PhotoActivityHelper? = null
+
+    var progressDlg: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,7 +105,7 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageList
         val database = FirebaseDatabase.getInstance().reference
         val strKey = database.child(Item.TABLE_NAME).push().getKey();
 
-        Utils.createProgressDialog(this, "Submitting Item", "Your item is being posted right now")
+        showSaveProgress()
 
         val metadata = StorageMetadata.Builder()
                 .setContentType("image/jpeg")
@@ -127,10 +133,48 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageList
         newItem.category = spinner_category.selectedItemPosition
         newItem.condition = spinner_condition.selectedItemPosition
 
-        newItem.saveToDatabase(withId)
-        User.currentUser!!.posts.add(0, newItem)
+        // geofire
+        val geoFire = GeoFire(FirebaseDatabase.getInstance().getReference(Item.TABLE_NAME))
+        if (Globals.mLocation != null) {
 
-        finish()
+            showSaveProgress()
+
+            this.but_post.isEnabled = false
+
+            geoFire.setLocation(withId, GeoLocation(Globals.mLocation!!.latitude, Globals.mLocation!!.longitude)) { key, error ->
+                if (error != null) {
+                    Log.w(TAG, "setLocation:failure", error.toException())
+
+                    this.but_post.isEnabled = true
+                }
+                else {
+                    newItem.saveToDatabase(withId)
+                    User.currentUser!!.posts.add(0, newItem)
+
+                    // go to posted job page
+                    finish()
+                }
+
+                // close progress view
+                closeSaveProgress()
+            }
+        }
+        else {
+            Toast.makeText(this, "Cannot get current location", Toast.LENGTH_SHORT).show()
+
+            closeSaveProgress()
+        }
+    }
+
+    private fun showSaveProgress() {
+        if (progressDlg == null) {
+            progressDlg = Utils.createProgressDialog(this, "Submitting Item", "Your item will is being posted right now")
+        }
+    }
+
+    private fun closeSaveProgress() {
+        Utils.closeProgressDialog()
+        progressDlg = null
     }
 
     /**

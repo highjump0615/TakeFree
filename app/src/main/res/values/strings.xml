@@ -22,16 +22,16 @@
     </string-array>
 
     <string-array name="item_condition_array">
-        <item>Good as new 10 </item>
-        <item>Good as new 9</item>
-        <item>Good as new 8</item>
-        <item>Good as new 7</item>
-        <item>Good as new 6</item>
-        <item>Good as new 5</item>
-        <item>Good as new 4</item>
-        <item>Good as new 3</item>
-        <item>Good as new 2</item>
-        <item>Good as new 1</item>
+        <item>10 </item>
+        <item>9</item>
+        <item>8</item>
+        <item>7</item>
+        <item>6</item>
+        <item>5</item>
+        <item>4</item>
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
     </string-array>
 
     <string name="title_activity_home_map">Map</string>
