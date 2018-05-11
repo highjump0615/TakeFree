@@ -1,13 +1,18 @@
 package com.brainyapps.simplyfree.activities.main
 
+import android.content.DialogInterface
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import com.brainyapps.simplyfree.R
 import kotlinx.android.synthetic.main.activity_home.*
 import android.graphics.Typeface
+import android.location.Location
 import android.net.Uri
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.View
 import com.brainyapps.simplyfree.activities.BaseActivity
@@ -15,7 +20,12 @@ import com.brainyapps.simplyfree.fragments.main.MainHomeFragment
 import com.brainyapps.simplyfree.fragments.main.MainMessageFragment
 import com.brainyapps.simplyfree.fragments.main.MainNotificationFragment
 import com.brainyapps.simplyfree.fragments.main.MainProfileFragment
+import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
+import com.google.android.gms.location.*
+import com.google.android.gms.tasks.Task
+import com.yanzhenjie.permission.AndPermission
+import com.yanzhenjie.permission.Permission
 import kotlinx.android.synthetic.main.layout_main_app_bar.*
 
 
@@ -32,6 +42,8 @@ class HomeActivity : BaseActivity(),
 
     var fragCurrent: Fragment? = null
 
+    private var fusedLocationClient: FusedLocationProviderClient? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -46,6 +58,49 @@ class HomeActivity : BaseActivity(),
         navigation.menu.getItem(2).setChecked(true)
 
         setNavbar()
+
+        // init location
+        initLocation()
+    }
+
+    private fun initLocation() {
+        // check permission
+        // android.permission.ACCESS_COARSE_LOCATION
+        AndPermission.with(this)
+                .permission(
+                        Permission.Group.LOCATION
+                )
+                .rationale { context, permissions, executor ->
+                    // show confirm dialog
+                    AlertDialog.Builder(context)
+                            .setTitle("Will you open location features?")
+                            .setMessage("Location is needed when posting an item and getting items")
+                            .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, which ->
+                                executor.execute()
+                            })
+                            .setNegativeButton(android.R.string.no, DialogInterface.OnClickListener { dialog, which ->
+                                executor.cancel()
+                            })
+                            .create()
+                }
+                .onGranted {
+                    fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED) {
+                        fusedLocationClient?.lastLocation?.addOnSuccessListener { location: Location? ->
+                            // Got last known location. In some rare situations this can be null.
+                            gotNewLocation(location)
+                        }
+                    }
+                }
+                .onDenied {
+                }
+                .start()
+    }
+
+    private fun gotNewLocation(location: Location?) {
+        Globals.mLocation = location
+        Log.w(TAG, "Location: ${location?.latitude}, ${location?.longitude}")
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -71,6 +126,48 @@ class HomeActivity : BaseActivity(),
             }
         }
         false
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+    private fun stopLocationUpdates() {
+        fusedLocationClient?.removeLocationUpdates(mLocationCallback)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (Globals.mLocation == null) {
+            startLocationUpdates()
+        }
+    }
+
+    private val mLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult?) {
+            locationResult ?: return
+
+            gotNewLocation(locationResult.locations[0])
+        }
+
+        override fun onLocationAvailability(p0: LocationAvailability?) {
+            super.onLocationAvailability(p0)
+        }
+    }
+
+    private fun startLocationUpdates() {
+        val locationRequest = LocationRequest().apply {
+            interval = 10000
+            fastestInterval = 5000
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient?.requestLocationUpdates(locationRequest,
+                    mLocationCallback,
+                    null /* Looper */)
+        }
     }
 
     private fun loadFragByTag(tag: String) {
