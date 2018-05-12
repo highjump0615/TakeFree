@@ -23,6 +23,7 @@
         app:layout_constraintRight_toRightOf="parent"/>
 
     <RelativeLayout
+        android:id="@+id/layout_item"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -42,12 +43,14 @@
                 android:layout_margin="@dimen/message_item_img_margin"
                 android:gravity="center_vertical">
                 <ImageView
+                    android:id="@+id/imgview_photo"
                     android:layout_width="@dimen/message_item_img_size"
                     android:layout_height="@dimen/message_item_img_size"
                     android:layout_marginRight="@dimen/message_item_img_margin"
                     android:src="@drawable/img_item_default"
                     android:scaleType="centerCrop"/>
                 <TextView
+                    android:id="@+id/text_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Spanish Boxwood Chefs Carbon Steel Knife"
@@ -82,10 +85,30 @@
 
     </RelativeLayout>
 
+    <!-- chat list -->
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_item"
+        app:layout_constraintBottom_toTopOf="@id/layout_chat_input"
+        android:background="@color/colorBackground">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <!-- chat input -->
     <LinearLayout
-        android:id="@+id/layout_comment_input"
+        android:id="@+id/layout_chat_input"
         android:layout_width="0dp"
         android:layout_height="50dp"
         app:layout_constraintLeft_toLeftOf="parent"

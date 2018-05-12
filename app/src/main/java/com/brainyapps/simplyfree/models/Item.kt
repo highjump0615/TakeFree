@@ -60,6 +60,10 @@ class Item() : BaseModel(), Parcelable {
     }
 
     fun fetchUser(fetchListener: FetchDatabaseListener?) {
+        if (userPosted != null) {
+            fetchListener?.onFetchedUser(true)
+        }
+
         User.readFromDatabase(userId, object: User.FetchDatabaseListener {
             override fun onFetchedReviews() {
             }

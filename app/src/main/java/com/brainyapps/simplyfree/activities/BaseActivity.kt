@@ -29,6 +29,13 @@ open class BaseActivity : AppCompatActivity() {
         Utils.closeProgressDialog()
     }
 
+    fun setTitle(title: String?) {
+        if (!TextUtils.isEmpty(title)) {
+            val textTitle = findViewById<View>(R.id.text_toolbar_title) as TextView
+            textTitle.text = title
+        }
+    }
+
     fun setNavbar(title: String? = null, withBackButton: Boolean = false, hideDefaultTitle: Boolean = true) {
         val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
@@ -38,10 +45,7 @@ open class BaseActivity : AppCompatActivity() {
         }
 
         // set title
-        if (!TextUtils.isEmpty(title)) {
-            val textTitle = findViewById<View>(R.id.text_toolbar_title) as TextView
-            textTitle.text = title
-        }
+        setTitle(title)
 
         // back button
         if (withBackButton) {

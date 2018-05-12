@@ -52,13 +52,11 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         getComments(false, true)
 
         // comment
-        edit_comment.setOnEditorActionListener(object: TextView.OnEditorActionListener {
-            override fun onEditorAction(p0: TextView?, p1: Int, p2: KeyEvent?): Boolean {
-                sendComment()
+        edit_comment.setOnEditorActionListener { v, actionId, event ->
+            sendComment()
 
-                return true
-            }
-        })
+            true
+        }
 
         // send button
         imgview_comment_send.setOnClickListener(this)
