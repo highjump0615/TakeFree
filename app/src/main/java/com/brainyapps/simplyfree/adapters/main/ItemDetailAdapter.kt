@@ -8,11 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
-import com.brainyapps.simplyfree.activities.admin.AdminReportDetailActivity
 import com.brainyapps.simplyfree.activities.main.ItemMessageActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
-import java.util.ArrayList
-import com.brainyapps.simplyfree.models.Comment
+import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.views.main.ViewHolderItemDetailComment
 import com.brainyapps.simplyfree.views.main.ViewHolderItemDetailItem
 
@@ -20,12 +18,12 @@ import com.brainyapps.simplyfree.views.main.ViewHolderItemDetailItem
  * Created by Administrator on 2/19/18.
  */
 
-class ItemDetailAdapter(val ctx: Context, private val aryComment: ArrayList<Comment>)
+class ItemDetailAdapter(val ctx: Context, private val item: Item)
     : BaseItemAdapter(ctx) {
 
     companion object {
-        val ITEM_VIEW_TYPE_ITEM = 1
-        val ITEM_VIEW_TYPE_COMMENT = 2
+        const val ITEM_VIEW_TYPE_ITEM = 1
+        const val ITEM_VIEW_TYPE_COMMENT = 2
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -55,9 +53,11 @@ class ItemDetailAdapter(val ctx: Context, private val aryComment: ArrayList<Comm
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolderItemDetailItem) {
+            holder.fillContent(item)
         }
         else if (holder is ViewHolderItemDetailComment) {
-            holder.showCount(position == 1)
+            holder.showCount(position == 1, item.comments.size)
+            holder.fillContent(item.comments[position - 1])
         }
         else {
         }
@@ -68,7 +68,7 @@ class ItemDetailAdapter(val ctx: Context, private val aryComment: ArrayList<Comm
         var nCount = 1
 
         // comment
-        nCount += aryComment.size
+        nCount += item.comments.size
 
         if (mbNeedMore) {
             nCount++
@@ -82,7 +82,7 @@ class ItemDetailAdapter(val ctx: Context, private val aryComment: ArrayList<Comm
         return if (position == 0) {
             ITEM_VIEW_TYPE_ITEM
         }
-        else if (position < aryComment.size + 1) {
+        else if (position < item.comments.size + 1) {
             ITEM_VIEW_TYPE_COMMENT
         }
         else {

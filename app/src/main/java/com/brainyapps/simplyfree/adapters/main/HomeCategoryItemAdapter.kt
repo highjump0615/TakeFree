@@ -10,8 +10,11 @@ import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.main.ItemDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import com.brainyapps.simplyfree.models.Item
+import com.brainyapps.simplyfree.utils.Globals
+import com.brainyapps.simplyfree.utils.Utils
 import java.util.ArrayList
 import com.brainyapps.simplyfree.views.main.ViewHolderHomeItem
+import kotlin.coroutines.experimental.coroutineContext
 
 /**
  * Created by Administrator on 2/19/18.
@@ -62,8 +65,8 @@ class HomeCategoryItemAdapter(val ctx: Context, private val aryItem: ArrayList<I
     }
 
     override fun onItemClick(view: View?, position: Int) {
-        val intent = Intent(this.context, ItemDetailActivity::class.java)
-//        intent.putExtra(UserDetailHelper.KEY_USER, user)
-        this.context!!.startActivity(intent)
+        Globals.selectedItem = aryItem[position]
+        val intent = Intent(context, ItemDetailActivity::class.java)
+        context!!.startActivity(intent)
     }
 }

@@ -13,6 +13,10 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.support.v4.app.ActivityCompat
 import android.text.TextUtils
+import android.view.inputmethod.InputMethodManager
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by Administrator on 3/24/18.
@@ -96,6 +100,36 @@ class Utils {
         fun getServerLongTime(): Long {
             val estimatedServerTimeMs = System.currentTimeMillis() + Utils.ServerOffset
             return estimatedServerTimeMs.toLong()
+        }
+
+        private fun getServerTime(): Date {
+            val estimatedServerTimeMs = System.currentTimeMillis() + Utils.ServerOffset
+            return Date(estimatedServerTimeMs.toLong())
+        }
+
+        fun getFormattedDate(date: Date): String {
+            val dateFormat = SimpleDateFormat("MM/dd/yyyy")
+            var result = dateFormat.format(date)
+
+            val period = Utils.getServerTime().time - date.time
+            val diffDay = TimeUnit.DAYS.convert(period, TimeUnit.MILLISECONDS)
+
+            if (diffDay == 0L) {
+                result = "Today"
+            }
+            else if (diffDay == 1L) {
+                result = "Yesterday"
+            }
+
+            return result
+        }
+
+        fun hideKeyboard(context: Context) {
+            val view = (context as Activity).getCurrentFocus()
+            view?.let {
+                val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(it.getWindowToken(), 0)
+            }
         }
     }
 }

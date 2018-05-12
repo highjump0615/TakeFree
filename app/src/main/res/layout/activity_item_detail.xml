@@ -46,7 +46,7 @@
     <LinearLayout
         android:id="@+id/layout_comment_input"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -55,16 +55,21 @@
         android:background="@android:color/white">
 
         <EditText
+            android:id="@+id/edit_comment"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/bg_border_round"
             android:layout_marginTop="@dimen/item_detail_comment_input_margin"
             android:layout_marginBottom="@dimen/item_detail_comment_input_margin"
             android:hint="Write comment here..."
             android:textSize="13sp"
-            android:paddingLeft="@dimen/item_detail_comment_input_padding"
-            android:paddingRight="@dimen/item_detail_comment_input_padding"/>
+            android:paddingLeft="@dimen/item_detail_comment_input_padding_hori"
+            android:paddingRight="@dimen/item_detail_comment_input_padding_hori"
+            android:paddingTop="@dimen/item_detail_comment_input_padding_vert"
+            android:paddingBottom="@dimen/item_detail_comment_input_padding_vert"
+            android:singleLine="true"
+            android:imeOptions="actionSend"/>
 
         <ImageView
             android:id="@+id/imgview_comment_send"

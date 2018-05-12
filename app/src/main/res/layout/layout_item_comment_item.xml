@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/layout_count"
+        android:id="@+id/text_count"
         android:layout_width="0dp"
         android:layout_height="24dp"
         android:background="#707979"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_count"
+        app:layout_constraintTop_toBottomOf="@id/text_count"
         android:background="@android:color/white">
 
         <LinearLayout
@@ -35,6 +35,7 @@
 
             <!-- photo -->
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgview_user"
                 android:layout_width="@dimen/item_detail_comment_user_img_size"
                 android:layout_height="@dimen/item_detail_comment_user_img_size"
                 android:src="@drawable/user_default"/>
@@ -46,6 +47,7 @@
                 android:orientation="vertical">
                 <!-- user name -->
                 <TextView
+                    android:id="@+id/text_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Anthony Davies"
@@ -54,6 +56,7 @@
 
                 <!-- comment-->
                 <TextView
+                    android:id="@+id/text_comment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Wow! This is so cool! Is the item still available?"

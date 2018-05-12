@@ -1,9 +1,10 @@
 package com.brainyapps.simplyfree.views.main
 
 import android.content.Context
-import android.opengl.Visibility
 import android.view.View
 import com.brainyapps.e2fix.views.admin.ViewHolderBase
+import com.brainyapps.simplyfree.activities.UserDetailHelper
+import com.brainyapps.simplyfree.models.Comment
 import kotlinx.android.synthetic.main.layout_item_comment_item.view.*
 
 /**
@@ -11,15 +12,27 @@ import kotlinx.android.synthetic.main.layout_item_comment_item.view.*
  */
 class ViewHolderItemDetailComment(itemView: View, ctx: Context) : ViewHolderBase(itemView, ctx) {
 
+    var helperUser: UserDetailHelper? = null
+
     init {
+        helperUser = UserDetailHelper(itemView)
     }
 
-    fun showCount(show: Boolean) {
+    fun showCount(show: Boolean, count: Int) {
         if (show) {
-            itemView.layout_count.visibility = View.VISIBLE
+            itemView.text_count.visibility = View.VISIBLE
+            itemView.text_count.text = "${count} comments"
         }
         else {
-            itemView.layout_count.visibility = View.GONE
+            itemView.text_count.visibility = View.GONE
         }
+    }
+
+    fun fillContent(data: Comment) {
+        // comment
+        itemView.text_comment.text = data.content
+
+        // user info
+        helperUser!!.fillUserInfoSimple(data.userPosted)
     }
 }

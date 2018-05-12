@@ -80,7 +80,8 @@
     <dimen name="item_detail_content_msg_but_margin_vert">12dp</dimen>
     <dimen name="item_detail_comment_user_img_size">32dp</dimen>
     <dimen name="item_detail_comment_input_margin">8dp</dimen>
-    <dimen name="item_detail_comment_input_padding">12dp</dimen>
+    <dimen name="item_detail_comment_input_padding_hori">12dp</dimen>
+    <dimen name="item_detail_comment_input_padding_vert">7dp</dimen>
 
     <!-- profile page -->
     <dimen name="main_profile_photo_size">130dp</dimen>
