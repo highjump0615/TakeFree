@@ -16,23 +16,26 @@ import kotlinx.android.synthetic.main.layout_home_category_list_item.view.*
 class ViewHolderHomeCategoryItem(itemView: View, ctx: Context) : ViewHolderBase(itemView, ctx) {
 
     var adapter: HomeCategoryItemAdapter? = null
-    var aryItem = ArrayList<Item>()
+    private var aryItem = ArrayList<Item>()
 
     init {
         // init list
         val layoutManager = LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false)
-        itemView.list.setLayoutManager(layoutManager)
+        itemView.list.layoutManager = layoutManager
 
-        for (i in 0..10) {
-            aryItem.add(Item())
-        }
-
-        this.adapter = HomeCategoryItemAdapter(ctx, this.aryItem)
-        itemView.list.setAdapter(this.adapter)
-        itemView.list.setItemAnimator(DefaultItemAnimator())
+        adapter = HomeCategoryItemAdapter(ctx, aryItem)
+        itemView.list.adapter = adapter
+        itemView.list.itemAnimator = DefaultItemAnimator()
     }
 
     fun fillContent(data: Category) {
-        // set items data
+        // set title
+        itemView.text_name.text = data.name
+
+        // set items
+        aryItem.clear()
+        aryItem.addAll(data.items)
+
+        adapter!!.notifyDataSetChanged()
     }
 }

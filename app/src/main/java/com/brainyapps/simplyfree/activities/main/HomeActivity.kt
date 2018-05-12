@@ -1,5 +1,6 @@
 package com.brainyapps.simplyfree.activities.main
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -63,6 +64,7 @@ class HomeActivity : BaseActivity(),
         initLocation()
     }
 
+    @SuppressLint("MissingPermission")
     private fun initLocation() {
         // check permission
         // android.permission.ACCESS_COARSE_LOCATION
@@ -86,11 +88,9 @@ class HomeActivity : BaseActivity(),
                 .onGranted {
                     fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED) {
-                        fusedLocationClient?.lastLocation?.addOnSuccessListener { location: Location? ->
-                            // Got last known location. In some rare situations this can be null.
-                            gotNewLocation(location)
-                        }
+                    fusedLocationClient?.lastLocation?.addOnSuccessListener { location: Location? ->
+                        // Got last known location. In some rare situations this can be null.
+                        gotNewLocation(location)
                     }
                 }
                 .onDenied {
@@ -150,10 +150,6 @@ class HomeActivity : BaseActivity(),
 
             gotNewLocation(locationResult.locations[0])
         }
-
-        override fun onLocationAvailability(p0: LocationAvailability?) {
-            super.onLocationAvailability(p0)
-        }
     }
 
     private fun startLocationUpdates() {
@@ -163,7 +159,7 @@ class HomeActivity : BaseActivity(),
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient?.requestLocationUpdates(locationRequest,
                     mLocationCallback,
                     null /* Looper */)

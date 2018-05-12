@@ -8,6 +8,7 @@ import android.util.Log
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.FirebaseManager
+import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
 
 class SplashActivity : BaseActivity() {
@@ -24,6 +25,9 @@ class SplashActivity : BaseActivity() {
 
         // init firebase setting
         FirebaseManager.initServerTime()
+
+        // init base data
+        Globals.initCategories(this)
 
         // check login state
         val userId = FirebaseManager.mAuth.currentUser?.uid

@@ -1,27 +1,35 @@
 package com.brainyapps.simplyfree.fragments.main
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
 import com.brainyapps.simplyfree.R
-import com.brainyapps.simplyfree.activities.main.HomeActivity
 import com.brainyapps.simplyfree.activities.main.ItemPostActivity
 import com.brainyapps.simplyfree.adapters.main.HomeCategoryAdapter
 import com.brainyapps.simplyfree.models.Category
+import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.utils.FontManager
+import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_main_home.*
 import kotlinx.android.synthetic.main.fragment_main_home.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass.
@@ -39,10 +47,11 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
     private var mParam1: String? = null
     private var mParam2: String? = null
 
+    var aryItemAll = ArrayList<Item>()
     var aryCategory = ArrayList<Category>()
     var adapter: HomeCategoryAdapter? = null
 
-    var mListener: OnFragmentInteractionListener? = null
+    private var mListener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,21 +72,35 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
 
         // init list
         val layoutManager = LinearLayoutManager(activity)
-        viewMain.list.setLayoutManager(layoutManager)
+        viewMain.list.layoutManager = layoutManager
 
         this.adapter = HomeCategoryAdapter(activity!!, this.aryCategory)
-        viewMain.list.setAdapter(this.adapter)
-        viewMain.list.setItemAnimator(DefaultItemAnimator())
+        viewMain.list.adapter = this.adapter
+        viewMain.list.itemAnimator = DefaultItemAnimator()
 
         viewMain.swiperefresh.setOnRefreshListener(this)
 
         viewMain.but_new.setOnClickListener(this)
+
+        // search keyword
+        viewMain.edit_search.addTextChangedListener(mTextWatcher)
 
         // load data
         Handler().postDelayed({ getItems(true, true) }, 500)
 
         // Inflate the layout for this fragment
         return viewMain
+    }
+
+    private val mTextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+        override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+        }
+
+        override fun afterTextChanged(editable: Editable) {
+            updateList()
+        }
     }
 
     override fun onResume() {
@@ -98,26 +121,81 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
             }
         }
 
+        val database = FirebaseDatabase.getInstance().reference
+        val query = database.child(Item.TABLE_NAME)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // store all items
+                aryItemAll.clear()
+                for (iItem in dataSnapshot.children) {
+                    val item = iItem.getValue(Item::class.java)
+                    item!!.id = iItem.key
+
+                    aryItemAll.add(item)
+                }
+
+                updateList(bAnimation)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                stopRefresh()
+            }
+        })
+    }
+
+    /**
+     * get category from list, add new if not exist
+     */
+    private fun getCategoryFromIndex(index: Int): Category {
+        var category: Category? = null
+
+        for (cItem in aryCategory) {
+            if (cItem.id == index) {
+                category = cItem
+                break
+            }
+        }
+
+        if (category == null) {
+            category = Globals.Categories[index].copy()
+            aryCategory.add(category)
+        }
+
+        return category
+    }
+
+    /**
+     * update the list with animation
+     */
+    fun updateList(bAnimation: Boolean = false) {
+
+        val strSearch = edit_search.text.toString()
+
+        stopRefresh()
+
         // clear
         if (bAnimation) {
             this@MainHomeFragment.adapter!!.notifyItemRangeRemoved(0, aryCategory.count())
         }
         aryCategory.clear()
 
-
-        // add
-        for (i in 0..10) {
-            aryCategory.add(Category())
+        // categorize the items
+        for (item in aryItemAll) {
+            // add match-keyword only
+            if (TextUtils.isEmpty(strSearch) || item.name.contains(strSearch, ignoreCase = true)) {
+                val category = getCategoryFromIndex(item.category)
+                category.items.add(item)
+            }
         }
 
-        updateList(bAnimation)
-
+        // empty notice
         if (aryCategory.isEmpty()) {
             this@MainHomeFragment.text_empty_notice.visibility = View.VISIBLE
         }
-    }
+        else {
+            this@MainHomeFragment.text_empty_notice.visibility = View.GONE
+        }
 
-    fun updateList(bAnimation: Boolean) {
         stopRefresh()
 
         if (bAnimation) {

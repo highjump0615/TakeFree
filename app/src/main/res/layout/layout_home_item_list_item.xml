@@ -13,6 +13,7 @@
         android:layout_margin="6dp"
         android:orientation="vertical">
         <ImageView
+            android:id="@+id/imgview_photo"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -24,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:lines="2"
+            android:maxLines="2"
             android:text="Style Oil Paint\nNylong Brush"
             android:textSize="10sp"
             android:textAlignment="center"/>

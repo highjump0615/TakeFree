@@ -45,7 +45,7 @@ class HomeCategoryAdapter(val ctx: Context, private val aryCategory: ArrayList<C
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolderHomeCategoryItem) {
-//            holder.fillContent(this.aryReport[position].userReported!!)
+            holder.fillContent(aryCategory[position])
         }
         else {
         }

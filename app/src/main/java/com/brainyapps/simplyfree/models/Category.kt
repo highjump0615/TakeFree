@@ -7,38 +7,10 @@ import android.os.Parcelable
  * Created by Administrator on 4/10/18.
  */
 
-class Category() : BaseModel(), Parcelable {
+data class Category(val id: Int, val name:String) {
 
     companion object {
-
-        @JvmField
-        val CREATOR = object : Parcelable.Creator<Category> {
-            override fun createFromParcel(parcel: Parcel): Category {
-                return Category(parcel)
-            }
-
-            override fun newArray(size: Int): Array<Category?> {
-                return arrayOfNulls(size)
-            }
-        }
     }
 
-    var name = ""
-
-    constructor(parcel: Parcel) : this() {
-        name = parcel.readString()
-
-        readFromParcelBase(parcel)
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(name)
-
-        writeToParcelBase(parcel, flags)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
+    var items = ArrayList<Item>()
 }

@@ -41,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="&#xf002;"/>
             <EditText
+                android:id="@+id/edit_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/admin_users_search_item_padding_horiz"
@@ -48,7 +49,8 @@
                 android:hint="Search"
                 android:textSize="14sp"
                 android:maxLines="1"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:imeOptions="actionDone"/>
         </LinearLayout>
 
         <!-- map button -->
@@ -81,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/notice_top_margin"
                 android:layout_centerHorizontal="true"
-                android:text="There is no reported users yet"
+                android:text="There is no items for your needs yet"
                 android:textColor="@android:color/white"
                 android:visibility="gone"/>
 

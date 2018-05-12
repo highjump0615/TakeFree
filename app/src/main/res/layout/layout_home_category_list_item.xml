@@ -15,6 +15,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:background="@drawable/bg_but_theme_round">
         <TextView
+            android:id="@+id/text_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/home_cateogry_item_cateogry_padding_vert"
