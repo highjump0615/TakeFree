@@ -37,7 +37,7 @@ class SplashActivity : BaseActivity() {
         }
         else {
             User.readFromDatabase(userId!!, object: User.FetchDatabaseListener {
-                override fun onFetchedReviews() {
+                override fun onFetchedItems() {
                 }
 
                 override fun onFetchedUser(user: User?, success: Boolean) {

@@ -17,6 +17,7 @@
 
         <!-- photo -->
         <ImageView
+            android:id="@+id/imgview_photo"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:src="@drawable/img_item_default"
@@ -29,6 +30,7 @@
             android:orientation="vertical">
             <!-- name -->
             <TextView
+                android:id="@+id/text_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Richard Rice Cooker and Steamer"
@@ -37,6 +39,7 @@
 
             <!-- date-->
             <TextView
+                android:id="@+id/text_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="11/21/17"

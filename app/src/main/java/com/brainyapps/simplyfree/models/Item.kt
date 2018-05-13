@@ -14,6 +14,7 @@ class Item() : BaseModel(), Parcelable {
         // table info
         //
         const val TABLE_NAME = "items"
+        const val FIELD_USER = "userId"
         const val FIELD_COMMENTS = "comments"
 
         @JvmField
@@ -34,6 +35,7 @@ class Item() : BaseModel(), Parcelable {
     var category = 0
     var condition = 0
     var userId = ""
+    var userIdTaken = ""
 
     // user posted
     @get:Exclude
@@ -65,7 +67,7 @@ class Item() : BaseModel(), Parcelable {
         }
 
         User.readFromDatabase(userId, object: User.FetchDatabaseListener {
-            override fun onFetchedReviews() {
+            override fun onFetchedItems() {
             }
 
             override fun onFetchedUser(user: User?, success: Boolean) {

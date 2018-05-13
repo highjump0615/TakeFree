@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.activities.PhotoActivityHelper
+import com.brainyapps.simplyfree.fragments.main.MainHomeFragment
 import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Globals
@@ -30,6 +31,10 @@ import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_item_post.*
 
 class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageListener {
+
+    companion object {
+        const val KEY_ITEMS = "items"
+    }
 
     private val TAG = ItemPostActivity::class.java.getSimpleName()
 
@@ -150,7 +155,12 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageList
                 }
                 else {
                     newItem.saveToDatabase(withId)
-                    User.currentUser!!.posts.add(0, newItem)
+                    User.currentUser!!.items.add(0, newItem)
+
+                    // send added item to main page
+                    val intent = Intent()
+                    intent.putExtra(MainHomeFragment.KEY_ADD_ITEM, newItem)
+                    setResult(1, intent)
 
                     // go to posted job page
                     finish()

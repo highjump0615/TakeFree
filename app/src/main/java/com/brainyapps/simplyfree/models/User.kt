@@ -10,7 +10,7 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.UploadTask
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Created by Administrator on 3/24/18.
@@ -63,10 +63,10 @@ class User() : BaseModel(), Parcelable {
         //
         // table info
         //
-        val TABLE_NAME = "users"
-        val FIELD_EMAIL = "email"
-        val FIELD_TYPE = "type"
-        val FIELD_BANNED = "banned"
+        const val TABLE_NAME = "users"
+        const val FIELD_EMAIL = "email"
+        const val FIELD_TYPE = "type"
+        const val FIELD_BANNED = "banned"
     }
 
     var type: Int = USER_TYPE_CUSTOMER
@@ -79,7 +79,7 @@ class User() : BaseModel(), Parcelable {
     var photoUrl = ""
 
     @get:Exclude
-    var posts = ArrayList<Item>()
+    var items = ArrayList<Item>()
 
     override fun tableName() = TABLE_NAME
 
@@ -113,11 +113,42 @@ class User() : BaseModel(), Parcelable {
     }
 
     /**
+     * fetch items of the user
+     */
+    fun fetchItems(fetchListener: FetchDatabaseListener) {
+        val database = FirebaseDatabase.getInstance().reference.child(Item.TABLE_NAME)
+        val query = database.orderByChild(Item.FIELD_USER).equalTo(this.id)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                this@User.items.clear()
+
+                for (itemItem in dataSnapshot.children) {
+                    val item = itemItem.getValue(Item::class.java)
+                    item!!.id = itemItem.key
+                    item.userPosted = this@User
+
+                    this@User.items.add(item)
+                }
+
+                // sort
+                Collections.sort(this@User.items, Collections.reverseOrder())
+
+                fetchListener.onFetchedItems()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                fetchListener.onFetchedItems()
+            }
+        })
+    }
+
+    /**
      * interface for reading from database
      */
     interface FetchDatabaseListener {
         fun onFetchedUser(user: User?, success: Boolean)
-        fun onFetchedReviews()
+        fun onFetchedItems()
     }
 
     /**
@@ -149,6 +180,21 @@ class User() : BaseModel(), Parcelable {
         }
         else {
             onCompleted()
+        }
+    }
+
+    /**
+     * remove item from list
+     */
+    fun deleteItem(id: String) {
+
+        val itemDelete = items.filter { element ->
+            element.id.equals(id)
+        }
+
+        if (itemDelete.isNotEmpty()) {
+            itemDelete[0].deleteFromDatabase()
+            items.remove(itemDelete[0])
         }
     }
 }

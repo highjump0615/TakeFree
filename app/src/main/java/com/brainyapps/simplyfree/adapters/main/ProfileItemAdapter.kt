@@ -1,6 +1,8 @@
 package com.brainyapps.simplyfree.adapters.main
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -11,6 +13,8 @@ import com.brainyapps.simplyfree.activities.admin.AdminUserDetailActivity
 import com.brainyapps.simplyfree.activities.main.ItemDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import com.brainyapps.simplyfree.models.Item
+import com.brainyapps.simplyfree.models.User
+import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.views.main.ViewHolderProfileItem
 
 
@@ -18,7 +22,7 @@ import com.brainyapps.simplyfree.views.main.ViewHolderProfileItem
  * Created by Administrator on 2/19/18.
  */
 
-class ProfileItemAdapter(val ctx: Context, private val aryUser: ArrayList<Item>)
+class ProfileItemAdapter(val ctx: Context, private val aryItem: ArrayList<Item>)
     : BaseItemAdapter(ctx) {
 
     companion object {
@@ -45,13 +49,14 @@ class ProfileItemAdapter(val ctx: Context, private val aryUser: ArrayList<Item>)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolderProfileItem) {
+            holder.fillContent(aryItem[position])
         }
         else {
         }
     }
 
     override fun getItemCount(): Int {
-        var nCount = aryUser.size
+        var nCount = aryItem.size
 
         if (mbNeedMore) {
             nCount++
@@ -62,7 +67,7 @@ class ProfileItemAdapter(val ctx: Context, private val aryUser: ArrayList<Item>)
 
     override fun getItemViewType(position: Int): Int {
 
-        return if (position < aryUser.size) {
+        return if (position < aryItem.size) {
             ITEM_VIEW_TYPE_ITEM
         }
         else {
@@ -71,10 +76,31 @@ class ProfileItemAdapter(val ctx: Context, private val aryUser: ArrayList<Item>)
     }
 
     override fun onItemClick(view: View?, position: Int) {
-//        val user = aryUser[position]
+        when (view?.id) {
+            R.id.but_delete -> {
+                // show confirm dialog
+                AlertDialog.Builder(context)
+                        .setTitle("Are you sure to delete this item?")
+                        .setMessage("The deleted item cannot be restored")
+                        .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, which ->
+                            // delete item
+                            User.currentUser?.deleteItem(aryItem[position].id)
 
-        val intent = Intent(this.context, ItemDetailActivity::class.java)
-//        intent.putExtra(UserDetailHelper.KEY_USER, user)
-        this.context!!.startActivity(intent)
+                            aryItem.removeAt(position)
+                            notifyItemRemoved(position)
+                        })
+                        .setNegativeButton(android.R.string.no, DialogInterface.OnClickListener { dialog, which ->
+                        })
+                        .create()
+                        .show()
+            }
+
+            else -> {
+                Globals.selectedItem = aryItem[position]
+
+                val intent = Intent(this.context, ItemDetailActivity::class.java)
+                this.context!!.startActivity(intent)
+            }
+        }
     }
 }

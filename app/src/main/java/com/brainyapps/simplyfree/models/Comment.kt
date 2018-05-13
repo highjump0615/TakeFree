@@ -22,7 +22,7 @@ class Comment() : BaseModel() {
 
     fun fetchUser(fetchListener: FetchDatabaseListener?) {
         User.readFromDatabase(userId, object: User.FetchDatabaseListener {
-            override fun onFetchedReviews() {
+            override fun onFetchedItems() {
             }
 
             override fun onFetchedUser(user: User?, success: Boolean) {

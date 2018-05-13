@@ -11,7 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.adapters.main.ProfileItemAdapter
+import com.brainyapps.simplyfree.models.BaseModel
 import com.brainyapps.simplyfree.models.Item
+import com.brainyapps.simplyfree.models.User
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_profile_item_list.*
 import kotlinx.android.synthetic.main.fragment_profile_item_list.view.*
 import java.util.ArrayList
@@ -45,6 +50,13 @@ class MainProfileItemFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
         return rootView
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        // refresh item list
+        updateList()
+    }
+
     /**
      * get User data
      */
@@ -56,60 +68,60 @@ class MainProfileItemFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
             }
         }
 
-//        val database = FirebaseDatabase.getInstance().reference
-//        var query = database.child(User.TABLE_NAME).orderByChild(BaseModel.FIELD_DATE)
-//
-//        if (this.arguments!!.getInt(ARG_USER_LIST_TYPE) == AdminUserActivity.USER_BANNED) {
-//            query = database.child(User.TABLE_NAME).orderByChild(User.FIELD_BANNED).equalTo(true)
-//        }
-//
-//        query.addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                stopRefresh()
-//
-//                var bEmpty = false
-//                // if empty, use animation for add
-//                if (aryUser.isEmpty()) {
-//                    bEmpty = true
-//                }
-//
-                if (bAnimation) {
-                    this@MainProfileItemFragment.adapter!!.notifyItemRangeRemoved(0, aryItem.count())
-                }
-                aryItem.clear()
+        val user = User.currentUser!!
 
-                for (i in 0..10) {
-                    aryItem.add(Item())
-                }
-//
-//                if (!dataSnapshot.exists()) {
-//                    this@AdminUserFragment.text_empty_notice.visibility = View.VISIBLE
-//                }
-//
-//                for (userItem in dataSnapshot.children) {
-//                    val user = userItem.getValue(User::class.java)
-//                    user!!.id = userItem.key
-//                    if (user.type == User.USER_TYPE_ADMIN) {
-//                        continue
-//                    }
-//
-//                    aryUser.add(user)
-//                }
-//
-                if (bAnimation) {
-                    this@MainProfileItemFragment.adapter!!.notifyItemRangeInserted(0, aryItem.count())
-                }
-                else {
-                    this@MainProfileItemFragment.adapter!!.notifyDataSetChanged()
-                }
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                stopRefresh()
-//            }
-//        })
+        user.fetchItems(object: User.FetchDatabaseListener {
+            override fun onFetchedUser(user: User?, success: Boolean) {
+            }
+
+            override fun onFetchedItems() {
+                stopRefresh()
+
+                updateList(bAnimation)
+            }
+        })
 
         isInitialized = true
+    }
+
+    private fun updateList(bAnimation: Boolean = false) {
+        val user = User.currentUser!!
+
+        if (bAnimation) {
+            this@MainProfileItemFragment.adapter!!.notifyItemRangeRemoved(0, aryItem.count())
+        }
+        aryItem.clear()
+
+        // add items
+        if (arguments!!.getInt(ARG_ITEM_LIST_TYPE) == MainProfileFragment.ITEM_AVAILABLE) {
+            for (item in user.items) {
+                if (item.userIdTaken.isEmpty()) {
+                    aryItem.add(item)
+                }
+            }
+        }
+        else {
+            for (item in user.items) {
+                if (!item.userIdTaken.isEmpty()) {
+                    aryItem.add(item)
+                }
+            }
+        }
+
+        // show empty notice
+        if (aryItem.isEmpty()) {
+            text_empty_notice.visibility = View.VISIBLE
+        }
+        else {
+            text_empty_notice.visibility = View.GONE
+        }
+
+        if (bAnimation) {
+            this@MainProfileItemFragment.adapter!!.notifyItemRangeInserted(0, aryItem.count())
+        }
+        else {
+            this@MainProfileItemFragment.adapter!!.notifyDataSetChanged()
+        }
     }
 
     fun stopRefresh() {
@@ -121,7 +133,7 @@ class MainProfileItemFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
          * The fragment argument representing thee section number for this
          * fragment.
          */
-        private val ARG_ITEM_LIST_TYPE = "item_list_type"
+        private const val ARG_ITEM_LIST_TYPE = "item_list_type"
 
         /**
          * Returns a new instance of this fragment for the given section

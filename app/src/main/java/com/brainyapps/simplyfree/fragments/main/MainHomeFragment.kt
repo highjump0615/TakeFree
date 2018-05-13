@@ -1,6 +1,7 @@
 package com.brainyapps.simplyfree.fragments.main
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -15,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.main.HomeActivity
 import com.brainyapps.simplyfree.activities.main.ItemPostActivity
 import com.brainyapps.simplyfree.adapters.main.HomeCategoryAdapter
 import com.brainyapps.simplyfree.models.Category
@@ -238,6 +240,9 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
     }
 
     companion object {
+        const val RC_ADD_ITEM = 2000
+        const val KEY_ADD_ITEM = "added_item"
+
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private val ARG_PARAM1 = "param1"
@@ -271,11 +276,27 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
             }
 
             R.id.but_new -> {
-                Utils.moveNextActivity(activity!!, ItemPostActivity::class.java)
+                val intent = Intent(activity, ItemPostActivity::class.java)
+                startActivityForResult(intent, RC_ADD_ITEM)
             }
         }
     }
 
-    override fun getInteractionListener() = mListener
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        val bundle = data?.extras
+        bundle?.let {
+            val item = it.getParcelable<Item>(KEY_ADD_ITEM)
+
+            onAddedItem(item)
+        }
+    }
+
+    // add item listener
+    private fun onAddedItem(item: Item) {
+        aryItemAll.add(item)
+        updateList()
+    }
 
 }// Required empty public constructor

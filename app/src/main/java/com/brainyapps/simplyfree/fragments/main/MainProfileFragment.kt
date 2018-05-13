@@ -40,8 +40,8 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener {
     var aryFragment = ArrayList<MainProfileItemFragment>()
 
     companion object {
-        val ITEM_AVAILABLE = 0
-        val ITEM_TAKEN = 1
+        const val ITEM_AVAILABLE = 0
+        const val ITEM_TAKEN = 1
     }
 
     private var currentTab = -1
@@ -99,20 +99,18 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener {
         super.onDetach()
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
 
         //
         // fill user info
         //
         text_name.text = User.currentUser?.userFullName()
 
-        if (!TextUtils.isEmpty(User.currentUser?.photoUrl)) {
-            Glide.with(this)
-                    .load(User.currentUser?.photoUrl)
-                    .apply(RequestOptions.placeholderOf(R.drawable.user_default).fitCenter())
-                    .into(imgview_photo)
-        }
+        Glide.with(this)
+                .load(User.currentUser?.photoUrl)
+                .apply(RequestOptions.placeholderOf(R.drawable.user_default).fitCenter())
+                .into(imgview_photo)
     }
 
     /**

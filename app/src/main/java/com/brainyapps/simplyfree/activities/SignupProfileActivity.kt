@@ -31,8 +31,8 @@ class SignupProfileActivity : BaseActivity(), View.OnClickListener, SFUpdateImag
     var helper: PhotoActivityHelper? = null
 
     companion object {
-        val KEY_EMAIL = "email"
-        val KEY_PASSWORD = "password"
+        const val KEY_EMAIL = "email"
+        const val KEY_PASSWORD = "password"
     }
 
     var email: String? = null

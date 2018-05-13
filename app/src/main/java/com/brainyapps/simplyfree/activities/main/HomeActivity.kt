@@ -2,6 +2,7 @@ package com.brainyapps.simplyfree.activities.main
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
@@ -21,6 +22,7 @@ import com.brainyapps.simplyfree.fragments.main.MainHomeFragment
 import com.brainyapps.simplyfree.fragments.main.MainMessageFragment
 import com.brainyapps.simplyfree.fragments.main.MainNotificationFragment
 import com.brainyapps.simplyfree.fragments.main.MainProfileFragment
+import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
 import com.google.android.gms.location.*
@@ -36,10 +38,10 @@ class HomeActivity : BaseActivity(),
         MainMessageFragment.OnFragmentInteractionListener {
 
     private val TAG = HomeActivity::class.java.getSimpleName()
-    val FRAG_HOME = "home_frag"
-    val FRAG_PROFILE = "profile_frag"
-    val FRAG_NOTIFICATION = "notification_frag"
-    val FRAG_MESSAGE = "message_frag"
+    private val FRAG_HOME = "home_frag"
+    private val FRAG_PROFILE = "profile_frag"
+    private val FRAG_NOTIFICATION = "notification_frag"
+    private val FRAG_MESSAGE = "message_frag"
 
     var fragCurrent: Fragment? = null
 
@@ -156,7 +158,7 @@ class HomeActivity : BaseActivity(),
         val locationRequest = LocationRequest().apply {
             interval = 10000
             fastestInterval = 5000
-            priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

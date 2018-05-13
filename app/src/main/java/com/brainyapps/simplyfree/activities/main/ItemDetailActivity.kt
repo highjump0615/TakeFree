@@ -33,7 +33,6 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
 
         // get item from common objects
         item = Globals.selectedItem!!
-        item.fetchUser(this)
 
         setNavbar("", true, false)
 
@@ -60,6 +59,9 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
 
         // send button
         imgview_comment_send.setOnClickListener(this)
+
+        // init data
+        item.fetchUser(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
