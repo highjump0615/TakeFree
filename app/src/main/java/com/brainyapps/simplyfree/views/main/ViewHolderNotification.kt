@@ -56,12 +56,14 @@ class ViewHolderNotification(itemView: View, ctx: Context) : ViewHolderBase(item
                 itemView.text_icon.text = "\uf075"
 
                 // content
-                val strUserName = "Andres Fernandez"
+                val strUserName = data.userPosted?.userFullName()
                 val strContent = "$strUserName commented on your posted item. Check it up!"
                 val spannable = SpannableString(strContent)
                 val colorTheme = ContextCompat.getColor(context!!, R.color.colorTheme)
-                spannable.setSpan(ForegroundColorSpan(colorTheme), 0, strUserName.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                spannable.setSpan(StyleSpan(android.graphics.Typeface.BOLD), 0, strUserName.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                strUserName?.let {
+                    spannable.setSpan(ForegroundColorSpan(colorTheme), 0, it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    spannable.setSpan(StyleSpan(android.graphics.Typeface.BOLD), 0, it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                }
 
                 itemView.text_content.setText(spannable, TextView.BufferType.SPANNABLE)
             }

@@ -2,7 +2,8 @@ package com.brainyapps.simplyfree.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.google.firebase.database.Exclude
+import com.google.firebase.database.*
+import java.util.*
 
 /**
  * Created by Administrator on 4/10/18.
@@ -67,6 +68,9 @@ class Item() : BaseModel(), Parcelable {
         }
 
         User.readFromDatabase(userId, object: User.FetchDatabaseListener {
+            override fun onFetchedNotifications() {
+            }
+
             override fun onFetchedItems() {
             }
 
@@ -79,10 +83,41 @@ class Item() : BaseModel(), Parcelable {
     }
 
     /**
+     * fetch comments of the item
+     */
+    fun fetchComments(fetchListener: FetchDatabaseListener) {
+        val database = FirebaseDatabase.getInstance().reference.child(Item.TABLE_NAME + "/" + id)
+        val query = database.child(Item.FIELD_COMMENTS)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                comments.clear()
+
+                for (itemComment in dataSnapshot.children) {
+                    val comment = itemComment.getValue(Comment::class.java)
+                    comment!!.id = itemComment.key
+
+                    comments.add(comment)
+                }
+
+                // sort
+                Collections.sort(comments, Collections.reverseOrder())
+
+                fetchListener.onFetchedComments(true)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                fetchListener.onFetchedComments(false)
+            }
+        })
+    }
+
+    /**
      * interface for reading from database
      */
     interface FetchDatabaseListener {
         fun onFetchedUser(success: Boolean)
+        fun onFetchedComments(success: Boolean)
     }
 
 }

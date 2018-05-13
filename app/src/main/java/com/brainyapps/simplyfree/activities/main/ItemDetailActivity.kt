@@ -15,6 +15,7 @@ import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.adapters.main.ItemDetailAdapter
 import com.brainyapps.simplyfree.models.Comment
 import com.brainyapps.simplyfree.models.Item
+import com.brainyapps.simplyfree.models.Notification
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
@@ -78,17 +79,7 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
 
     // fetch comment user
     private fun getComments(bRefresh: Boolean, bAnimation: Boolean) {
-
-        for (comment in item.comments) {
-            comment.fetchUser(object : Comment.FetchDatabaseListener {
-                override fun onFetchedUser(success: Boolean) {
-                    // update list
-                    adapter!!.notifyDataSetChanged()
-                }
-            })
-        }
-
-        stopRefresh()
+        item.fetchComments(this)
     }
 
     private fun stopRefresh() {
@@ -111,10 +102,11 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         }
 
         val newComment = Comment()
+        val user = User.currentUser!!
 
         newComment.content = strComment
-        newComment.userId = User.currentUser!!.id
-        newComment.userPosted = User.currentUser
+        newComment.userId = user.id
+        newComment.userPosted = user
         item.comments.add(0, newComment)
 
         // save data
@@ -127,6 +119,14 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         edit_comment.setText("")
         edit_comment.clearFocus()
         Utils.hideKeyboard(this)
+
+        // add notification
+        item.userPosted?.let {
+            val newNotification = Notification(notificationType = Notification.NOTIFICATION_COMMENT)
+            newNotification.itemId = item.id
+            it.notifications.add(newNotification)
+            it.saveToDatabase()
+        }
     }
 
     //
@@ -134,5 +134,17 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
     //
     override fun onFetchedUser(success: Boolean) {
         adapter!!.notifyItemChanged(0)
+    }
+    override fun onFetchedComments(success: Boolean) {
+        for (comment in item.comments) {
+            comment.fetchUser(object : Comment.FetchDatabaseListener {
+                override fun onFetchedUser(success: Boolean) {
+                    // update list
+                    adapter!!.notifyDataSetChanged()
+                }
+            })
+        }
+
+        stopRefresh()
     }
 }

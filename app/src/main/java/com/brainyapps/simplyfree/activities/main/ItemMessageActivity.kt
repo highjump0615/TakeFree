@@ -11,6 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_item_message.*
 
 class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener {
+
     lateinit var item: Item
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,5 +38,7 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener {
     override fun onFetchedUser(success: Boolean) {
         // update user info
         setTitle(item.userPosted?.userFullName())
+    }
+    override fun onFetchedComments(success: Boolean) {
     }
 }

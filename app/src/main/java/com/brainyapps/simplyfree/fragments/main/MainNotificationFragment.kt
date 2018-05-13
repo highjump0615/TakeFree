@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.adapters.main.NotificationAdapter
 import com.brainyapps.simplyfree.models.Notification
+import com.brainyapps.simplyfree.models.User
 import kotlinx.android.synthetic.main.fragment_main_notification.*
 import kotlinx.android.synthetic.main.fragment_main_notification.view.*
 
@@ -27,33 +28,31 @@ import kotlinx.android.synthetic.main.fragment_main_notification.view.*
  * Use the [MainNotificationFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, User.FetchDatabaseListener {
 
     private val TAG = MainNotificationFragment::class.java.getSimpleName()
 
-    var aryNotification = ArrayList<Notification>()
     var adapter: NotificationAdapter? = null
 
-    var mListener: OnFragmentInteractionListener? = null
+    private var mListener: OnFragmentInteractionListener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val viewMain = inflater!!.inflate(R.layout.fragment_main_notification, container, false)
+        val viewMain = inflater.inflate(R.layout.fragment_main_notification, container, false)
 
         // init list
-        val layoutManager = LinearLayoutManager(activity)
-        viewMain.list.setLayoutManager(layoutManager)
+        viewMain.list.layoutManager = LinearLayoutManager(activity)
 
         viewMain.list.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
 
-        this.adapter = NotificationAdapter(activity!!, this.aryNotification)
-        viewMain.list.setAdapter(this.adapter)
-        viewMain.list.setItemAnimator(DefaultItemAnimator())
+        this.adapter = NotificationAdapter(activity!!, User.currentUser?.notifications!!)
+        viewMain.list.adapter = this.adapter
+        viewMain.list.itemAnimator = DefaultItemAnimator()
 
         viewMain.swiperefresh.setOnRefreshListener(this)
 
         // load data
-        Handler().postDelayed({ getNotifications(true, true) }, 500)
+        Handler().postDelayed({ getNotifications(true, false) }, 500)
 
         // Inflate the layout for this fragment
         return viewMain
@@ -77,32 +76,37 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
             }
         }
 
-        // clear
-        if (bAnimation) {
-            this@MainNotificationFragment.adapter!!.notifyItemRangeRemoved(0, aryNotification.count())
-        }
-        aryNotification.clear()
+        User.currentUser?.fetchNotifications(object: User.FetchDatabaseListener {
+            override fun onFetchedUser(user: User?, success: Boolean) {
+            }
 
-        // add
-        for (i in 0..2) {
-            val data = Notification()
-            data.type = i
+            override fun onFetchedItems() {
+            }
 
-            aryNotification.add(data)
-        }
+            override fun onFetchedNotifications() {
+                // clear
+                if (bAnimation) {
+                    this@MainNotificationFragment.adapter!!.notifyItemRangeRemoved(0, User.currentUser?.notifications!!.count())
+                }
 
-        updateList(bAnimation)
+                updateList(bAnimation)
 
-        if (aryNotification.isEmpty()) {
-            this@MainNotificationFragment.text_empty_notice.visibility = View.VISIBLE
-        }
+                if (User.currentUser?.notifications!!.isEmpty()) {
+                    this@MainNotificationFragment.text_empty_notice.visibility = View.VISIBLE
+                }
+                else {
+                    this@MainNotificationFragment.text_empty_notice.visibility = View.GONE
+                }
+            }
+
+        })
     }
 
     fun updateList(bAnimation: Boolean) {
         stopRefresh()
 
         if (bAnimation) {
-            this@MainNotificationFragment.adapter!!.notifyItemRangeInserted(0, aryNotification.count())
+            this@MainNotificationFragment.adapter!!.notifyItemRangeInserted(0, User.currentUser?.notifications!!.count())
         }
         else {
             this@MainNotificationFragment.adapter!!.notifyDataSetChanged()
@@ -149,5 +153,17 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
     }
 
     override fun getInteractionListener() = mListener
+
+    //
+    // User.FetchDatabaseListener
+    //
+    override fun onFetchedUser(user: User?, success: Boolean) {
+    }
+
+    override fun onFetchedItems() {
+    }
+
+    override fun onFetchedNotifications() {
+    }
 
 }// Required empty public constructor

@@ -1,6 +1,5 @@
 package com.brainyapps.simplyfree.adapters.main
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
@@ -8,17 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
-import com.brainyapps.simplyfree.activities.admin.AdminReportDetailActivity
+import com.brainyapps.simplyfree.activities.UserDetailHelper
 import com.brainyapps.simplyfree.activities.main.RateActivity
 import com.brainyapps.simplyfree.activities.main.UserDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
-import com.brainyapps.simplyfree.models.Category
 import com.brainyapps.simplyfree.models.Notification
 import java.util.ArrayList
-import com.brainyapps.simplyfree.models.Report
-import com.brainyapps.simplyfree.utils.Utils
-import com.brainyapps.simplyfree.views.admin.ViewHolderUserItem
-import com.brainyapps.simplyfree.views.main.ViewHolderHomeCategoryItem
 import com.brainyapps.simplyfree.views.main.ViewHolderNotification
 
 /**
@@ -29,7 +23,11 @@ class NotificationAdapter(val ctx: Context, private val aryData: ArrayList<Notif
     : BaseItemAdapter(ctx) {
 
     companion object {
-        val ITEM_VIEW_TYPE_NOTIFICATION = 1
+        const val ITEM_VIEW_TYPE_NOTIFICATION = 1
+    }
+
+    private fun getAvailableList(): List<Notification> = aryData.filter { element ->
+        element.userPosted != null
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -51,14 +49,17 @@ class NotificationAdapter(val ctx: Context, private val aryData: ArrayList<Notif
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolderNotification) {
-            holder.fillContent(this.aryData[position])
+            holder.fillContent(getAvailableList()[position])
         }
         else {
         }
     }
 
     override fun getItemCount(): Int {
-        var nCount = aryData.size
+        val listNotification = aryData.filter { element ->
+            element.userPosted != null
+        }
+        var nCount = listNotification.size
 
         if (mbNeedMore) {
             nCount++
@@ -68,8 +69,7 @@ class NotificationAdapter(val ctx: Context, private val aryData: ArrayList<Notif
     }
 
     override fun getItemViewType(position: Int): Int {
-
-        return if (position < aryData.size) {
+        return if (position < getAvailableList().size) {
             ITEM_VIEW_TYPE_NOTIFICATION
         }
         else {
@@ -78,12 +78,16 @@ class NotificationAdapter(val ctx: Context, private val aryData: ArrayList<Notif
     }
 
     override fun onItemClick(view: View?, position: Int) {
-        if (position == 1) {
+        val listNotification = getAvailableList()
+        val notification = listNotification[position]
+
+        if (notification.type == Notification.NOTIFICATION_RATED) {
             val intent = Intent(context, RateActivity::class.java)
             context!!.startActivity(intent)
         }
         else {
             val intent = Intent(context, UserDetailActivity::class.java)
+            intent.putExtra(UserDetailHelper.KEY_USER, notification.userPosted)
             context!!.startActivity(intent)
         }
     }

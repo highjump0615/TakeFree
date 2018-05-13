@@ -108,7 +108,7 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageList
 
         // generate id
         val database = FirebaseDatabase.getInstance().reference
-        val strKey = database.child(Item.TABLE_NAME).push().getKey();
+        val strKey = database.child(Item.TABLE_NAME).push().key;
 
         showSaveProgress()
 

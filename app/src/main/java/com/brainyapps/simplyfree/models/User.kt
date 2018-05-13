@@ -67,6 +67,7 @@ class User() : BaseModel(), Parcelable {
         const val FIELD_EMAIL = "email"
         const val FIELD_TYPE = "type"
         const val FIELD_BANNED = "banned"
+        const val FIELD_NOTIFICATIONS = "notifications"
     }
 
     var type: Int = USER_TYPE_CUSTOMER
@@ -80,6 +81,8 @@ class User() : BaseModel(), Parcelable {
 
     @get:Exclude
     var items = ArrayList<Item>()
+
+    var notifications = ArrayList<Notification>()
 
     override fun tableName() = TABLE_NAME
 
@@ -146,11 +149,90 @@ class User() : BaseModel(), Parcelable {
     }
 
     /**
+     * fetch notifications of the user
+     */
+    fun fetchNotifications(fetchListener: FetchDatabaseListener) {
+        val database = FirebaseDatabase.getInstance().reference.child(User.TABLE_NAME + "/" + id)
+        val query = database.child(User.FIELD_NOTIFICATIONS)
+
+        var countFound = 0
+        var countFetched = 0
+        val aryNotifiId = ArrayList<String>()
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                for (itemNotifi in dataSnapshot.children) {
+
+                    val strId = itemNotifi.key
+                    aryNotifiId.add(strId)
+
+                    //
+                    // add new ones only
+                    //
+                    val notifiExists = notifications.filter { element ->
+                        element.id.equals(strId)
+                    }
+                    if (notifiExists.isNotEmpty()) {
+                        continue
+                    }
+
+                    val notifi = itemNotifi.getValue(Notification::class.java)
+                    notifi!!.id = strId
+
+                    countFound++
+
+                    // fetch its user
+                    User.readFromDatabase(notifi.userId, object: User.FetchDatabaseListener {
+                        override fun onFetchedUser(user: User?, success: Boolean) {
+
+                            notifi.userPosted = user
+
+                            notifications.add(notifi)
+                            countFetched++
+
+                            // if all notification users are fetched
+                            if (countFound == countFetched) {
+                                // sort
+                                Collections.sort(notifications, Collections.reverseOrder())
+
+                                fetchListener.onFetchedNotifications()
+                            }
+                        }
+
+                        override fun onFetchedItems() {
+                        }
+
+                        override fun onFetchedNotifications() {
+                        }
+                    })
+                }
+
+                // remove already deleted ones
+                val notifiDelete = notifications.filter { element ->
+                    !aryNotifiId.contains(element.id)
+                }
+                notifications.removeAll(notifiDelete)
+
+                // not found new, fetched callback
+                if (countFound == 0) {
+                    fetchListener.onFetchedNotifications()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                fetchListener.onFetchedNotifications()
+            }
+        })
+    }
+
+    /**
      * interface for reading from database
      */
     interface FetchDatabaseListener {
         fun onFetchedUser(user: User?, success: Boolean)
         fun onFetchedItems()
+        fun onFetchedNotifications()
     }
 
     /**
