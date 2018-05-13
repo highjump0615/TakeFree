@@ -28,19 +28,10 @@ class ViewRateStar : LinearLayout, View.OnClickListener {
         init()
 
         // init star image views
-        this.imgview_star1.setOnClickListener(this)
         imgViewStars.add(this.imgview_star1)
-
-        this.imgview_star2.setOnClickListener(this)
         imgViewStars.add(this.imgview_star2)
-
-        this.imgview_star3.setOnClickListener(this)
         imgViewStars.add(this.imgview_star3)
-
-        this.imgview_star4.setOnClickListener(this)
         imgViewStars.add(this.imgview_star4)
-
-        this.imgview_star5.setOnClickListener(this)
         imgViewStars.add(this.imgview_star5)
 
         val a = context.obtainStyledAttributes(attrs, R.styleable.ViewRateStar)
@@ -55,13 +46,21 @@ class ViewRateStar : LinearLayout, View.OnClickListener {
         View.inflate(context, R.layout.layout_star_rate, this)
     }
 
-    fun updateStar(value: Double) {
+    private fun updateStar(value: Double) {
         for (i in 0..4) {
             if (i < round(value)) {
                 imgViewStars[i].setColorFilter(ContextCompat.getColor(context!!, R.color.colorStar))
             }
             else {
                 imgViewStars[i].setColorFilter(ContextCompat.getColor(context!!, R.color.colorGrey))
+            }
+
+            if (!starSelectable) {
+                imgViewStars[i].isClickable = false
+                imgViewStars[i].isFocusable = false
+            }
+            else {
+                imgViewStars[i].setOnClickListener(this)
             }
         }
     }

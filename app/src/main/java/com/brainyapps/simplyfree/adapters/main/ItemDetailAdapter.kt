@@ -13,6 +13,7 @@ import com.brainyapps.simplyfree.activities.main.ItemMessageActivity
 import com.brainyapps.simplyfree.activities.main.UserDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import com.brainyapps.simplyfree.models.Item
+import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.views.main.ViewHolderItemDetailComment
 import com.brainyapps.simplyfree.views.main.ViewHolderItemDetailItem
 
@@ -97,6 +98,11 @@ class ItemDetailAdapter(val ctx: Context, private val item: Item)
             // user profile
             R.id.layout_user -> {
                 item.userPosted.let {
+                    // go to profile page for other users only
+                    if (it?.id!!.equals(User.currentUser?.id)) {
+                        return
+                    }
+
                     val intent = Intent(context, UserDetailActivity::class.java)
                     intent.putExtra(UserDetailHelper.KEY_USER, it)
                     context!!.startActivity(intent)
