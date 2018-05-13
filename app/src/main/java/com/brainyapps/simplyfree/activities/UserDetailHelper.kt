@@ -14,6 +14,10 @@ import com.bumptech.glide.request.RequestOptions
  */
 class UserDetailHelper(private val contentView: View) {
 
+    companion object {
+        val KEY_USER = "user"
+    }
+
     init {
     }
 

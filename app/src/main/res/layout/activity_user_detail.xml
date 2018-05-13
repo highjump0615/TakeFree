@@ -34,6 +34,7 @@
 
                 <!-- photo -->
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgview_user"
                     android:layout_width="@dimen/main_profile_photo_size"
                     android:layout_height="@dimen/main_profile_photo_size"
                     android:layout_margin="10dp"
@@ -50,6 +51,7 @@
                     android:orientation="vertical">
                     <!-- name -->
                     <TextView
+                        android:id="@+id/text_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/white"

@@ -16,6 +16,7 @@ import android.text.TextUtils
 import android.view.*
 
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.UserDetailHelper
 import com.brainyapps.simplyfree.activities.main.ProfileEditActivity
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Utils
@@ -39,6 +40,8 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener {
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
     var aryFragment = ArrayList<MainProfileItemFragment>()
 
+    lateinit var helperUser: UserDetailHelper
+
     companion object {
         const val ITEM_AVAILABLE = 0
         const val ITEM_TAKEN = 1
@@ -51,6 +54,8 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener {
         val viewMain = inflater.inflate(R.layout.fragment_main_profile, container, false)
 
         setHasOptionsMenu(true)
+
+        helperUser = UserDetailHelper(viewMain)
 
         // Inflate the layout for this fragment
         return viewMain
@@ -105,12 +110,7 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener {
         //
         // fill user info
         //
-        text_name.text = User.currentUser?.userFullName()
-
-        Glide.with(this)
-                .load(User.currentUser?.photoUrl)
-                .apply(RequestOptions.placeholderOf(R.drawable.user_default).fitCenter())
-                .into(imgview_photo)
+        helperUser.fillUserInfoSimple(User.currentUser)
     }
 
     /**

@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.UserDetailHelper
 import com.brainyapps.simplyfree.activities.main.ItemMessageActivity
+import com.brainyapps.simplyfree.activities.main.UserDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.views.main.ViewHolderItemDetailComment
@@ -92,6 +94,16 @@ class ItemDetailAdapter(val ctx: Context, private val item: Item)
 
     override fun onItemClick(view: View?, position: Int) {
         when (view!!.id) {
+            // user profile
+            R.id.layout_user -> {
+                item.userPosted.let {
+                    val intent = Intent(context, UserDetailActivity::class.java)
+                    intent.putExtra(UserDetailHelper.KEY_USER, it)
+                    context!!.startActivity(intent)
+                }
+            }
+
+            // message to user
             R.id.but_message -> {
                 val intent = Intent(this.context, ItemMessageActivity::class.java)
                 this.context!!.startActivity(intent)

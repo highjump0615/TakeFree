@@ -18,12 +18,12 @@ import java.util.*
 class User() : BaseModel(), Parcelable {
 
     companion object {
-        val USER_TYPE_ADMIN = 0
-        val USER_TYPE_CUSTOMER = 1
-
-        val TAG = User::class.java.getSimpleName()
+        const val USER_TYPE_ADMIN = 0
+        const val USER_TYPE_CUSTOMER = 1
 
         var currentUser: User? = null
+
+        val TAG = User::class.java.getSimpleName()
 
         fun readFromDatabase(withId: String, fetchListener: FetchDatabaseListener) {
 
@@ -91,6 +91,8 @@ class User() : BaseModel(), Parcelable {
         firstName = parcel.readString()
         lastName = parcel.readString()
         photoUrl = parcel.readString()
+
+        readFromParcelBase(parcel)
     }
 
     constructor(id: String) : this() {

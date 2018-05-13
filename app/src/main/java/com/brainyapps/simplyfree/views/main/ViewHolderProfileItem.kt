@@ -5,6 +5,7 @@ import android.view.View
 import com.brainyapps.e2fix.views.admin.ViewHolderBase
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.models.Item
+import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Utils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -34,5 +35,10 @@ class ViewHolderProfileItem(itemView: View, ctx: Context) : ViewHolderBase(itemV
                 .load(data.photoUrl)
                 .apply(RequestOptions.placeholderOf(R.drawable.img_item_default).fitCenter())
                 .into(itemView.imgview_photo)
+
+        // hide delete button on other users
+        if (!data.userPosted?.id.equals(User.currentUser?.id)) {
+            itemView.but_delete.visibility = View.GONE
+        }
     }
 }

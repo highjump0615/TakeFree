@@ -5,6 +5,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.text.TextUtils
 import com.brainyapps.simplyfree.utils.Utils
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.FirebaseDatabase
 import java.util.*
@@ -52,9 +53,9 @@ open class BaseModel() : Comparable<BaseModel> {
         parcel.writeLong(createdAt)
     }
 
-//    fun saveToDatabaseBase(node: DatabaseReference) {
-//        node.child(FIELD_DATE).setValue(this.createdAt)
-//    }
+    fun saveToDatabaseBase(node: DatabaseReference) {
+        node.child(FIELD_DATE).setValue(this.createdAt)
+    }
 
     fun saveToDatabase(withId: String? = null) {
         val database = FirebaseDatabase.getInstance().reference.child(tableName())

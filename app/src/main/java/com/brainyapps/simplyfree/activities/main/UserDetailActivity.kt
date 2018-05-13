@@ -10,9 +10,11 @@ import android.view.Menu
 import android.view.View
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
+import com.brainyapps.simplyfree.activities.UserDetailHelper
 import com.brainyapps.simplyfree.adapters.main.ProfileItemAdapter
 import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.models.Review
+import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.activity_user_detail.*
 
@@ -22,21 +24,32 @@ class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLay
 
     var adapter: ProfileItemAdapter? = null
 
+    lateinit var user: User
+    lateinit var helperUser: UserDetailHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_detail)
 
-        setNavbar("Fernando Gimenez", true)
+        // get user from intent
+        val bundle = intent.extras
+        user = bundle?.getParcelable<User>(UserDetailHelper.KEY_USER)!!
+
+        setNavbar(user.userFullName(), true)
 
         layout_review.setOnClickListener(this)
 
+        helperUser = UserDetailHelper(findViewById<View>(android.R.id.content))
+
+        // fill user info
+        helperUser.fillUserInfoSimple(user)
+
         // init list
-        val layoutManager = LinearLayoutManager(this)
-        list.setLayoutManager(layoutManager)
+        list.layoutManager = LinearLayoutManager(this)
 
         this.adapter = ProfileItemAdapter(this, aryItem)
-        list.setAdapter(this.adapter)
-        list.setItemAnimator(DefaultItemAnimator())
+        list.adapter = this.adapter
+        list.itemAnimator = DefaultItemAnimator()
 
         this.swiperefresh.setOnRefreshListener(this)
 
@@ -55,7 +68,7 @@ class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLay
     /**
      * get Item data
      */
-    fun getItems(bRefresh: Boolean, bAnimation: Boolean) {
+    private fun getItems(bRefresh: Boolean, bAnimation: Boolean) {
 
         if (bAnimation) {
             if (!this.swiperefresh.isRefreshing) {
@@ -63,58 +76,38 @@ class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLay
             }
         }
 
-//        val database = FirebaseDatabase.getInstance().reference
-//        var query = database.child(User.TABLE_NAME).orderByChild(BaseModel.FIELD_DATE)
-//
-//        if (this.arguments!!.getInt(ARG_USER_LIST_TYPE) == AdminUserActivity.USER_BANNED) {
-//            query = database.child(User.TABLE_NAME).orderByChild(User.FIELD_BANNED).equalTo(true)
-//        }
-//
-//        query.addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-        stopRefresh()
-//
-//                var bEmpty = false
-//                // if empty, use animation for add
-//                if (aryUser.isEmpty()) {
-//                    bEmpty = true
-//                }
-//
-        if (bAnimation) {
-            this@UserDetailActivity.adapter!!.notifyItemRangeRemoved(0, aryItem.count())
-        }
-        aryItem.clear()
+        user.fetchItems(object: User.FetchDatabaseListener {
+            override fun onFetchedUser(user: User?, success: Boolean) {
+            }
 
-        for (i in 0..10) {
-            aryItem.add(Item())
-        }
-//
-//                if (!dataSnapshot.exists()) {
-//                    this@AdminUserFragment.text_empty_notice.visibility = View.VISIBLE
-//                }
-//
-//                for (userItem in dataSnapshot.children) {
-//                    val user = userItem.getValue(User::class.java)
-//                    user!!.id = userItem.key
-//                    if (user.type == User.USER_TYPE_ADMIN) {
-//                        continue
-//                    }
-//
-//                    aryUser.add(user)
-//                }
-//
-        if (bAnimation) {
-            this@UserDetailActivity.adapter!!.notifyItemRangeInserted(0, aryItem.count())
-        }
-        else {
-            this@UserDetailActivity.adapter!!.notifyDataSetChanged()
-        }
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                stopRefresh()
-//            }
-//        })
+            override fun onFetchedItems() {
+                stopRefresh()
+
+                if (bAnimation) {
+                    adapter!!.notifyItemRangeRemoved(0, aryItem.count())
+                }
+                aryItem.clear()
+
+                // add items
+                aryItem.addAll(user.items)
+
+                // show empty notice
+                if (aryItem.isEmpty()) {
+                    text_empty_notice.visibility = View.VISIBLE
+                }
+                else {
+                    text_empty_notice.visibility = View.GONE
+                }
+
+                if (bAnimation) {
+                    adapter!!.notifyItemRangeInserted(0, aryItem.count())
+                }
+                else {
+                    adapter!!.notifyDataSetChanged()
+                }
+            }
+        })
+
     }
 
     fun stopRefresh() {
