@@ -124,7 +124,7 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
         }
 
         val database = FirebaseDatabase.getInstance().reference
-        val query = database.child(Item.TABLE_NAME)
+        val query = database.child(Item.TABLE_NAME).orderByChild(Item.FIELD_TAKEN).equalTo(false)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // store all items

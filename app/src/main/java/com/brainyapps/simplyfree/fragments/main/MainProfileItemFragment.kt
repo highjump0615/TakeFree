@@ -71,6 +71,9 @@ class MainProfileItemFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
         val user = User.currentUser!!
 
         user.fetchItems(object: User.FetchDatabaseListener {
+            override fun onFetchedNotifications() {
+            }
+
             override fun onFetchedUser(user: User?, success: Boolean) {
             }
 

@@ -188,6 +188,9 @@ open class LoginBaseActivity : BaseActivity(), GoogleApiClient.OnConnectionFaile
         val userId = FirebaseManager.mAuth.currentUser!!.uid
 
         User.readFromDatabase(userId, object: User.FetchDatabaseListener {
+            override fun onFetchedNotifications() {
+            }
+
             override fun onFetchedItems() {
             }
 

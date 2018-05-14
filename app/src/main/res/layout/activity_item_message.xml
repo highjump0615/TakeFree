@@ -69,6 +69,7 @@
                     android:layout_alignParentBottom="true"/>
 
                 <Button
+                    android:id="@+id/but_take"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginLeft="@dimen/login_but_margin_horiz"

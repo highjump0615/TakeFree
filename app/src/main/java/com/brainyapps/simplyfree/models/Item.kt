@@ -16,6 +16,7 @@ class Item() : BaseModel(), Parcelable {
         //
         const val TABLE_NAME = "items"
         const val FIELD_USER = "userId"
+        const val FIELD_TAKEN = "isTaken"
         const val FIELD_COMMENTS = "comments"
 
         @JvmField
@@ -37,10 +38,14 @@ class Item() : BaseModel(), Parcelable {
     var condition = 0
     var userId = ""
     var userIdTaken = ""
+    var isTaken = false
 
     // user posted
     @get:Exclude
     var userPosted: User? = null
+
+    @get:Exclude
+    var userTaken: User? = null
 
     var comments = ArrayList<Comment>()
 
@@ -62,9 +67,13 @@ class Item() : BaseModel(), Parcelable {
         return 0
     }
 
+    /**
+     * fetch posted user
+     */
     fun fetchUser(fetchListener: FetchDatabaseListener?) {
         if (userPosted != null) {
             fetchListener?.onFetchedUser(true)
+            return
         }
 
         User.readFromDatabase(userId, object: User.FetchDatabaseListener {
@@ -76,6 +85,30 @@ class Item() : BaseModel(), Parcelable {
 
             override fun onFetchedUser(user: User?, success: Boolean) {
                 userPosted = user
+
+                fetchListener?.onFetchedUser(user != null)
+            }
+        })
+    }
+
+    /**
+     * fetch user taken
+     */
+    fun fetchUserTaken(fetchListener: FetchDatabaseListener?) {
+        if (userTaken != null) {
+            fetchListener?.onFetchedUser(true)
+            return
+        }
+
+        User.readFromDatabase(userIdTaken, object: User.FetchDatabaseListener {
+            override fun onFetchedNotifications() {
+            }
+
+            override fun onFetchedItems() {
+            }
+
+            override fun onFetchedUser(user: User?, success: Boolean) {
+                userTaken = user
 
                 fetchListener?.onFetchedUser(user != null)
             }
