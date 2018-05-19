@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.UserDetailHelper
+import com.brainyapps.simplyfree.activities.main.ItemDetailActivity
 import com.brainyapps.simplyfree.activities.main.RateActivity
 import com.brainyapps.simplyfree.activities.main.UserDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
@@ -82,12 +83,17 @@ class NotificationAdapter(val ctx: Context, private val aryData: ArrayList<Notif
         val notification = listNotification[position]
 
         if (notification.type == Notification.NOTIFICATION_RATED) {
+            val intent = Intent(context, UserDetailActivity::class.java)
+            context!!.startActivity(intent)
+        }
+        else if (notification.type == Notification.NOTIFICATION_TOOK) {
             val intent = Intent(context, RateActivity::class.java)
+            intent.putExtra(UserDetailHelper.KEY_USER, notification.userPosted)
             context!!.startActivity(intent)
         }
         else {
-            val intent = Intent(context, UserDetailActivity::class.java)
-            intent.putExtra(UserDetailHelper.KEY_USER, notification.userPosted)
+            val intent = Intent(context, ItemDetailActivity::class.java)
+            intent.putExtra(ItemDetailActivity.KEY_ITEM_ID, notification.itemId)
             context!!.startActivity(intent)
         }
     }

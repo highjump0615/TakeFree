@@ -2,6 +2,7 @@ package com.brainyapps.simplyfree.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.Log
 import com.google.firebase.database.*
 import java.util.*
 
@@ -16,8 +17,34 @@ class Item() : BaseModel(), Parcelable {
         //
         const val TABLE_NAME = "items"
         const val FIELD_USER = "userId"
-        const val FIELD_TAKEN = "isTaken"
+        const val FIELD_TAKEN = "taken"
         const val FIELD_COMMENTS = "comments"
+
+        val TAG = Item::class.java.simpleName
+
+        fun readFromDatabase(withId: String, fetchListener: Item.FetchDatabaseListener) {
+
+            val database = FirebaseDatabase.getInstance().reference
+            val query = database.child(Item.TABLE_NAME + "/" + withId)
+
+            // Read from the database
+            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    val i = dataSnapshot.getValue(Item::class.java)
+                    i?.id = withId
+
+                    fetchListener.onFetchedItem(i)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w(TAG, "failed to read from database.", error.toException())
+                    fetchListener.onFetchedItem(null)
+                }
+            })
+        }
 
         @JvmField
         val CREATOR = object : Parcelable.Creator<Item> {
@@ -38,7 +65,7 @@ class Item() : BaseModel(), Parcelable {
     var condition = 0
     var userId = ""
     var userIdTaken = ""
-    var isTaken = false
+    var taken = false
 
     // user posted
     @get:Exclude
@@ -149,6 +176,7 @@ class Item() : BaseModel(), Parcelable {
      * interface for reading from database
      */
     interface FetchDatabaseListener {
+        fun onFetchedItem(i: Item?)
         fun onFetchedUser(success: Boolean)
         fun onFetchedComments(success: Boolean)
     }

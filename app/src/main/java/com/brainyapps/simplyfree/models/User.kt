@@ -23,7 +23,7 @@ class User() : BaseModel(), Parcelable {
 
         var currentUser: User? = null
 
-        val TAG = User::class.java.getSimpleName()
+        val TAG = User::class.java.simpleName
 
         fun readFromDatabase(withId: String, fetchListener: FetchDatabaseListener) {
 

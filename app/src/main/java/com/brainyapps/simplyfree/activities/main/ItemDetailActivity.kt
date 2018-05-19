@@ -24,26 +24,43 @@ import kotlinx.android.synthetic.main.activity_item_detail.*
 
 class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, Item.FetchDatabaseListener {
 
+    companion object {
+        const val KEY_ITEM_ID = "item_id"
+    }
+
     var adapter: ItemDetailAdapter? = null
 
-    lateinit var item: Item
+    var item: Item? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_detail)
 
         // get item from common objects
-        item = Globals.selectedItem!!
+        item = Globals.selectedItem
 
         setNavbar("", true, false)
 
+        if (item != null) {
+            initView()
+        }
+        else {
+            // get item id from intent
+            val bundle = intent.extras
+            val itemId = bundle?.getString(KEY_ITEM_ID)!!
+
+            Item.readFromDatabase(withId = itemId, fetchListener = this)
+        }
+    }
+
+    private fun initView() {
         // title
-        toolbar.title = item.name
+        toolbar.title = item?.name
 
         // init list
         list.layoutManager = LinearLayoutManager(this)
 
-        this.adapter = ItemDetailAdapter(this, item)
+        adapter = ItemDetailAdapter(this, item!!)
         list.adapter = this.adapter
         list.itemAnimator = DefaultItemAnimator()
 
@@ -62,7 +79,7 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         imgview_comment_send.setOnClickListener(this)
 
         // init data
-        item.fetchUser(this)
+        item?.fetchUser(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -79,7 +96,7 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
 
     // fetch comment user
     private fun getComments(bRefresh: Boolean, bAnimation: Boolean) {
-        item.fetchComments(this)
+        item?.fetchComments(this)
     }
 
     private fun stopRefresh() {
@@ -107,10 +124,10 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         newComment.content = strComment
         newComment.userId = user.id
         newComment.userPosted = user
-        item.comments.add(0, newComment)
+        item!!.comments.add(0, newComment)
 
         // save data
-        item.saveToDatabase()
+        item?.saveToDatabase()
 
         // update list
         adapter!!.notifyDataSetChanged()
@@ -121,9 +138,9 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         Utils.hideKeyboard(this)
 
         // add notification
-        item.userPosted?.let {
+        item!!.userPosted?.let {
             val newNotification = Notification(notificationType = Notification.NOTIFICATION_COMMENT)
-            newNotification.itemId = item.id
+            newNotification.itemId = item!!.id
             it.notifications.add(newNotification)
             it.saveToDatabase()
         }
@@ -132,11 +149,15 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
     //
     // Item.FetchDatabaseListener
     //
+    override fun onFetchedItem(i: Item?) {
+        item = i
+        initView()
+    }
     override fun onFetchedUser(success: Boolean) {
         adapter!!.notifyItemChanged(0)
     }
     override fun onFetchedComments(success: Boolean) {
-        for (comment in item.comments) {
+        for (comment in item!!.comments) {
             comment.fetchUser(object : Comment.FetchDatabaseListener {
                 override fun onFetchedUser(success: Boolean) {
                     // update list

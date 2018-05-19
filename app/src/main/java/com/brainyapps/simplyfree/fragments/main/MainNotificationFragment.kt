@@ -52,7 +52,7 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
         viewMain.swiperefresh.setOnRefreshListener(this)
 
         // load data
-        Handler().postDelayed({ getNotifications(true, false) }, 500)
+        Handler().postDelayed({ getNotifications(false, false) }, 500)
 
         // Inflate the layout for this fragment
         return viewMain
@@ -70,7 +70,7 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
      * get User data
      */
     private fun getNotifications(bRefresh: Boolean, bAnimation: Boolean) {
-        if (bAnimation) {
+        if (!bRefresh) {
             if (!this.swiperefresh.isRefreshing) {
                 this.swiperefresh.isRefreshing = true
             }

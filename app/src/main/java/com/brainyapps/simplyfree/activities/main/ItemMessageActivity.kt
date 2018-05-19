@@ -47,7 +47,7 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
     private fun updateTakeButton() {
         val user = User.currentUser!!
 
-        if (item.isTaken) {
+        if (item.taken) {
             // I took this item
             if (item.userIdTaken.equals(user.id)) {
                 but_take.text = "Owner Accepted Request"
@@ -68,8 +68,11 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
             but_take.setBackgroundResource(R.drawable.bg_item_status_but_round_requested)
 
             // check request
-            if (item.userId.equals(item.userId)) {
+            if (item.userId.equals(user.id)) {
                 item.fetchUserTaken(object: Item.FetchDatabaseListener {
+                    override fun onFetchedItem(i: Item?) {
+                    }
+
                     override fun onFetchedUser(success: Boolean) {
                         // show confirm dialog
                         AlertDialog.Builder(this@ItemMessageActivity)
@@ -99,7 +102,7 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
 
     private fun acceptTakeRequest() {
         // update item status
-        item.isTaken = true
+        item.taken = true
         item.saveToDatabase()
 
         // send notification to user
@@ -114,6 +117,8 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
     //
     // Item.FetchDatabaseListener
     //
+    override fun onFetchedItem(i: Item?) {
+    }
     override fun onFetchedUser(success: Boolean) {
         // update user info
         setTitle(item.userPosted?.userFullName())
