@@ -17,6 +17,11 @@ class Review() : BaseModel() {
     @get:Exclude
     var user: User? = null
 
+    var itemId = ""
+    // item related
+    @get:Exclude
+    var itemRelated: Item? = null
+
     var rate = 0.0
     var review = ""
 }

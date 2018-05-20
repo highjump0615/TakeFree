@@ -24,6 +24,7 @@
 
             <!-- photo -->
             <ImageView
+                android:id="@+id/imgview_photo"
                 android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:src="@drawable/img_item_default"
@@ -36,6 +37,7 @@
                 android:orientation="vertical">
                 <!-- name -->
                 <TextView
+                    android:id="@+id/text_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Richard Rice Cooker and Steamer"
@@ -44,6 +46,7 @@
 
                 <!-- rate -->
                 <com.brainyapps.simplyfree.views.ViewRateStar
+                    android:id="@+id/view_star_rate"
                     android:layout_width="66dp"
                     android:layout_height="13dp"
                     android:layout_marginTop="3dp"
@@ -51,6 +54,7 @@
 
                 <!-- review -->
                 <TextView
+                    android:id="@+id/text_review"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Thank you! Looking forward for our next transaction."

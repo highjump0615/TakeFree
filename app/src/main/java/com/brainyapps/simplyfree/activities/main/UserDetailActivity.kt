@@ -1,5 +1,6 @@
 package com.brainyapps.simplyfree.activities.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
@@ -17,8 +18,6 @@ import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.activity_user_detail.*
 
 class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
-
-    var aryItem = ArrayList<Item>()
 
     var adapter: ProfileItemAdapter? = null
 
@@ -45,7 +44,7 @@ class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLay
         // init list
         list.layoutManager = LinearLayoutManager(this)
 
-        this.adapter = ProfileItemAdapter(this, aryItem)
+        this.adapter = ProfileItemAdapter(this, user.items)
         list.adapter = this.adapter
         list.itemAnimator = DefaultItemAnimator()
 
@@ -75,6 +74,9 @@ class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLay
         }
 
         user.fetchItems(object: User.FetchDatabaseListener {
+            override fun onFetchedReviews() {
+            }
+
             override fun onFetchedNotifications() {
             }
 
@@ -85,15 +87,11 @@ class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLay
                 stopRefresh()
 
                 if (bAnimation) {
-                    adapter!!.notifyItemRangeRemoved(0, aryItem.count())
+                    adapter!!.notifyItemRangeRemoved(0, user.items.count())
                 }
-                aryItem.clear()
-
-                // add items
-                aryItem.addAll(user.items)
 
                 // show empty notice
-                if (aryItem.isEmpty()) {
+                if (user.items.isEmpty()) {
                     text_empty_notice.visibility = View.VISIBLE
                 }
                 else {
@@ -101,7 +99,7 @@ class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLay
                 }
 
                 if (bAnimation) {
-                    adapter!!.notifyItemRangeInserted(0, aryItem.count())
+                    adapter!!.notifyItemRangeInserted(0, user.items.count())
                 }
                 else {
                     adapter!!.notifyDataSetChanged()
@@ -122,7 +120,9 @@ class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLay
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.layout_review -> {
-                Utils.moveNextActivity(this, ReviewListActivity::class.java)
+                val intent = Intent(this, ReviewListActivity::class.java)
+                intent.putExtra(UserDetailHelper.KEY_USER, user)
+                startActivity(intent)
             }
         }
     }

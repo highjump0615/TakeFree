@@ -104,6 +104,9 @@ class Item() : BaseModel(), Parcelable {
         }
 
         User.readFromDatabase(userId, object: User.FetchDatabaseListener {
+            override fun onFetchedReviews() {
+            }
+
             override fun onFetchedNotifications() {
             }
 
@@ -128,6 +131,9 @@ class Item() : BaseModel(), Parcelable {
         }
 
         User.readFromDatabase(userIdTaken, object: User.FetchDatabaseListener {
+            override fun onFetchedReviews() {
+            }
+
             override fun onFetchedNotifications() {
             }
 

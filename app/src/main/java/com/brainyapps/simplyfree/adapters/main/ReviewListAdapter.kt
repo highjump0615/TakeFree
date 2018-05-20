@@ -1,16 +1,13 @@
 package com.brainyapps.simplyfree.adapters.main
 
 import android.content.Context
-import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
-import com.brainyapps.simplyfree.activities.main.ItemDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import com.brainyapps.simplyfree.models.Review
-import com.brainyapps.simplyfree.views.main.ViewHolderProfileItem
 import com.brainyapps.simplyfree.views.main.ViewHolderReview
 
 
@@ -18,7 +15,7 @@ import com.brainyapps.simplyfree.views.main.ViewHolderReview
  * Created by Administrator on 2/19/18.
  */
 
-class ReviewListAdapter(val ctx: Context, private val aryUser: ArrayList<Review>)
+class ReviewListAdapter(val ctx: Context, private val aryReview: ArrayList<Review>)
     : BaseItemAdapter(ctx) {
 
     companion object {
@@ -44,14 +41,15 @@ class ReviewListAdapter(val ctx: Context, private val aryUser: ArrayList<Review>
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ViewHolderProfileItem) {
+        if (holder is ViewHolderReview) {
+            holder.fillContent(aryReview[position])
         }
         else {
         }
     }
 
     override fun getItemCount(): Int {
-        var nCount = aryUser.size
+        var nCount = aryReview.size
 
         if (mbNeedMore) {
             nCount++
@@ -62,7 +60,7 @@ class ReviewListAdapter(val ctx: Context, private val aryUser: ArrayList<Review>
 
     override fun getItemViewType(position: Int): Int {
 
-        return if (position < aryUser.size) {
+        return if (position < aryReview.size) {
             ITEM_VIEW_TYPE_REVIEW
         }
         else {

@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_main_notification.view.*
  * Use the [MainNotificationFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, User.FetchDatabaseListener {
+class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private val TAG = MainNotificationFragment::class.java.getSimpleName()
 
@@ -51,11 +51,15 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
 
         viewMain.swiperefresh.setOnRefreshListener(this)
 
-        // load data
-        Handler().postDelayed({ getNotifications(false, false) }, 500)
-
         // Inflate the layout for this fragment
         return viewMain
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // load data
+        getNotifications(false, false)
     }
 
     override fun onResume() {
@@ -71,12 +75,15 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
      */
     private fun getNotifications(bRefresh: Boolean, bAnimation: Boolean) {
         if (!bRefresh) {
-            if (!this.swiperefresh.isRefreshing) {
-                this.swiperefresh.isRefreshing = true
+            if (!swiperefresh.isRefreshing) {
+                swiperefresh.isRefreshing = true
             }
         }
 
         User.currentUser?.fetchNotifications(object: User.FetchDatabaseListener {
+            override fun onFetchedReviews() {
+            }
+
             override fun onFetchedUser(u: User?, success: Boolean) {
             }
 
@@ -106,15 +113,15 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
         stopRefresh()
 
         if (bAnimation) {
-            this@MainNotificationFragment.adapter!!.notifyItemRangeInserted(0, User.currentUser?.notifications!!.count())
+            adapter!!.notifyItemRangeInserted(0, User.currentUser?.notifications!!.count())
         }
         else {
-            this@MainNotificationFragment.adapter!!.notifyDataSetChanged()
+            adapter!!.notifyDataSetChanged()
         }
     }
 
-    fun stopRefresh() {
-        this.swiperefresh.isRefreshing = false
+    private fun stopRefresh() {
+        swiperefresh.isRefreshing = false
     }
 
     override fun onAttach(context: Context?) {
@@ -153,17 +160,5 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
     }
 
     override fun getInteractionListener() = mListener
-
-    //
-    // User.FetchDatabaseListener
-    //
-    override fun onFetchedUser(u: User?, success: Boolean) {
-    }
-
-    override fun onFetchedItems() {
-    }
-
-    override fun onFetchedNotifications() {
-    }
 
 }// Required empty public constructor

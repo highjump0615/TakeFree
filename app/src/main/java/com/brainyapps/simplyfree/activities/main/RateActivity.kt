@@ -17,6 +17,8 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
     var user: User? = null
     lateinit var helperUser: UserDetailHelper
 
+    var itemId = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rate)
@@ -28,6 +30,9 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
         // get user from intent
         val bundle = intent.extras
         val userId = bundle?.getString(UserDetailHelper.KEY_USER_ID)!!
+
+        // item id
+        itemId = bundle.getString(ItemDetailActivity.KEY_ITEM_ID)!!
 
         User.readFromDatabase(withId = userId, fetchListener = this)
 
@@ -80,6 +85,8 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
         newReview.rate = dRate
         newReview.review = strReview
 
+        newReview.itemId = itemId
+
         user?.let {
             // calculate average user rate
             val dSum = it.rating * it.reviews.count() + dRate
@@ -108,10 +115,11 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
     }
 
     override fun onFetchedItems() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onFetchedNotifications() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onFetchedReviews() {
     }
 }
