@@ -57,6 +57,9 @@ open class BaseModel() : Comparable<BaseModel> {
         node.child(FIELD_DATE).setValue(this.createdAt)
     }
 
+    /**
+     * Save all data to db
+     */
     fun saveToDatabase(withId: String? = null) {
         val database = FirebaseDatabase.getInstance().reference.child(tableName())
 
@@ -68,6 +71,14 @@ open class BaseModel() : Comparable<BaseModel> {
             this.id = database.push().key
         }
         database.child(this.id).setValue(this)
+    }
+
+    /**
+     * Save specific field to db
+     */
+    fun saveToDatabaseChild(fieldName: String, data: Any) {
+        val database = FirebaseDatabase.getInstance().reference.child(tableName())
+        database.child(this.id).child(fieldName).setValue(data)
     }
 
     fun deleteFromDatabase() {

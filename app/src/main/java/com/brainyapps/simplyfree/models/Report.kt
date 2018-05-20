@@ -2,6 +2,7 @@ package com.brainyapps.simplyfree.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.firebase.database.Exclude
 
 /**
  * Created by Administrator on 4/10/18.
@@ -13,8 +14,6 @@ class Report() : BaseModel(), Parcelable {
         //
         // table info
         //
-        const val TABLE_NAME = "reports"
-
         @JvmField
         val CREATOR = object : Parcelable.Creator<Report> {
             override fun createFromParcel(parcel: Parcel): Report {
@@ -28,31 +27,22 @@ class Report() : BaseModel(), Parcelable {
     }
 
     var userId = ""
-//    @get:Exclude
+    @get:Exclude
     var user: User? = null
-
-    var userReportedId = ""
-//    @get:Exclude
-    var userReported: User? = null
 
     var content = ""
 
     constructor(parcel: Parcel) : this() {
         userId = parcel.readString()
         user = parcel.readParcelable(User::class.java.classLoader)
-        userReportedId = parcel.readString()
-        userReported = parcel.readParcelable(User::class.java.classLoader)
         content = parcel.readString()
 
         readFromParcelBase(parcel)
     }
 
-    override fun tableName() = TABLE_NAME
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(userId)
         parcel.writeParcelable(user, flags)
-        parcel.writeString(userReportedId)
-        parcel.writeParcelable(userReported, flags)
         parcel.writeString(content)
 
         writeToParcelBase(parcel, flags)

@@ -69,6 +69,7 @@ class User() : BaseModel(), Parcelable {
         const val FIELD_BANNED = "banned"
         const val FIELD_NOTIFICATIONS = "notifications"
         const val FIELD_REVIEWS = "reviews"
+        const val FIELD_REPORTS = "reports"
     }
 
     var type: Int = USER_TYPE_CUSTOMER
@@ -87,6 +88,7 @@ class User() : BaseModel(), Parcelable {
 
     var notifications = ArrayList<Notification>()
     var reviews = ArrayList<Review>()
+    var reports = ArrayList<Report>()
 
     override fun tableName() = TABLE_NAME
 
@@ -361,5 +363,10 @@ class User() : BaseModel(), Parcelable {
             itemDelete[0].deleteFromDatabase()
             items.remove(itemDelete[0])
         }
+    }
+
+    fun addNotification(data: Notification) {
+        notifications.add(data)
+        saveToDatabaseChild(User.FIELD_NOTIFICATIONS, notifications)
     }
 }

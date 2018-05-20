@@ -1,5 +1,6 @@
 package com.brainyapps.simplyfree.activities.main
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -7,11 +8,13 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.adapters.main.ProfileItemAdapter
+import com.brainyapps.simplyfree.helpers.ReportHelper
 import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Utils
@@ -23,6 +26,8 @@ class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLay
 
     lateinit var user: User
     lateinit var helperUser: UserDetailHelper
+
+    private lateinit var reportHelper: ReportHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +57,8 @@ class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLay
 
         // load data
         Handler().postDelayed({ getItems(true, true) }, 500)
+
+        reportHelper = ReportHelper(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -60,6 +67,16 @@ class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLay
         menuInflater.inflate(R.menu.report, menu)
 
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.menu_report -> {
+                reportHelper.addReport(user)
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     /**

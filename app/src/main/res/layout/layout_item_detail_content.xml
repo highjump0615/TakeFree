@@ -27,7 +27,7 @@
                     android:id="@+id/text_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Spanish Boxwood Chefs Carbon Steel Knife"
+                    android:text=""
                     android:textStyle="bold"
                     android:textSize="14sp"/>
 
@@ -51,7 +51,7 @@
                         android:id="@+id/text_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="11/25/17"
+                        android:text=""
                         android:textSize="@dimen/item_detail_content_font_size"/>
                 </LinearLayout>
 
@@ -68,7 +68,7 @@
                         android:id="@+id/text_condition"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Good as new"
+                        android:text=""
                         android:textSize="@dimen/item_detail_content_font_size"/>
                 </LinearLayout>
 
@@ -85,7 +85,7 @@
                         android:id="@+id/text_category"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Household Goods"
+                        android:text=""
                         android:textSize="@dimen/item_detail_content_font_size"/>
                 </LinearLayout>
 
@@ -94,7 +94,7 @@
                     android:id="@+id/text_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Item Description: This is a traditional Spanish boxwood chefs knife made with a carbon steel blade for longevity."
+                    android:text=""
                     android:textSize="@dimen/item_detail_content_font_size" />
 
                 <!-- user info -->

@@ -14,6 +14,8 @@ import android.os.Build
 import android.support.v4.app.ActivityCompat
 import android.text.TextUtils
 import android.view.inputmethod.InputMethodManager
+import com.brainyapps.simplyfree.R
+import kotlinx.android.synthetic.main.layout_dialog_edit.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -84,6 +86,27 @@ class Utils {
                     .setTitle(title)
                     .setMessage(message)
                     .setPositiveButton(android.R.string.ok, listener).create()
+        }
+
+        fun createEditDialog(context: Context,
+                             title: String,
+                             message: String,
+                             listener: DialogInterface.OnClickListener? = null): Dialog {
+            val builder = AlertDialog.Builder(context)
+            val inflater = (context as Activity).layoutInflater
+            val view = inflater.inflate(R.layout.layout_dialog_edit, null)
+
+            // placeholder
+            view.edit_content.hint = message
+
+            val dialog = builder.setTitle(title)
+                    .setView(view)
+                    .setPositiveButton(android.R.string.ok, listener)
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .setCancelable(true)
+                    .create()
+
+            return dialog
         }
 
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

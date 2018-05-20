@@ -1,25 +1,23 @@
 package com.brainyapps.simplyfree.activities.main
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
-import android.view.KeyEvent
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.adapters.main.ItemDetailAdapter
+import com.brainyapps.simplyfree.helpers.ReportHelper
 import com.brainyapps.simplyfree.models.Comment
 import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.models.Notification
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_item_detail.*
 
 class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, Item.FetchDatabaseListener {
@@ -29,6 +27,8 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
     }
 
     var adapter: ItemDetailAdapter? = null
+
+    private lateinit var reportHelper: ReportHelper
 
     var item: Item? = null
 
@@ -51,6 +51,8 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
 
             Item.readFromDatabase(withId = itemId, fetchListener = this)
         }
+
+        reportHelper = ReportHelper(this)
     }
 
     private fun initView() {
@@ -90,6 +92,18 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         return true
     }
 
+    override fun onOptionsItemSelected(i: MenuItem?): Boolean {
+        when (i?.itemId) {
+            R.id.menu_report -> {
+                item?.userPosted?.let {
+                    reportHelper.addReport(it)
+                }
+            }
+        }
+
+        return super.onOptionsItemSelected(i)
+    }
+
     override fun onRefresh() {
         getComments(true, false)
     }
@@ -127,7 +141,7 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         item!!.comments.add(0, newComment)
 
         // save data
-        item?.saveToDatabase()
+        item?.saveToDatabaseChild(Item.FIELD_COMMENTS, item!!.comments)
 
         // update list
         adapter!!.notifyDataSetChanged()
@@ -141,8 +155,8 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         item!!.userPosted?.let {
             val newNotification = Notification(notificationType = Notification.NOTIFICATION_COMMENT)
             newNotification.itemId = item!!.id
-            it.notifications.add(newNotification)
-            it.saveToDatabase()
+
+            it.addNotification(newNotification)
         }
     }
 

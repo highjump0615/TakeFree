@@ -140,7 +140,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.main.UserDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity
             android:name=".activities.main.ReviewListActivity"
             android:screenOrientation="portrait" />

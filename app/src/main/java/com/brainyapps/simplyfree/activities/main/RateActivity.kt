@@ -96,10 +96,9 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
 
             // add notification
             val newNotification = Notification(notificationType = Notification.NOTIFICATION_RATED)
-            it.notifications.add(newNotification)
 
             // save
-            it.saveToDatabase()
+            it.addNotification(newNotification)
 
             // done, back to prev page
             finish()

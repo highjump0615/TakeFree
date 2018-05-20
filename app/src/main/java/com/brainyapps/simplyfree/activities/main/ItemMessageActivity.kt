@@ -110,8 +110,8 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
         val newNotification = Notification(notificationType = Notification.NOTIFICATION_TOOK)
         newNotification.itemId = item.id
         newNotification.userId = item.userId
-        user.notifications.add(newNotification)
-        user.saveToDatabase()
+
+        user.addNotification(newNotification)
 
         updateTakeButton()
     }
