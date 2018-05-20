@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
-import com.brainyapps.simplyfree.activities.UserDetailHelper
 import com.brainyapps.simplyfree.activities.admin.AdminUserDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import com.brainyapps.simplyfree.views.admin.ViewHolderUserItem

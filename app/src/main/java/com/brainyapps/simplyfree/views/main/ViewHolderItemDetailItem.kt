@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.View
 import com.brainyapps.e2fix.views.admin.ViewHolderBase
 import com.brainyapps.simplyfree.R
-import com.brainyapps.simplyfree.activities.UserDetailHelper
+import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils

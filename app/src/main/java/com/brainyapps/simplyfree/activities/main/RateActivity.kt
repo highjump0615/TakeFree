@@ -1,13 +1,13 @@
 package com.brainyapps.simplyfree.activities.main
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
-import com.brainyapps.simplyfree.activities.UserDetailHelper
+import com.brainyapps.simplyfree.helpers.UserDetailHelper
+import com.brainyapps.simplyfree.models.Notification
 import com.brainyapps.simplyfree.models.Review
 import com.brainyapps.simplyfree.models.User
 import kotlinx.android.synthetic.main.activity_rate.*
@@ -86,6 +86,12 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
             it.rating = dSum / (it.reviews.count() + 1)
 
             it.reviews.add(newReview)
+
+            // add notification
+            val newNotification = Notification(notificationType = Notification.NOTIFICATION_RATED)
+            it.notifications.add(newNotification)
+
+            // save
             it.saveToDatabase()
 
             // done, back to prev page

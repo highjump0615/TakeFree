@@ -2,26 +2,20 @@ package com.brainyapps.simplyfree.activities
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.helpers.PhotoActivityHelper
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.FirebaseManager
 import com.brainyapps.simplyfree.utils.SFUpdateImageListener
 import com.brainyapps.simplyfree.utils.Utils
 import com.bumptech.glide.Glide
-import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageMetadata
-import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_signup_profile.*
 
 class SignupProfileActivity : BaseActivity(), View.OnClickListener, SFUpdateImageListener {

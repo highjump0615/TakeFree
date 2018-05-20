@@ -1,4 +1,4 @@
-package com.brainyapps.simplyfree.activities
+package com.brainyapps.simplyfree.helpers
 
 import android.app.Activity
 import android.view.View

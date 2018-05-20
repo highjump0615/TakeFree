@@ -2,13 +2,12 @@ package com.brainyapps.simplyfree.activities.main
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
-import com.brainyapps.simplyfree.activities.PhotoActivityHelper
+import com.brainyapps.simplyfree.helpers.PhotoActivityHelper
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.SFUpdateImageListener
 import com.brainyapps.simplyfree.utils.Utils

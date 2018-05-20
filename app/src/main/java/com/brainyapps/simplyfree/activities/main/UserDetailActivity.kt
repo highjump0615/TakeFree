@@ -1,6 +1,5 @@
 package com.brainyapps.simplyfree.activities.main
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
@@ -10,10 +9,9 @@ import android.view.Menu
 import android.view.View
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
-import com.brainyapps.simplyfree.activities.UserDetailHelper
+import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.adapters.main.ProfileItemAdapter
 import com.brainyapps.simplyfree.models.Item
-import com.brainyapps.simplyfree.models.Review
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.activity_user_detail.*

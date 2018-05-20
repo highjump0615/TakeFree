@@ -1,6 +1,5 @@
 package com.brainyapps.simplyfree.adapters.main
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
@@ -8,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
-import com.brainyapps.simplyfree.activities.UserDetailHelper
+import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.activities.main.ItemMessageActivity
 import com.brainyapps.simplyfree.activities.main.UserDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter

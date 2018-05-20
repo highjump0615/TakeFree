@@ -1,29 +1,20 @@
 package com.brainyapps.simplyfree.fragments.main
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.app.FragmentStatePagerAdapter
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.text.TextUtils
 import android.view.*
 
 import com.brainyapps.simplyfree.R
-import com.brainyapps.simplyfree.activities.UserDetailHelper
+import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.activities.main.ProfileEditActivity
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Utils
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_main_profile.*
-import kotlinx.android.synthetic.main.fragment_main_profile.view.*
 
 /**
  * A simple [Fragment] subclass.
