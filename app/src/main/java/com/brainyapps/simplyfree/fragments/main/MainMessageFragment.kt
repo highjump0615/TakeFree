@@ -96,7 +96,7 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
         }
     }
 
-    fun updateList(bAnimation: Boolean) {
+    private fun updateList(bAnimation: Boolean) {
         stopRefresh()
 
         if (bAnimation) {

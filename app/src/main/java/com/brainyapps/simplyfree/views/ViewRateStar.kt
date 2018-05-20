@@ -20,6 +20,8 @@ class ViewRateStar : LinearLayout, View.OnClickListener {
 
     var rateListener: SelectRateListener? = null
 
+    var starValue = 0.0
+
     constructor(context: Context) : super(context) {
         init()
     }
@@ -46,7 +48,7 @@ class ViewRateStar : LinearLayout, View.OnClickListener {
         View.inflate(context, R.layout.layout_star_rate, this)
     }
 
-    private fun updateStar(value: Double) {
+    fun updateStar(value: Double) {
         for (i in 0..4) {
             if (i < round(value)) {
                 imgViewStars[i].setColorFilter(ContextCompat.getColor(context!!, R.color.colorStar))
@@ -63,6 +65,8 @@ class ViewRateStar : LinearLayout, View.OnClickListener {
                 imgViewStars[i].setOnClickListener(this)
             }
         }
+
+        starValue = value
     }
 
     override fun onClick(view: View?) {

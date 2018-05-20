@@ -110,10 +110,10 @@ class Item() : BaseModel(), Parcelable {
             override fun onFetchedItems() {
             }
 
-            override fun onFetchedUser(user: User?, success: Boolean) {
-                userPosted = user
+            override fun onFetchedUser(u: User?, success: Boolean) {
+                userPosted = u
 
-                fetchListener?.onFetchedUser(user != null)
+                fetchListener?.onFetchedUser(u != null)
             }
         })
     }
@@ -134,10 +134,10 @@ class Item() : BaseModel(), Parcelable {
             override fun onFetchedItems() {
             }
 
-            override fun onFetchedUser(user: User?, success: Boolean) {
-                userTaken = user
+            override fun onFetchedUser(u: User?, success: Boolean) {
+                userTaken = u
 
-                fetchListener?.onFetchedUser(user != null)
+                fetchListener?.onFetchedUser(u != null)
             }
         })
     }

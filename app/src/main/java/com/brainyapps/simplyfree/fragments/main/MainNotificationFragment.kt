@@ -77,7 +77,7 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
         }
 
         User.currentUser?.fetchNotifications(object: User.FetchDatabaseListener {
-            override fun onFetchedUser(user: User?, success: Boolean) {
+            override fun onFetchedUser(u: User?, success: Boolean) {
             }
 
             override fun onFetchedItems() {
@@ -157,7 +157,7 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
     //
     // User.FetchDatabaseListener
     //
-    override fun onFetchedUser(user: User?, success: Boolean) {
+    override fun onFetchedUser(u: User?, success: Boolean) {
     }
 
     override fun onFetchedItems() {

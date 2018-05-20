@@ -82,7 +82,10 @@ class User() : BaseModel(), Parcelable {
     @get:Exclude
     var items = ArrayList<Item>()
 
+    var rating = 0.0
+
     var notifications = ArrayList<Notification>()
+    var reviews = ArrayList<Review>()
 
     override fun tableName() = TABLE_NAME
 
@@ -184,9 +187,9 @@ class User() : BaseModel(), Parcelable {
 
                     // fetch its user
                     User.readFromDatabase(notifi.userId, object: User.FetchDatabaseListener {
-                        override fun onFetchedUser(user: User?, success: Boolean) {
+                        override fun onFetchedUser(u: User?, success: Boolean) {
 
-                            notifi.userPosted = user
+                            notifi.userPosted = u
 
                             notifications.add(notifi)
                             countFetched++
@@ -230,7 +233,7 @@ class User() : BaseModel(), Parcelable {
      * interface for reading from database
      */
     interface FetchDatabaseListener {
-        fun onFetchedUser(user: User?, success: Boolean)
+        fun onFetchedUser(u: User?, success: Boolean)
         fun onFetchedItems()
         fun onFetchedNotifications()
     }

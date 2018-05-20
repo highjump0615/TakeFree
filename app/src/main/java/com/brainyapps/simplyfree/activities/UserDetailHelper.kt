@@ -16,6 +16,7 @@ class UserDetailHelper(private val contentView: View) {
 
     companion object {
         const val KEY_USER = "user"
+        const val KEY_USER_ID = "user_id"
     }
 
     init {

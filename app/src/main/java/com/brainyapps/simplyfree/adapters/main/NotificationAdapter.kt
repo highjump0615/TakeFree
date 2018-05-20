@@ -88,7 +88,7 @@ class NotificationAdapter(val ctx: Context, private val aryData: ArrayList<Notif
         }
         else if (notification.type == Notification.NOTIFICATION_TOOK) {
             val intent = Intent(context, RateActivity::class.java)
-            intent.putExtra(UserDetailHelper.KEY_USER, notification.userPosted)
+            intent.putExtra(UserDetailHelper.KEY_USER_ID, notification.userId)
             context!!.startActivity(intent)
         }
         else {

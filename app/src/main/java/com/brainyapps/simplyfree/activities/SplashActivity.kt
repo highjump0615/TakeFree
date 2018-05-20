@@ -1,6 +1,5 @@
 package com.brainyapps.simplyfree.activities
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
@@ -43,10 +42,10 @@ class SplashActivity : BaseActivity() {
                 override fun onFetchedItems() {
                 }
 
-                override fun onFetchedUser(user: User?, success: Boolean) {
-                    User.currentUser = user
+                override fun onFetchedUser(u: User?, success: Boolean) {
+                    User.currentUser = u
 
-                    Log.d(TAG, "fetched user")
+                    Log.d(TAG, "fetched u")
                     bFetchedUser = true
 
                     // do action only when time is up

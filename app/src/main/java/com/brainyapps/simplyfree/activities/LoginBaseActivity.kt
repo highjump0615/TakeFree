@@ -194,8 +194,8 @@ open class LoginBaseActivity : BaseActivity(), GoogleApiClient.OnConnectionFaile
             override fun onFetchedItems() {
             }
 
-            override fun onFetchedUser(user: User?, success: Boolean) {
-                User.currentUser = user
+            override fun onFetchedUser(u: User?, success: Boolean) {
+                User.currentUser = u
 
                 if (!success) {
                     signOutClear()
@@ -204,7 +204,7 @@ open class LoginBaseActivity : BaseActivity(), GoogleApiClient.OnConnectionFaile
                 }
                 else {
                     if (User.currentUser == null) {
-                        // get user info, from facebook account info
+                        // get u info, from facebook account info
                         if (userInfo != null) {
                             val newUser = User(userId)
                             if (!TextUtils.isEmpty(userInfo.displayName)) {
@@ -222,7 +222,7 @@ open class LoginBaseActivity : BaseActivity(), GoogleApiClient.OnConnectionFaile
                             User.currentUser = newUser
                         }
 
-                        // social login, go to user type page
+                        // social login, go to u type page
                         var intent = Intent(this@LoginBaseActivity, SignupLandingActivity::class.java)
                         if (paymentType > PAYMENT_TYPE_NOT_DETERMINED) {
                             // already selected payment, go to profile page

@@ -1,7 +1,5 @@
 package com.brainyapps.simplyfree.models
 
-import android.os.Parcel
-import android.os.Parcelable
 import com.google.firebase.database.Exclude
 
 /**
@@ -28,10 +26,10 @@ class Comment() : BaseModel() {
             override fun onFetchedItems() {
             }
 
-            override fun onFetchedUser(user: User?, success: Boolean) {
-                userPosted = user
+            override fun onFetchedUser(u: User?, success: Boolean) {
+                userPosted = u
 
-                fetchListener?.onFetchedUser(user != null)
+                fetchListener?.onFetchedUser(u != null)
             }
         })
     }

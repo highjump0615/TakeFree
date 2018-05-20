@@ -31,6 +31,7 @@
 
         <!-- photo -->
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgview_user"
             android:layout_width="@dimen/main_profile_photo_size"
             android:layout_height="@dimen/main_profile_photo_size"
             android:layout_margin="10dp"
@@ -47,25 +48,28 @@
             android:orientation="vertical">
             <!-- name -->
             <TextView
+                android:id="@+id/text_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:text="Fernando Gimenez"
+                android:text=""
                 android:textStyle="bold"
                 android:textSize="16sp"/>
 
             <!-- rate -->
             <com.brainyapps.simplyfree.views.ViewRateStar
+                android:id="@+id/view_star_user"
                 android:layout_width="100dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="6dp"
-                app:starValue="5.0"/>
+                app:starValue="0.0"/>
             <TextView
+                android:id="@+id/text_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dp"
                 android:textColor="@android:color/white"
-                android:text="5.0/5.0" />
+                android:text="0.0 / 5.0" />
 
         </LinearLayout>
 
@@ -88,13 +92,14 @@
 
             <!-- star -->
             <com.brainyapps.simplyfree.views.ViewRateStar
+                android:id="@+id/view_star_edit"
                 android:layout_width="180dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/rate_review_margin"
                 app:starSelectable="true" />
 
-            <!-- email -->
+            <!-- review -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -104,6 +109,7 @@
                 android:orientation="vertical">
 
                 <EditText
+                    android:id="@+id/edit_review"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
@@ -114,7 +120,7 @@
 
             <!-- submit button -->
             <Button
-                android:id="@+id/but_next"
+                android:id="@+id/but_submit"
                 android:layout_width="wrap_content"
                 style="@style/ButtonWhiteRound"
                 android:layout_gravity="right"
@@ -123,7 +129,6 @@
                 android:layout_marginBottom="@dimen/signup_but_next_margin"
                 android:layout_marginRight="@dimen/signup_but_margin"
                 android:text="Submit" />
-
 
         </LinearLayout>
 
