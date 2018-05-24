@@ -13,6 +13,7 @@ import com.brainyapps.simplyfree.activities.main.UserDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.models.User
+import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.views.main.ViewHolderItemDetailComment
 import com.brainyapps.simplyfree.views.main.ViewHolderItemDetailItem
 
@@ -111,6 +112,7 @@ class ItemDetailAdapter(val ctx: Context, private val item: Item)
             // message to user
             R.id.but_message -> {
                 val intent = Intent(this.context, ItemMessageActivity::class.java)
+                Globals.selectedItem = item
                 this.context!!.startActivity(intent)
             }
         }

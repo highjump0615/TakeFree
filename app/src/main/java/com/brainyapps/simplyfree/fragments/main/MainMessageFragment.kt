@@ -67,7 +67,7 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
     }
 
     /**
-     * get User data
+     * get Message data
      */
     private fun getMessages(bRefresh: Boolean, bAnimation: Boolean) {
         if (bAnimation) {

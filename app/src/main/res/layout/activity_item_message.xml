@@ -102,7 +102,9 @@
             android:id="@+id/list"
             android:scrollbars="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:paddingTop="10dp"
+            android:clipToPadding="false"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -120,6 +122,7 @@
         android:background="@android:color/white">
 
         <EditText
+            android:id="@+id/edit_message"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -130,7 +133,9 @@
             android:hint="Type message..."
             android:textSize="13sp"
             android:paddingLeft="@dimen/item_detail_comment_input_padding_hori"
-            android:paddingRight="@dimen/item_detail_comment_input_padding_hori"/>
+            android:paddingRight="@dimen/item_detail_comment_input_padding_hori"
+            android:inputType="text"
+            android:maxLines="1"/>
 
         <ImageView
             android:id="@+id/imgview_comment_send"

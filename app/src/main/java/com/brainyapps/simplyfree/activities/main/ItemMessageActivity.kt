@@ -4,22 +4,43 @@ import android.content.DialogInterface
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.content.ContextCompat
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
+import android.view.TextureView
 import android.view.View
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
+import com.brainyapps.simplyfree.adapters.main.ChatAdapter
+import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.models.Item
+import com.brainyapps.simplyfree.models.Message
 import com.brainyapps.simplyfree.models.Notification
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Globals
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_item_message.*
 
-class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnClickListener {
+class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     lateinit var item: Item
+
+    private lateinit var mLinearLayoutManager: LinearLayoutManager
+
+    var adapter: ChatAdapter? = null
+    var aryChat = ArrayList<Message>()
+
+    private var userToId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +52,17 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
         item = Globals.selectedItem!!
         item.fetchUser(this)
 
+        // get user-to id from intent
+        val bundle = intent.extras
+        val userId = bundle?.getString(UserDetailHelper.KEY_USER_ID)
+        if (TextUtils.isEmpty(userId)) {
+            // from item details, user-to is item owner
+            userToId = item.userId
+        }
+        else {
+            userToId = userId
+        }
+
         // item info
         text_item.text = item.name
         Glide.with(this)
@@ -41,7 +73,62 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
         // button
         but_take.setOnClickListener(this)
 
+        // message send
+        imgview_comment_send.setOnClickListener(this)
+
         updateTakeButton()
+
+        // load message data
+        getMessages(true, true)
+
+        // init list
+        mLinearLayoutManager = LinearLayoutManager(this)
+        list.layoutManager = mLinearLayoutManager
+
+        adapter = ChatAdapter(this, aryChat)
+        list.adapter = adapter
+        list.itemAnimator = DefaultItemAnimator()
+
+        adapter!!.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart:Int, itemCount:Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+
+                val msgCount = adapter!!.getItemCount()
+                val lastVisiblePosition = mLinearLayoutManager.findLastCompletelyVisibleItemPosition()
+                if (lastVisiblePosition == -1 || positionStart >= msgCount - 1 && lastVisiblePosition == positionStart - 1) {
+                    list.scrollToPosition(positionStart)
+                }
+            }
+        })
+
+        swiperefresh.setOnRefreshListener(this)
+    }
+
+    private fun getMessages(bRefresh: Boolean, bAnimation: Boolean) {
+        val database = FirebaseDatabase.getInstance().reference.child(Message.TABLE_NAME)
+        val query = database.child(User.currentUser!!.id).child(userToId).child(Message.FIELD_CHAT)
+
+        query.addChildEventListener(object: ChildEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+            }
+
+            override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
+            }
+
+            override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
+            }
+
+            override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {
+                // A new message has been added, add it to the displayed list
+                val msg = dataSnapshot?.getValue(Message::class.java)!!
+
+                aryChat.add(msg)
+                adapter?.notifyItemInserted(aryChat.size - 1)
+            }
+
+            override fun onChildRemoved(p0: DataSnapshot?) {
+            }
+        })
     }
 
     private fun updateTakeButton() {
@@ -142,6 +229,38 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
 
                 updateTakeButton()
             }
+
+            // send message
+            R.id.imgview_comment_send -> {
+                doSendMessage()
+            }
         }
+    }
+
+    /**
+     * Send message to owner
+     */
+    private fun doSendMessage() {
+        val strMessage = edit_message.text.toString()
+        if (TextUtils.isEmpty(strMessage)) {
+            return
+        }
+
+        val newMsg = Message()
+        newMsg.addMessageTo(item.userId, strMessage)
+
+        // clear edit
+        edit_message.setText("")
+    }
+
+    //
+    // SwipeRefreshLayout.OnRefreshListener
+    //
+    override fun onRefresh() {
+        stopRefresh()
+    }
+
+    private fun stopRefresh() {
+        swiperefresh.isRefreshing = false
     }
 }

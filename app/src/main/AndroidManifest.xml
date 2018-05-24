@@ -150,7 +150,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.main.ItemMessageActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".activities.main.TermActivity"
             android:screenOrientation="portrait" />

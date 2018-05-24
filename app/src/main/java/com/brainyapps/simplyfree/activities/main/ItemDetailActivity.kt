@@ -55,9 +55,13 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         reportHelper = ReportHelper(this)
     }
 
+    override fun onStart() {
+        super.onStart()
+    }
+
     private fun initView() {
         // title
-        toolbar.title = item?.name
+        title = item?.name
 
         // init list
         list.layoutManager = LinearLayoutManager(this)
