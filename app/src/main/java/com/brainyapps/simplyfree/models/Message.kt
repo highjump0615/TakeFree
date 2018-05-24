@@ -24,16 +24,16 @@ class Message() : BaseModel() {
     var text = ""
     var senderId = ""
 
-    fun addMessageTo(userTo: String, message: String) {
+    fun addMessageTo(item: Item, message: String) {
         text = message
         senderId = User.currentUser!!.id
 
         val database = FirebaseDatabase.getInstance().reference.child(TABLE_NAME)
 
         // add to history of oneself
-        addToChatDatabase(database.child(senderId).child(userTo))
+        addToChatDatabase(database.child(senderId).child(item.userId).child(item.id))
         // add to history of target
-        addToChatDatabase(database.child(userTo).child(senderId))
+        addToChatDatabase(database.child(item.userId).child(senderId).child(item.id))
     }
 
     private fun addToChatDatabase(db: DatabaseReference) {

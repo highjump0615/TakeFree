@@ -148,42 +148,52 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
                 but_take.setBackgroundResource(R.drawable.bg_item_status_but_round_taken)
             }
         }
-        else if (item.userIdTaken.isNotEmpty()) {
-            // request sent
-            but_take.text = "Request Sent"
-            but_take.setTextColor(Color.WHITE)
-            but_take.setBackgroundResource(R.drawable.bg_item_status_but_round_requested)
-
-            // check request
-            if (item.userId.equals(user.id)) {
-                item.fetchUserTaken(object: Item.FetchDatabaseListener {
-                    override fun onFetchedItem(i: Item?) {
-                    }
-
-                    override fun onFetchedUser(success: Boolean) {
-                        // show confirm dialog
-                        AlertDialog.Builder(this@ItemMessageActivity)
-                                .setTitle("Do you accept the take request?")
-                                .setMessage("${item.userTaken?.userFullName()} would like to take the item.")
-                                .setPositiveButton("ACCEPT", DialogInterface.OnClickListener { dialog, which ->
-                                    acceptTakeRequest()
-                                })
-                                .setNegativeButton("DECLINE", DialogInterface.OnClickListener { dialog, which ->
-                                })
-                                .create()
-                                .show()
-                    }
-
-                    override fun onFetchedComments(success: Boolean) {
-                    }
-                })
-            }
-        }
         else {
-            // normal
-            but_take.text = "Take Item"
-            but_take.setTextColor(ContextCompat.getColor(this, R.color.colorTheme))
-            but_take.setBackgroundResource(R.drawable.bg_item_status_but_round)
+            // simple "Available" if item is his own
+            if (item.userId.equals(user.id)) {
+                // normal
+                but_take.text = "Available"
+                but_take.setTextColor(ContextCompat.getColor(this, R.color.colorTheme))
+                but_take.setBackgroundResource(R.drawable.bg_item_status_but_round)
+            }
+            else {
+                if (item.userIdTaken.isNotEmpty()) {
+                    // request sent
+                    but_take.text = "Request Sent"
+                    but_take.setTextColor(Color.WHITE)
+                    but_take.setBackgroundResource(R.drawable.bg_item_status_but_round_requested)
+
+                    // check request
+                    if (item.userId.equals(user.id)) {
+                        item.fetchUserTaken(object : Item.FetchDatabaseListener {
+                            override fun onFetchedItem(i: Item?) {
+                            }
+
+                            override fun onFetchedUser(success: Boolean) {
+                                // show confirm dialog
+                                AlertDialog.Builder(this@ItemMessageActivity)
+                                        .setTitle("Do you accept the take request?")
+                                        .setMessage("${item.userTaken?.userFullName()} would like to take the item.")
+                                        .setPositiveButton("ACCEPT", DialogInterface.OnClickListener { dialog, which ->
+                                            acceptTakeRequest()
+                                        })
+                                        .setNegativeButton("DECLINE", DialogInterface.OnClickListener { dialog, which ->
+                                        })
+                                        .create()
+                                        .show()
+                            }
+
+                            override fun onFetchedComments(success: Boolean) {
+                            }
+                        })
+                    }
+                } else {
+                    // normal
+                    but_take.text = "Take Item"
+                    but_take.setTextColor(ContextCompat.getColor(this, R.color.colorTheme))
+                    but_take.setBackgroundResource(R.drawable.bg_item_status_but_round)
+                }
+            }
         }
     }
 
@@ -247,7 +257,7 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
         }
 
         val newMsg = Message()
-        newMsg.addMessageTo(item.userId, strMessage)
+        newMsg.addMessageTo(item, strMessage)
 
         // clear edit
         edit_message.setText("")

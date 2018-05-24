@@ -86,12 +86,20 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
 
         // init data
         item?.fetchUser(this)
+
+        // refresh menu
+        invalidateOptionsMenu()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
 
-        menuInflater.inflate(R.menu.report, menu)
+        // report button if item is not his own
+        item?.let {
+            if (!it.userId.equals(User.currentUser!!.id)) {
+                menuInflater.inflate(R.menu.report, menu)
+            }
+        }
 
         return true
     }

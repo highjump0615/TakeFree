@@ -6,6 +6,7 @@ import com.brainyapps.e2fix.views.admin.ViewHolderBase
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.models.Item
+import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
 import com.bumptech.glide.Glide
@@ -53,5 +54,10 @@ class ViewHolderItemDetailItem(itemView: View, ctx: Context) : ViewHolderBase(it
 
         // user info
         helperUser!!.fillUserInfoSimple(data.userPosted)
+
+        // hide the message button if item is his own
+        if (data.userId.equals(User.currentUser!!.id)) {
+            itemView.but_message.visibility = View.GONE
+        }
     }
 }
