@@ -25,6 +25,8 @@ import com.brainyapps.simplyfree.fragments.main.MainProfileFragment
 import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
 import com.yanzhenjie.permission.AndPermission
@@ -35,7 +37,9 @@ import kotlinx.android.synthetic.main.layout_main_app_bar.*
 class HomeActivity : BaseActivity(),
         MainHomeFragment.OnFragmentInteractionListener,
         MainNotificationFragment.OnFragmentInteractionListener,
-        MainMessageFragment.OnFragmentInteractionListener {
+        MainMessageFragment.OnFragmentInteractionListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private val TAG = HomeActivity::class.java.getSimpleName()
     private val FRAG_HOME = "home_frag"
@@ -43,7 +47,8 @@ class HomeActivity : BaseActivity(),
     private val FRAG_NOTIFICATION = "notification_frag"
     private val FRAG_MESSAGE = "message_frag"
 
-    var fragCurrent: Fragment? = null
+    private var fragCurrent: Fragment? = null
+    lateinit var googleApiClient: GoogleApiClient
 
     private var fusedLocationClient: FusedLocationProviderClient? = null
 
@@ -58,7 +63,7 @@ class HomeActivity : BaseActivity(),
 
         // set home tab as default
         loadFragByTag(FRAG_HOME)
-        navigation.menu.getItem(2).setChecked(true)
+        navigation.menu.getItem(2).isChecked = true
 
         setNavbar()
 
@@ -66,38 +71,12 @@ class HomeActivity : BaseActivity(),
         initLocation()
     }
 
-    @SuppressLint("MissingPermission")
     private fun initLocation() {
-        // check permission
-        // android.permission.ACCESS_COARSE_LOCATION
-        AndPermission.with(this)
-                .permission(
-                        Permission.Group.LOCATION
-                )
-                .rationale { context, permissions, executor ->
-                    // show confirm dialog
-                    AlertDialog.Builder(context)
-                            .setTitle("Will you open location features?")
-                            .setMessage("Location is needed when posting an item and getting items")
-                            .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, which ->
-                                executor.execute()
-                            })
-                            .setNegativeButton(android.R.string.no, DialogInterface.OnClickListener { dialog, which ->
-                                executor.cancel()
-                            })
-                            .create()
-                }
-                .onGranted {
-                    fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-                    fusedLocationClient?.lastLocation?.addOnSuccessListener { location: Location? ->
-                        // Got last known location. In some rare situations this can be null.
-                        gotNewLocation(location)
-                    }
-                }
-                .onDenied {
-                }
-                .start()
+        googleApiClient = GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build()
     }
 
     private fun gotNewLocation(location: Location?) {
@@ -130,6 +109,20 @@ class HomeActivity : BaseActivity(),
         false
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        // Initiating the connection
+        googleApiClient.connect()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        // Disconnecting the connection
+        googleApiClient.disconnect()
+    }
+
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
@@ -158,7 +151,7 @@ class HomeActivity : BaseActivity(),
         val locationRequest = LocationRequest().apply {
             interval = 10000
             fastestInterval = 5000
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         }
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -222,5 +215,48 @@ class HomeActivity : BaseActivity(),
     override fun onHomeClickMap() {
         // go to map page
         Utils.moveNextActivity(this, HomeMapActivity::class.java)
+    }
+
+    /**
+     * GoogleApiClient.ConnectionCallbacks
+     */
+    @SuppressLint("MissingPermission")
+    override fun onConnected(bundle: Bundle?) {
+        // check permission
+        // android.permission.ACCESS_COARSE_LOCATION
+        AndPermission.with(this)
+                .permission(
+                        Permission.Group.LOCATION
+                )
+                .rationale { context, permissions, executor ->
+                    // show confirm dialog
+                    AlertDialog.Builder(context)
+                            .setTitle("Will you open location features?")
+                            .setMessage("Location is needed when posting an item and getting items")
+                            .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, which ->
+                                executor.execute()
+                            })
+                            .setNegativeButton(android.R.string.no, DialogInterface.OnClickListener { dialog, which ->
+                                executor.cancel()
+                            })
+                            .create()
+                }
+                .onGranted {
+                    fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@HomeActivity)
+
+                    fusedLocationClient?.lastLocation?.addOnSuccessListener { location: Location? ->
+                        // Got last known location. In some rare situations this can be null.
+                        gotNewLocation(location)
+                    }
+                }
+                .onDenied {
+                }
+                .start()
+    }
+
+    override fun onConnectionSuspended(p0: Int) {
+    }
+
+    override fun onConnectionFailed(connectionResult: ConnectionResult) {
     }
 }

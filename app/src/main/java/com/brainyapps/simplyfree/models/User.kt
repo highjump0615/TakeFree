@@ -3,6 +3,7 @@ package com.brainyapps.simplyfree.models
 import android.app.Activity
 import android.os.Parcel
 import android.os.Parcelable
+import android.text.TextUtils
 import android.util.Log
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
@@ -100,6 +101,7 @@ class User() : BaseModel(), Parcelable {
         firstName = parcel.readString()
         lastName = parcel.readString()
         photoUrl = parcel.readString()
+        rating = parcel.readDouble()
 
         readFromParcelBase(parcel)
     }
@@ -115,6 +117,7 @@ class User() : BaseModel(), Parcelable {
         parcel.writeString(firstName)
         parcel.writeString(lastName)
         parcel.writeString(photoUrl)
+        parcel.writeDouble(rating)
 
         writeToParcelBase(parcel, flags)
     }
@@ -348,6 +351,22 @@ class User() : BaseModel(), Parcelable {
         else {
             onCompleted()
         }
+    }
+
+    /**
+     * Save all data to db
+     */
+    fun saveToDatabase(withId: String? = null) {
+        val database = FirebaseDatabase.getInstance().reference.child(tableName())
+
+        if (!TextUtils.isEmpty(withId)) {
+            this.id = withId!!
+        }
+        else if (TextUtils.isEmpty(this.id)) {
+            // generate new id
+            this.id = database.push().key
+        }
+        database.child(this.id).setValue(this)
     }
 
     /**

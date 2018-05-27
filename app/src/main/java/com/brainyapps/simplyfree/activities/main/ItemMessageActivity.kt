@@ -36,7 +36,7 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
         const val KEY_ITEM_ID = "item_id"
     }
 
-    private val TAG = ItemMessageActivity::class.java.getSimpleName()
+    private val TAG = ItemMessageActivity::class.java.simpleName
 
     private var itemId: String? = null
     private var item: Item? = null

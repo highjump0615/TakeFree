@@ -2,6 +2,7 @@ package com.brainyapps.simplyfree.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import android.text.TextUtils
 import android.util.Log
 import com.google.firebase.database.*
 import java.util.*
@@ -16,7 +17,14 @@ class Item() : BaseModel(), Parcelable {
         // table info
         //
         const val TABLE_NAME = "items"
+
+        const val FIELD_NAME = "name"
+        const val FIELD_DESC = "description"
+        const val FIELD_PHOTO_URL = "photoUrl"
+        const val FIELD_CATEGORY = "category"
+        const val FIELD_CONDITION = "condition"
         const val FIELD_USER = "userId"
+        const val FIELD_USER_TAKEN = "userIdTaken"
         const val FIELD_TAKEN = "taken"
         const val FIELD_COMMENTS = "comments"
 
@@ -80,12 +88,26 @@ class Item() : BaseModel(), Parcelable {
 
     constructor(parcel: Parcel) : this() {
         name = parcel.readString()
+        description = parcel.readString()
+        photoUrl = parcel.readString()
+        category = parcel.readInt()
+        condition = parcel.readInt()
+        userId = parcel.readString()
+        userIdTaken = parcel.readString()
+        taken = parcel.readByte().toInt() != 0
 
         readFromParcelBase(parcel)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
+        parcel.writeString(description)
+        parcel.writeString(photoUrl)
+        parcel.writeInt(category)
+        parcel.writeInt(condition)
+        parcel.writeString(userId)
+        parcel.writeString(userIdTaken)
+        parcel.writeByte((if (taken) 1 else 0).toByte())
 
         writeToParcelBase(parcel, flags)
     }
@@ -176,6 +198,31 @@ class Item() : BaseModel(), Parcelable {
                 fetchListener.onFetchedComments(false)
             }
         })
+    }
+
+    fun saveToDatabase(withId: String? = null, key: String? = null, value: Any? = null) {
+        if (!TextUtils.isEmpty(withId)) {
+            this.id = withId!!
+        }
+
+        val database = FirebaseDatabase.getInstance().reference
+        val node = database.child(tableName()).child(withId)
+
+        if (key != null && value != null) {
+            node.child(key).setValue(value)
+        }
+        else {
+            node.child(FIELD_NAME).setValue(name)
+            node.child(FIELD_DESC).setValue(description)
+            node.child(FIELD_PHOTO_URL).setValue(description)
+            node.child(FIELD_CATEGORY).setValue(category)
+            node.child(FIELD_CONDITION).setValue(condition)
+            node.child(FIELD_USER).setValue(userId)
+            node.child(FIELD_USER_TAKEN).setValue(userIdTaken)
+            node.child(FIELD_TAKEN).setValue(taken)
+        }
+
+        saveToDatabaseBase(node)
     }
 
     /**

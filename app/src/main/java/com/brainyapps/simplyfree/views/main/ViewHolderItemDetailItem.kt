@@ -49,7 +49,7 @@ class ViewHolderItemDetailItem(itemView: View, ctx: Context) : ViewHolderBase(it
         // photo
         Glide.with(context!!)
                 .load(data.photoUrl)
-                .apply(RequestOptions.placeholderOf(R.drawable.user_default).fitCenter())
+                .apply(RequestOptions.placeholderOf(R.drawable.img_item_default).fitCenter())
                 .into(itemView.imgview_photo)
 
         // user info

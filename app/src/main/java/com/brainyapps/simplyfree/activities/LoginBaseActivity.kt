@@ -33,17 +33,17 @@ import com.google.firebase.auth.GoogleAuthProvider
 open class LoginBaseActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedListener {
 
     companion object {
-        val KEY_LOGIN_TYPE = "loginType"
+        const val KEY_LOGIN_TYPE = "loginType"
 
-        val LOGIN_TYPE_EMAIL = 0
-        val LOGIN_TYPE_FACEBOOK = 1
-        val LOGIN_TYPE_GOOGLE = 2
+        const val LOGIN_TYPE_EMAIL = 0
+        const val LOGIN_TYPE_FACEBOOK = 1
+        const val LOGIN_TYPE_GOOGLE = 2
 
-        val KEY_PAYMENT_TYPE = "paymentType"
+        const val KEY_PAYMENT_TYPE = "paymentType"
 
-        val PAYMENT_TYPE_NOT_DETERMINED = -1
-        val PAYMENT_TYPE_NONE = 0
-        val PAYMENT_TYPE_PAY = 1
+        const val PAYMENT_TYPE_NOT_DETERMINED = -1
+        const val PAYMENT_TYPE_NONE = 0
+        const val PAYMENT_TYPE_PAY = 1
     }
 
     private val TAG = LoginBaseActivity ::class.java.getSimpleName()

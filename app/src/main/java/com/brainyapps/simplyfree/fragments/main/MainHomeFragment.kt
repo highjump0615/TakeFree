@@ -76,7 +76,7 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
         val layoutManager = LinearLayoutManager(activity)
         viewMain.list.layoutManager = layoutManager
 
-        this.adapter = HomeCategoryAdapter(activity!!, this.aryCategory)
+        this.adapter = HomeCategoryAdapter(activity!!, aryCategory)
         viewMain.list.adapter = this.adapter
         viewMain.list.itemAnimator = DefaultItemAnimator()
 
