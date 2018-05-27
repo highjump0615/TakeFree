@@ -22,6 +22,8 @@ class ViewHolderMessageListItem(itemView: View, ctx: Context) : ViewHolderBase(i
         val iconFont = FontManager.getTypeface(ctx, FontManager.FONTAWESOME)
         FontManager.markAsIconContainer(itemView.but_delete, iconFont)
 
+        itemView.swipe.isClickToClose = true
+
         itemView.but_delete.setOnClickListener(this)
 
         // surface view

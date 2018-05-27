@@ -64,18 +64,18 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
     override fun onResume() {
         super.onResume()
 
-        getMessages(true, false)
+        getMessages(aryMessage.isEmpty(), false)
     }
 
     override fun onRefresh() {
-        getMessages(true, false)
+        getMessages(false, false)
     }
 
     /**
      * get Message data
      */
     private fun getMessages(bRefresh: Boolean, bAnimation: Boolean) {
-        if (bAnimation) {
+        if (bRefresh) {
             if (!this.swiperefresh.isRefreshing) {
                 this.swiperefresh.isRefreshing = true
             }

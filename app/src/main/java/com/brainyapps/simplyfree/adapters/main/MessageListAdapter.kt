@@ -1,7 +1,9 @@
 package com.brainyapps.simplyfree.adapters.main
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -12,11 +14,15 @@ import com.brainyapps.simplyfree.activities.main.ItemMessageActivity
 import com.brainyapps.simplyfree.activities.main.UserDetailActivity
 import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.models.Message
+import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Globals
 import java.util.ArrayList
 import com.brainyapps.simplyfree.utils.SFItemClickListener
 import com.brainyapps.simplyfree.views.main.ViewHolderMessageListItem
+import com.daimajia.swipe.SwipeLayout
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter
+import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.layout_message_list_item.view.*
 
 /**
  * Created by Administrator on 2/19/18.
@@ -70,6 +76,33 @@ class MessageListAdapter(val ctx: Context, private val aryData: ArrayList<Messag
                 intent.putExtra(ItemMessageActivity.KEY_ITEM_ID, aryData[position].itemId)
                 intent.putExtra(UserDetailHelper.KEY_USER, aryData[position].targetUser)
                 ctx.startActivity(intent)
+            }
+
+            // delete
+            R.id.but_delete -> {
+                // show confirm dialog
+                AlertDialog.Builder(ctx)
+                        .setTitle("Sure to delete this message?")
+                        .setMessage("The deleted message cannot be restored")
+                        .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, which ->
+                            // remove from db
+                            val database = FirebaseDatabase.getInstance().reference.child(Message.TABLE_NAME)
+                            val query = database.child(User.currentUser!!.id)
+                                    .child(aryData[position].itemId)
+                                    .child(aryData[position].targetUserId)
+                            query.child(Message.FIELD_LATEST_MSG).removeValue()
+
+                            // delete message
+                            aryData.removeAt(position)
+                            notifyItemRemoved(position)
+                        })
+                        .setNegativeButton(android.R.string.no, DialogInterface.OnClickListener { dialog, which ->
+                            // close the drawer
+                            val layoutSwipe = view.parent.parent as SwipeLayout
+                            layoutSwipe.close()
+                        })
+                        .create()
+                        .show()
             }
         }
     }
