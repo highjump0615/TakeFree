@@ -30,6 +30,7 @@ class ChatAdapter(val ctx: Context, private val aryData: ArrayList<Message>)
     companion object {
         const val CHAT_VIEW_TYPE_FROM = 1
         const val CHAT_VIEW_TYPE_TO = 2
+        const val CHAT_VIEW_TYPE_NOTICE = 3
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -46,11 +47,15 @@ class ChatAdapter(val ctx: Context, private val aryData: ArrayList<Message>)
             // create a new view
             v = LayoutInflater.from(parent.context).inflate(R.layout.layout_chat_item_to, parent, false)
         }
+        else if (viewType == CHAT_VIEW_TYPE_NOTICE) {
+            // create a new view
+            v = LayoutInflater.from(parent.context).inflate(R.layout.layout_chat_item_notice, parent, false)
+        }
 
         val vh = ViewHolderChatItem(v!!, ctx)
         vhRes = vh
 
-        return vhRes!!
+        return vhRes
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -66,11 +71,14 @@ class ChatAdapter(val ctx: Context, private val aryData: ArrayList<Message>)
     override fun getItemViewType(position: Int): Int {
         val msg = aryData[position]
 
-        return if (User.currentUser!!.id.equals(msg.senderId)) {
-            CHAT_VIEW_TYPE_TO
-        }
-        else {
-            CHAT_VIEW_TYPE_FROM
-        }
+        return if (msg.type == Message.MESSAGE_TYPE_REQUEST || msg.type == Message.MESSAGE_TYPE_ACCEPT) {
+                CHAT_VIEW_TYPE_NOTICE
+            }
+            else if (User.currentUser!!.id.equals(msg.senderId)) {
+                CHAT_VIEW_TYPE_TO
+            }
+            else {
+                CHAT_VIEW_TYPE_FROM
+            }
     }
 }

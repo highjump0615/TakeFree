@@ -43,6 +43,7 @@
                 android:paddingBottom="@dimen/message_item_padding_vert">
 
                 <ImageView
+                    android:id="@+id/imgview_user"
                     android:layout_width="@dimen/message_item_photo_size"
                     android:layout_height="@dimen/message_item_photo_size"
                     android:src="@drawable/user_default"
@@ -62,6 +63,7 @@
 
                         <!-- user name -->
                         <TextView
+                            android:id="@+id/text_username"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Mary Lean"
@@ -69,6 +71,7 @@
 
                         <!-- message -->
                         <TextView
+                            android:id="@+id/text_msg"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
@@ -81,6 +84,7 @@
 
                     <!-- time -->
                     <TextView
+                        android:id="@+id/text_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"

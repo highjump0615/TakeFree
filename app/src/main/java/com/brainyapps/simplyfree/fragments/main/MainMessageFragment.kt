@@ -15,8 +15,14 @@ import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.adapters.main.MessageListAdapter
 import com.brainyapps.simplyfree.models.Message
+import com.brainyapps.simplyfree.models.User
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_main_message.*
 import kotlinx.android.synthetic.main.fragment_main_message.view.*
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -51,15 +57,14 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
 
         viewMain.swiperefresh.setOnRefreshListener(this)
 
-        // load data
-        Handler().postDelayed({ getMessages(true, true) }, 500)
-
         // Inflate the layout for this fragment
         return viewMain
     }
 
     override fun onResume() {
         super.onResume()
+
+        getMessages(true, false)
     }
 
     override fun onRefresh() {
@@ -82,18 +87,52 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
         }
         aryMessage.clear()
 
-        // add
-        for (i in 0..10) {
-            val data = Message()
+        val userCurrent = User.currentUser!!
+        val database = FirebaseDatabase.getInstance().reference.child(Message.TABLE_NAME + "/" + userCurrent.id)
 
-            aryMessage.add(data)
-        }
+        var countFound = 0
+        var countFetched = 0
 
-        updateList(bAnimation)
+        database.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+                stopRefresh()
+            }
 
-        if (aryMessage.isEmpty()) {
-            this@MainMessageFragment.text_empty_notice.visibility = View.VISIBLE
-        }
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                for (itemItem in dataSnapshot!!.children) {
+                    val itemId = itemItem.key
+                    val itemUsers = itemItem.value as HashMap<String, Any>
+                    val entryUser = itemUsers.entries.first()
+                    val userId = entryUser.key
+                    val entryMsg = (entryUser.value as HashMap<String, Any>).get(Message.FIELD_LATEST_MSG)
+                    val msg = Message(entryMsg as HashMap<String, Any>)
+                    msg.targetUserId = userId
+                    msg.itemId = itemId
+
+                    countFound++
+
+                    msg.fetchTargetUser(object: Message.FetchDatabaseListener {
+                        override fun onFetchedTargetUser(success: Boolean) {
+                            aryMessage.add(msg)
+                            countFetched++
+
+                            // if all messages users are fetched
+                            if (countFound == countFetched) {
+                                // sort
+                                Collections.sort(aryMessage, Collections.reverseOrder())
+
+                                updateList(bAnimation)
+                            }
+                        }
+                    })
+                }
+
+                // no found
+                if (countFound == 0) {
+                    updateList(bAnimation)
+                }
+            }
+        })
     }
 
     private fun updateList(bAnimation: Boolean) {
@@ -104,6 +143,13 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
         }
         else {
             this@MainMessageFragment.adapter!!.notifyDataSetChanged()
+        }
+
+        if (aryMessage.isEmpty()) {
+            this@MainMessageFragment.text_empty_notice.visibility = View.VISIBLE
+        }
+        else {
+            this@MainMessageFragment.text_empty_notice.visibility = View.GONE
         }
     }
 

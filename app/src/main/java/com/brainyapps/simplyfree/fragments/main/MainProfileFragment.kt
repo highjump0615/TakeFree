@@ -101,7 +101,7 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener {
         //
         // fill user info
         //
-        helperUser.fillUserInfoSimple(User.currentUser)
+        helperUser.fillUserWithRating(User.currentUser)
     }
 
     /**

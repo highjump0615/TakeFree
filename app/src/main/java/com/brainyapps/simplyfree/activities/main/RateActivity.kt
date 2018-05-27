@@ -40,12 +40,8 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
     }
 
     private fun initView() {
-        helperUser.fillUserInfoSimple(user)
-
-        // rate
-        text_rate.text = "${user?.rating} / 5.0"
-        view_star_user.updateStar(user?.rating!!)
-
+        helperUser.fillUserWithRating(user)
+        
         // title
         setNavbar(user?.userFullName(), true)
     }

@@ -55,11 +55,13 @@
 
                 <!-- rate -->
                 <com.brainyapps.simplyfree.views.ViewRateStar
+                    android:id="@+id/view_star_user"
                     android:layout_width="100dp"
                     android:layout_height="20dp"
                     android:layout_marginTop="6dp"
                     app:starValue="5.0"/>
                 <TextView
+                    android:id="@+id/text_rate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="6dp"

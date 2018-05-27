@@ -130,6 +130,32 @@ class Utils {
             return Date(estimatedServerTimeMs.toLong())
         }
 
+        /**
+         * format date time
+         * - Message list view
+         */
+        fun getFormattedDateTime(date: Date): String {
+            val period = Utils.getServerTime().time - date.time
+            val value = TimeUnit.MINUTES.convert(period, TimeUnit.MILLISECONDS)
+            if (value == 0L) {
+                return "0 min ago"
+            } else if (value < 60) {
+                return value.toString() + " mins ago"
+            } else if (value == 60L) {
+                return "1 hour ago"
+            } else if (value < 120) {
+                return "1 hour " + (value - 60) + " mins ago"
+            } else if (value < 720) {
+                return "" + (value / 60).toString() + " hours ago"
+            } else if (value < 1440) {
+                return "Today " + SimpleDateFormat("HH:mm").format(date)
+            } else if (value < 2880) {
+                return "Yesterday " + SimpleDateFormat("HH:mm").format(date)
+            }
+
+            return SimpleDateFormat("MM/dd, yyyy").format(date)
+        }
+
         fun getFormattedDate(date: Date): String {
             val dateFormat = SimpleDateFormat("MM/dd/yyyy")
             var result = dateFormat.format(date)

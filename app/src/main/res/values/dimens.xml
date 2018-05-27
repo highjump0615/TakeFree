@@ -112,7 +112,7 @@
     <dimen name="rate_review_margin">14dp</dimen>
 
     <!-- message page -->
-    <dimen name="message_item_img_size">90dp</dimen>
+    <dimen name="message_item_img_size">70dp</dimen>
     <dimen name="message_item_img_margin">12dp</dimen>
     <dimen name="chat_item_margin_left">10dp</dimen>
     <dimen name="chat_item_margin_right">60dp</dimen>

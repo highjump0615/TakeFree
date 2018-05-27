@@ -53,13 +53,13 @@
                     android:id="@+id/text_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Spanish Boxwood Chefs Carbon Steel Knife"
+                    android:text=""
                     android:textSize="16sp"/>
             </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp">
+                android:layout_height="50dp">
 
                 <!-- background -->
                 <ImageView
@@ -74,7 +74,6 @@
                     android:layout_height="40dp"
                     android:layout_marginLeft="@dimen/login_but_margin_horiz"
                     android:layout_marginRight="@dimen/login_but_margin_horiz"
-                    android:layout_marginTop="10dp"
                     android:text="Take Item"
                     android:textAllCaps="false"
                     android:textColor="@color/colorTheme"

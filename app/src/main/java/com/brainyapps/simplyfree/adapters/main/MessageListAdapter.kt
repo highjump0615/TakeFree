@@ -8,7 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.main.ItemMessageActivity
+import com.brainyapps.simplyfree.activities.main.UserDetailActivity
+import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.models.Message
+import com.brainyapps.simplyfree.utils.Globals
 import java.util.ArrayList
 import com.brainyapps.simplyfree.utils.SFItemClickListener
 import com.brainyapps.simplyfree.views.main.ViewHolderMessageListItem
@@ -22,7 +26,7 @@ class MessageListAdapter(val ctx: Context, private val aryData: ArrayList<Messag
     : RecyclerSwipeAdapter<RecyclerView.ViewHolder>(), SFItemClickListener {
 
     companion object {
-        val ITEM_VIEW_TYPE_MESSAGE_ITEM = 1
+        const val ITEM_VIEW_TYPE_MESSAGE_ITEM = 1
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -43,8 +47,7 @@ class MessageListAdapter(val ctx: Context, private val aryData: ArrayList<Messag
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolderMessageListItem) {
-        }
-        else {
+            holder.fillContent(aryData[position])
         }
     }
 
@@ -59,5 +62,15 @@ class MessageListAdapter(val ctx: Context, private val aryData: ArrayList<Messag
     }
 
     override fun onItemClick(view: View?, position: Int) {
+        when (view?.id) {
+            // go to message detail
+            R.id.layout_surface -> {
+                val intent = Intent(ctx, ItemMessageActivity::class.java)
+                Globals.selectedItem = null
+                intent.putExtra(ItemMessageActivity.KEY_ITEM_ID, aryData[position].itemId)
+                intent.putExtra(UserDetailHelper.KEY_USER, aryData[position].targetUser)
+                ctx.startActivity(intent)
+            }
+        }
     }
 }

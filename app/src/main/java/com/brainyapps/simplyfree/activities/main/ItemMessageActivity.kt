@@ -2,9 +2,7 @@ package com.brainyapps.simplyfree.activities.main
 
 import android.content.DialogInterface
 import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AlertDialog
@@ -12,7 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
-import android.view.TextureView
+import android.util.Log
 import android.view.View
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
@@ -23,6 +21,7 @@ import com.brainyapps.simplyfree.models.Message
 import com.brainyapps.simplyfree.models.Notification
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Globals
+import com.brainyapps.simplyfree.utils.Utils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.database.ChildEventListener
@@ -33,13 +32,21 @@ import kotlinx.android.synthetic.main.activity_item_message.*
 
 class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    lateinit var item: Item
+    companion object {
+        const val KEY_ITEM_ID = "item_id"
+    }
 
-    private lateinit var mLinearLayoutManager: LinearLayoutManager
+    private val TAG = ItemMessageActivity::class.java.getSimpleName()
+
+    private var itemId: String? = null
+    private var item: Item? = null
+
+    private var mLinearLayoutManager: LinearLayoutManager? = null
 
     var adapter: ChatAdapter? = null
     var aryChat = ArrayList<Message>()
 
+    var userTo: User? = null
     private var userToId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,27 +55,37 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
 
         setNavbar("", true)
 
-        // get item from common objects
-        item = Globals.selectedItem!!
-        item.fetchUser(this)
-
-        // get user-to id from intent
         val bundle = intent.extras
-        val userId = bundle?.getString(UserDetailHelper.KEY_USER_ID)
-        if (TextUtils.isEmpty(userId)) {
-            // from item details, user-to is item owner
-            userToId = item.userId
+
+        //
+        // init item
+        //
+
+        // get item from common objects
+        item = Globals.selectedItem
+        if (item != null) {
+            initItemView()
+            itemId = item?.id
         }
         else {
-            userToId = userId
+            // get item id from intent
+            itemId = bundle?.getString(KEY_ITEM_ID)
+
+            Item.readFromDatabase(withId = itemId!!, fetchListener = this)
         }
 
-        // item info
-        text_item.text = item.name
-        Glide.with(this)
-                .load(item.photoUrl)
-                .apply(RequestOptions.placeholderOf(R.drawable.user_default).fitCenter())
-                .into(imgview_photo)
+        //
+        // init user
+        //
+
+        // from message tab item
+        if (intent.hasExtra(UserDetailHelper.KEY_USER)) {
+            userTo = bundle?.getParcelable<User>(UserDetailHelper.KEY_USER)!!
+            userToId = userTo!!.id
+        }
+
+        // from item detail page
+        initUserId()
 
         // button
         but_take.setOnClickListener(this)
@@ -77,9 +94,6 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
         imgview_comment_send.setOnClickListener(this)
 
         updateTakeButton()
-
-        // load message data
-        getMessages(true, true)
 
         // init list
         mLinearLayoutManager = LinearLayoutManager(this)
@@ -94,7 +108,7 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
                 super.onItemRangeInserted(positionStart, itemCount)
 
                 val msgCount = adapter!!.getItemCount()
-                val lastVisiblePosition = mLinearLayoutManager.findLastCompletelyVisibleItemPosition()
+                val lastVisiblePosition = mLinearLayoutManager?.findLastCompletelyVisibleItemPosition()
                 if (lastVisiblePosition == -1 || positionStart >= msgCount - 1 && lastVisiblePosition == positionStart - 1) {
                     list.scrollToPosition(positionStart)
                 }
@@ -102,11 +116,64 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
         })
 
         swiperefresh.setOnRefreshListener(this)
+
+        // load message data
+        getMessages(true, true)
+    }
+
+    private fun initUserId() {
+        if (TextUtils.isEmpty(userToId)) {
+            // from item details, user-to is item owner
+            userToId = item?.userId
+        }
+
+        initUserView()
+
+        if (userTo == null) {
+            User.readFromDatabase(userToId!!, object:User.FetchDatabaseListener {
+                override fun onFetchedUser(u: User?, success: Boolean) {
+                    userTo = u
+
+                    initUserView()
+                }
+
+                override fun onFetchedItems() {
+                }
+
+                override fun onFetchedNotifications() {
+                }
+
+                override fun onFetchedReviews() {
+                }
+
+            })
+        }
+    }
+
+    private fun initUserView() {
+        // update user info
+        setTitle(userTo?.userFullName())
+    }
+
+    private fun initItemView() {
+        // item info
+        text_item.text = item?.name
+        Glide.with(this)
+                .load(item?.photoUrl)
+                .apply(RequestOptions.placeholderOf(R.drawable.user_default).fitCenter())
+                .into(imgview_photo)
+
+        updateTakeButton()
     }
 
     private fun getMessages(bRefresh: Boolean, bAnimation: Boolean) {
         val database = FirebaseDatabase.getInstance().reference.child(Message.TABLE_NAME)
-        val query = database.child(User.currentUser!!.id).child(userToId).child(Message.FIELD_CHAT)
+        val query = database.child(User.currentUser!!.id)
+                .child(itemId)
+                .child(userToId)
+                .child(Message.FIELD_CHAT)
+
+        Log.e(TAG, "${itemId}, ${userToId}")
 
         query.addChildEventListener(object: ChildEventListener {
             override fun onCancelled(p0: DatabaseError?) {
@@ -132,11 +199,15 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
     }
 
     private fun updateTakeButton() {
+        if (item == null) {
+            return
+        }
+
         val user = User.currentUser!!
 
-        if (item.taken) {
+        if (item?.taken!!) {
             // I took this item
-            if (item.userIdTaken.equals(user.id)) {
+            if (item?.userIdTaken.equals(user.id)) {
                 but_take.text = "Owner Accepted Request"
                 but_take.setTextColor(Color.WHITE)
                 but_take.setBackgroundResource(R.drawable.bg_item_status_but_round_accepted)
@@ -150,44 +221,43 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
         }
         else {
             // simple "Available" if item is his own
-            if (item.userId.equals(user.id)) {
+            if (item?.userId.equals(user.id)) {
                 // normal
                 but_take.text = "Available"
                 but_take.setTextColor(ContextCompat.getColor(this, R.color.colorTheme))
                 but_take.setBackgroundResource(R.drawable.bg_item_status_but_round)
+
+                // check request
+                item?.fetchUserTaken(object : Item.FetchDatabaseListener {
+                    override fun onFetchedItem(i: Item?) {
+                    }
+
+                    override fun onFetchedUser(success: Boolean) {
+                        // show confirm dialog
+                        AlertDialog.Builder(this@ItemMessageActivity)
+                                .setTitle("Do you accept the take request?")
+                                .setMessage("${item?.userTaken?.userFullName()} would like to take the item.")
+                                .setPositiveButton("ACCEPT", DialogInterface.OnClickListener { dialog, which ->
+                                    acceptTakeRequest()
+                                })
+                                .setNegativeButton("DECLINE", DialogInterface.OnClickListener { dialog, which ->
+                                })
+                                .create()
+                                .show()
+                    }
+
+                    override fun onFetchedComments(success: Boolean) {
+                    }
+                })
             }
             else {
-                if (item.userIdTaken.isNotEmpty()) {
+                if (!TextUtils.isEmpty(item?.userIdTaken)) {
                     // request sent
                     but_take.text = "Request Sent"
                     but_take.setTextColor(Color.WHITE)
                     but_take.setBackgroundResource(R.drawable.bg_item_status_but_round_requested)
-
-                    // check request
-                    if (item.userId.equals(user.id)) {
-                        item.fetchUserTaken(object : Item.FetchDatabaseListener {
-                            override fun onFetchedItem(i: Item?) {
-                            }
-
-                            override fun onFetchedUser(success: Boolean) {
-                                // show confirm dialog
-                                AlertDialog.Builder(this@ItemMessageActivity)
-                                        .setTitle("Do you accept the take request?")
-                                        .setMessage("${item.userTaken?.userFullName()} would like to take the item.")
-                                        .setPositiveButton("ACCEPT", DialogInterface.OnClickListener { dialog, which ->
-                                            acceptTakeRequest()
-                                        })
-                                        .setNegativeButton("DECLINE", DialogInterface.OnClickListener { dialog, which ->
-                                        })
-                                        .create()
-                                        .show()
-                            }
-
-                            override fun onFetchedComments(success: Boolean) {
-                            }
-                        })
-                    }
-                } else {
+                }
+                else {
                     // normal
                     but_take.text = "Take Item"
                     but_take.setTextColor(ContextCompat.getColor(this, R.color.colorTheme))
@@ -198,44 +268,38 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
     }
 
     private fun acceptTakeRequest() {
+        if (item == null) {
+            return
+        }
+
         // update item status
-        item.taken = true
-        item.saveToDatabase()
+        item!!.taken = true
+        item!!.saveToDatabase()
 
         // send notification to user
         val user = User.currentUser!!
         val newNotification = Notification(notificationType = Notification.NOTIFICATION_TOOK)
-        newNotification.itemId = item.id
-        newNotification.userId = item.userId
+        newNotification.itemId = item!!.id
+        newNotification.userId = item!!.userId
 
         user.addNotification(newNotification)
 
-        updateTakeButton()
-    }
+        // send accept message
+        val newMsg = Message()
+        newMsg.addMessageTo(item!!, userToId!!, "", Message.MESSAGE_TYPE_ACCEPT)
 
-    //
-    // Item.FetchDatabaseListener
-    //
-    override fun onFetchedItem(i: Item?) {
-    }
-    override fun onFetchedUser(success: Boolean) {
-        // update user info
-        setTitle(item.userPosted?.userFullName())
-    }
-    override fun onFetchedComments(success: Boolean) {
+        updateTakeButton()
     }
 
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.but_take -> {
                 // already submitted take
-                if (item.userIdTaken.isNotEmpty()) {
+                if (!TextUtils.isEmpty(item?.userIdTaken)) {
                     return
                 }
 
-                // send request
-                item.userIdTaken = User.currentUser!!.id
-                item.saveToDatabase()
+                doSendRequest()
 
                 updateTakeButton()
             }
@@ -247,6 +311,15 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
         }
     }
 
+    private fun doSendRequest() {
+        // send request
+        item?.userIdTaken = User.currentUser!!.id
+        item?.saveToDatabase()
+
+        val newMsg = Message()
+        newMsg.addMessageTo(item!!, userToId!!, "", Message.MESSAGE_TYPE_REQUEST)
+    }
+
     /**
      * Send message to owner
      */
@@ -255,12 +328,17 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
         if (TextUtils.isEmpty(strMessage)) {
             return
         }
+        if (item == null) {
+            return
+        }
 
         val newMsg = Message()
-        newMsg.addMessageTo(item, strMessage)
+        newMsg.addMessageTo(item!!, userToId!!, strMessage)
 
-        // clear edit
+        // clear edit & hide keyboard
         edit_message.setText("")
+        edit_message.clearFocus()
+        Utils.hideKeyboard(this)
     }
 
     //
@@ -272,5 +350,19 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
 
     private fun stopRefresh() {
         swiperefresh.isRefreshing = false
+    }
+
+    //
+    // Item.FetchDatabaseListener
+    //
+    override fun onFetchedItem(i: Item?) {
+        item = i
+        initItemView()
+    }
+    override fun onFetchedUser(success: Boolean) {
+        // update user info
+        setTitle(item?.userPosted?.userFullName())
+    }
+    override fun onFetchedComments(success: Boolean) {
     }
 }

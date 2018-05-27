@@ -105,7 +105,6 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
                     this@MainNotificationFragment.text_empty_notice.visibility = View.GONE
                 }
             }
-
         })
     }
 
