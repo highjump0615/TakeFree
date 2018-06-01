@@ -1,5 +1,6 @@
 package com.brainyapps.simplyfree.activities.admin
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -11,8 +12,13 @@ import android.view.View
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.adapters.admin.ReportItemAdapter
+import com.brainyapps.simplyfree.models.BaseModel
 import com.brainyapps.simplyfree.models.Report
 import com.brainyapps.simplyfree.models.User
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_admin_reported_user.*
 import java.util.ArrayList
 
@@ -30,13 +36,11 @@ class AdminReportedUserActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshLi
 
         // init list
         val recyclerView = findViewById<RecyclerView>(R.id.list)
-
-        val layoutManager = LinearLayoutManager(this)
-        recyclerView.setLayoutManager(layoutManager)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         this.adapter = ReportItemAdapter(this, this.aryReport)
-        recyclerView.setAdapter(this.adapter)
-        recyclerView.setItemAnimator(DefaultItemAnimator())
+        recyclerView.adapter = this.adapter
+        recyclerView.itemAnimator = DefaultItemAnimator()
 
         this.swiperefresh.setOnRefreshListener(this)
 
@@ -63,54 +67,55 @@ class AdminReportedUserActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshLi
             }
         }
 
-//        val database = FirebaseDatabase.getInstance().reference
-//        val query = database.child(Report.TABLE_NAME).orderByChild(BaseModel.FIELD_DATE)
-//
-//        query.addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//
+        val database = FirebaseDatabase.getInstance().reference
+        val query = database.child(User.TABLE_NAME).orderByChild(BaseModel.FIELD_DATE)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
                 aryReport.clear()
-                for (i in 0..20) {
-                    aryReport.add(Report())
+
+                for (reportItem in dataSnapshot.children) {
+                    val u = reportItem.getValue(User::class.java)
+                    u?.id = reportItem.key
+                    if (u?.reports!!.isEmpty()) {
+                        continue
+                    }
+
+                    val report = u.reports[0]
+                    report.userReported = u
+                    aryReport.add(report)
                 }
-//                for (reportItem in dataSnapshot.children) {
-//                    val report = reportItem.getValue(Report::class.java)
-//                    report?.id = reportItem.key
-//
-//                    // check existence
-//                    var bExist = false
-//                    for (r in aryReport) {
-//                        if (TextUtils.equals(r.userReportedId, report!!.userReportedId)) {
-//                            bExist = true
-//                            break
-//                        }
-//                    }
-//
-//                    if (bExist) {
-//                        continue
-//                    }
-//
-//                    aryReport.add(report!!)
-//
-//                    // fetch user
-//                    User.readFromDatabase(report.userReportedId, mFetchUserListner)
-//                }
-//
+
                 updateList()
 
                 if (aryReport.isEmpty()) {
                     this@AdminReportedUserActivity.text_empty_notice.visibility = View.VISIBLE
                 }
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                stopRefresh()
-//            }
-//        })
+                else {
+                    this@AdminReportedUserActivity.text_empty_notice.visibility = View.GONE
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                stopRefresh()
+            }
+        })
     }
 
     fun updateList() {
         stopRefresh()
         this@AdminReportedUserActivity.adapter!!.notifyDataSetChanged()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == AdminReportDetailActivity.REPORT_DETAIL_CODE) {
+            if (resultCode == 1) {
+                // deleted report, refresh list
+                getReports(true, false)
+            }
+        }
     }
 }

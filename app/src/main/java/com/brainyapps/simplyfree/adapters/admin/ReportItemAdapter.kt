@@ -24,7 +24,7 @@ class ReportItemAdapter(val ctx: Context, private val aryReport: ArrayList<Repor
     var report: Report? = null
 
     companion object {
-        val ITEM_VIEW_TYPE_REPORT = 1
+        const val ITEM_VIEW_TYPE_REPORT = 1
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -46,7 +46,7 @@ class ReportItemAdapter(val ctx: Context, private val aryReport: ArrayList<Repor
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolderUserItem) {
-//            holder.fillContent(this.aryReport[position].userReported!!)
+            holder.fillContent(aryReport[position].userReported!!)
         }
         else {
         }
@@ -75,9 +75,9 @@ class ReportItemAdapter(val ctx: Context, private val aryReport: ArrayList<Repor
     override fun onItemClick(view: View?, position: Int) {
         val report = aryReport[position]
 
-        val intent = Intent(this.context, AdminReportDetailActivity::class.java)
-//        intent.putExtra(AdminReportDetailActivity.KEY_REPORT, report)
-        val activity = this.context as Activity
+        val intent = Intent(context, AdminReportDetailActivity::class.java)
+        intent.putExtra(AdminReportDetailActivity.KEY_REPORT, report)
+        val activity = context as Activity
         activity.startActivityForResult(intent, AdminReportDetailActivity.REPORT_DETAIL_CODE)
     }
 }

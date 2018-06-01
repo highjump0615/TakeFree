@@ -40,6 +40,7 @@
 
         <!-- content -->
         <TextView
+            android:id="@+id/text_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -66,14 +67,24 @@
         </LinearLayout>
 
         <!-- ban button -->
-        <Button
-            android:id="@+id/but_ban"
+        <RelativeLayout
             android:layout_width="match_parent"
-            style="@style/ButtonWhiteRound"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/user_profile_but_margin"
             android:layout_marginRight="@dimen/user_profile_but_margin"
-            android:layout_marginTop="40dp"
-            android:text="Ban this user" />
+            android:layout_marginTop="40dp">
+            <Button
+                android:id="@+id/but_ban"
+                android:layout_width="match_parent"
+                style="@style/ButtonWhiteRound"
+                android:text="Ban this user" />
+            <Button
+                android:id="@+id/but_unban"
+                android:layout_width="match_parent"
+                style="@style/ButtonWhiteRound"
+                android:text="Unban this user"
+                android:visibility="gone"/>
+        </RelativeLayout>
 
         <!-- delete button -->
         <Button

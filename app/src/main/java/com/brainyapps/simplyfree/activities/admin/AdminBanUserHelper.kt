@@ -62,6 +62,8 @@ class AdminBanUserHelper(private val owner: Activity, val user: User) : View.OnC
                             // success
                             this.user.banned = true
 
+                            owner.setResult(1)
+
                             Toast.makeText(owner, "Banned user successfully", Toast.LENGTH_SHORT).show()
                             updateButton()
                         })
@@ -85,6 +87,8 @@ class AdminBanUserHelper(private val owner: Activity, val user: User) : View.OnC
 
                             // success
                             this.user.banned = false
+
+                            owner.setResult(1)
 
                             Toast.makeText(owner, "Unbanned user successfully", Toast.LENGTH_SHORT).show()
                             updateButton()

@@ -30,12 +30,16 @@ class Report() : BaseModel(), Parcelable {
     @get:Exclude
     var user: User? = null
 
+    @get:Exclude
+    var userReported: User? = null
+
     var content = ""
 
     constructor(parcel: Parcel) : this() {
         userId = parcel.readString()
         user = parcel.readParcelable(User::class.java.classLoader)
         content = parcel.readString()
+        userReported = parcel.readParcelable(User::class.java.classLoader)
 
         readFromParcelBase(parcel)
     }
@@ -44,6 +48,7 @@ class Report() : BaseModel(), Parcelable {
         parcel.writeString(userId)
         parcel.writeParcelable(user, flags)
         parcel.writeString(content)
+        parcel.writeParcelable(userReported, flags)
 
         writeToParcelBase(parcel, flags)
     }
