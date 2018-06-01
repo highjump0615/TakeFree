@@ -6,12 +6,20 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.admin.AdminUserActivity
 import com.brainyapps.simplyfree.adapters.admin.AdminUserItemAdapter
+import com.brainyapps.simplyfree.models.BaseModel
 import com.brainyapps.simplyfree.models.User
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.activity_admin_users.*
 import kotlinx.android.synthetic.main.fragment_admin_user.*
 import kotlinx.android.synthetic.main.fragment_admin_user.view.*
 import java.util.ArrayList
@@ -23,6 +31,7 @@ class AdminUserFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     var adapter: AdminUserItemAdapter? = null
     var aryUser = ArrayList<User>()
+    var aryUserAll = ArrayList<User>()
 
     var isInitialized = false
 
@@ -35,12 +44,11 @@ class AdminUserFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         val recyclerView = rootView.findViewById<RecyclerView>(R.id.list)
 
-        val layoutManager = LinearLayoutManager(this.activity)
-        recyclerView.setLayoutManager(layoutManager)
+        recyclerView.layoutManager = LinearLayoutManager(this.activity)
 
-        this.adapter = AdminUserItemAdapter(this.activity!!, this.aryUser)
-        recyclerView.setAdapter(this.adapter)
-        recyclerView.setItemAnimator(DefaultItemAnimator())
+        this.adapter = AdminUserItemAdapter(this.activity!!, aryUser)
+        recyclerView.adapter = this.adapter
+        recyclerView.itemAnimator = DefaultItemAnimator()
 
         return rootView
     }
@@ -56,60 +64,78 @@ class AdminUserFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             }
         }
 
-//        val database = FirebaseDatabase.getInstance().reference
-//        var query = database.child(User.TABLE_NAME).orderByChild(BaseModel.FIELD_DATE)
-//
-//        if (this.arguments!!.getInt(ARG_USER_LIST_TYPE) == AdminUserActivity.USER_BANNED) {
-//            query = database.child(User.TABLE_NAME).orderByChild(User.FIELD_BANNED).equalTo(true)
-//        }
-//
-//        query.addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                stopRefresh()
-//
-//                var bEmpty = false
-//                // if empty, use animation for add
-//                if (aryUser.isEmpty()) {
-//                    bEmpty = true
-//                }
-//
-                if (bAnimation) {
-                    this@AdminUserFragment.adapter!!.notifyItemRangeRemoved(0, aryUser.count())
-                }
-                aryUser.clear()
+        val database = FirebaseDatabase.getInstance().reference
+        var query = database.child(User.TABLE_NAME).orderByChild(BaseModel.FIELD_DATE)
 
-                for (i in 0..10) {
-                    aryUser.add(User())
+        if (this.arguments!!.getInt(ARG_USER_LIST_TYPE) == AdminUserActivity.USER_BANNED) {
+            query = database.child(User.TABLE_NAME).orderByChild(User.FIELD_BANNED).equalTo(true)
+        }
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                stopRefresh()
+
+                // store all users
+                aryUserAll.clear()
+
+                for (userItem in dataSnapshot.children) {
+                    val user = userItem.getValue(User::class.java)
+                    user!!.id = userItem.key
+                    if (user.type == User.USER_TYPE_ADMIN) {
+                        continue
+                    }
+
+                    aryUserAll.add(user)
                 }
-//
-//                if (!dataSnapshot.exists()) {
-//                    this@AdminUserFragment.text_empty_notice.visibility = View.VISIBLE
-//                }
-//
-//                for (userItem in dataSnapshot.children) {
-//                    val user = userItem.getValue(User::class.java)
-//                    user!!.id = userItem.key
-//                    if (user.type == User.USER_TYPE_ADMIN) {
-//                        continue
-//                    }
-//
-//                    aryUser.add(user)
-//                }
-//
-                if (bAnimation) {
-                    this@AdminUserFragment.adapter!!.notifyItemRangeInserted(0, aryUser.count())
-                }
-                else {
-                    this@AdminUserFragment.adapter!!.notifyDataSetChanged()
-                }
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                stopRefresh()
-//            }
-//        })
+
+                updateList(bAnimation)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                stopRefresh()
+            }
+        })
 
         isInitialized = true
+    }
+
+    /**
+     * update the list with animation
+     */
+    fun updateList(bAnimation: Boolean = false) {
+        val activityUser = activity as AdminUserActivity
+        val strSearch = activityUser.edit_search.text.toString()
+
+        stopRefresh()
+
+        // clear
+        if (bAnimation) {
+            adapter!!.notifyItemRangeRemoved(0, aryUser.count())
+        }
+        aryUser.clear()
+
+        // categorize the items
+        for (user in aryUserAll) {
+            // add match-keyword only
+            if (TextUtils.isEmpty(strSearch) || user.userFullName().contains(strSearch, ignoreCase = true)) {
+                aryUser.add(user)
+            }
+        }
+
+        // empty notice
+        if (aryUser.isEmpty()) {
+            text_empty_notice.visibility = View.VISIBLE
+        }
+        else {
+            text_empty_notice.visibility = View.GONE
+        }
+
+        if (bAnimation) {
+            adapter!!.notifyItemRangeInserted(0, aryUser.count())
+        }
+        else {
+            adapter!!.notifyDataSetChanged()
+        }
     }
 
     fun stopRefresh() {

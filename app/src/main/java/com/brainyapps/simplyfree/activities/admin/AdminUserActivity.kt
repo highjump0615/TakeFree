@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
@@ -28,8 +30,8 @@ class AdminUserActivity : BaseActivity(), View.OnClickListener {
     var aryFragment = ArrayList<AdminUserFragment>()
 
     companion object {
-        val USER_ALL = 0
-        val USER_BANNED = 1
+        const val USER_ALL = 0
+        const val USER_BANNED = 1
     }
 
     private var currentTab = -1
@@ -57,6 +59,9 @@ class AdminUserActivity : BaseActivity(), View.OnClickListener {
 
         container.addOnPageChangeListener(PageChangeListener())
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
+
+        // search keyword
+        edit_search.addTextChangedListener(mTextWatcher)
     }
 
     override fun onResume() {
@@ -78,12 +83,36 @@ class AdminUserActivity : BaseActivity(), View.OnClickListener {
         // update list
         val fragment = this@AdminUserActivity.mSectionsPagerAdapter!!.getItem(this.currentTab) as AdminUserFragment
         if (reload || !fragment.isInitialized) {
-            fragment.getUsers(false, false)
+            fragment.getUsers(false, !fragment.isInitialized)
         }
+        else {
+            fragment.updateList()
+        }
+    }
+
+    fun updateUserList() {
+        if (this.currentTab < 0) {
+            return
+        }
+
+        // update list
+        val fragment = this@AdminUserActivity.mSectionsPagerAdapter!!.getItem(this.currentTab) as AdminUserFragment
+        fragment.updateList()
     }
 
     override fun onClick(view: View?) {
         when (view?.id) {
+        }
+    }
+
+    private val mTextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+        override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+        }
+
+        override fun afterTextChanged(editable: Editable) {
+            updateUserList()
         }
     }
 

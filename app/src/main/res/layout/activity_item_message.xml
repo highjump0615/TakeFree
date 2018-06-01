@@ -66,7 +66,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:src="@drawable/img_bg_item_message"
-                    android:layout_alignParentBottom="true"/>
+                    android:layout_alignParentBottom="true"
+                    android:scaleType="fitXY"/>
 
                 <Button
                     android:id="@+id/but_take"

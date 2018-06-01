@@ -160,7 +160,7 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
         text_item.text = item?.name
         Glide.with(this)
                 .load(item?.photoUrl)
-                .apply(RequestOptions.placeholderOf(R.drawable.user_default).fitCenter())
+                .apply(RequestOptions.placeholderOf(R.drawable.img_item_default).fitCenter())
                 .into(imgview_photo)
 
         updateTakeButton()
@@ -274,7 +274,7 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
 
         // update item status
         item!!.taken = true
-        item!!.saveToDatabase()
+        item!!.saveToDatabase(item!!.id, Item.FIELD_TAKEN, true)
 
         // send notification to user
         val user = User.currentUser!!
@@ -313,8 +313,7 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
 
     private fun doSendRequest() {
         // send request
-        item?.userIdTaken = User.currentUser!!.id
-        item?.saveToDatabase()
+        item?.saveToDatabase(item?.id, Item.FIELD_USER_TAKEN, User.currentUser!!.id)
 
         val newMsg = Message()
         newMsg.addMessageTo(item!!, userToId!!, "", Message.MESSAGE_TYPE_REQUEST)

@@ -206,7 +206,7 @@ class Item() : BaseModel(), Parcelable {
         }
 
         val database = FirebaseDatabase.getInstance().reference
-        val node = database.child(tableName()).child(withId)
+        val node = database.child(tableName()).child(id)
 
         if (key != null && value != null) {
             node.child(key).setValue(value)
@@ -214,7 +214,7 @@ class Item() : BaseModel(), Parcelable {
         else {
             node.child(FIELD_NAME).setValue(name)
             node.child(FIELD_DESC).setValue(description)
-            node.child(FIELD_PHOTO_URL).setValue(description)
+            node.child(FIELD_PHOTO_URL).setValue(photoUrl)
             node.child(FIELD_CATEGORY).setValue(category)
             node.child(FIELD_CONDITION).setValue(condition)
             node.child(FIELD_USER).setValue(userId)
