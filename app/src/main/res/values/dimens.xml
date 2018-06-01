@@ -53,6 +53,9 @@
 
     <dimen name="admin_user_list_margin">10dp</dimen>
 
+    <!-- admin user detail page -->
+    <dimen name="admin_user_name_font_size">18sp</dimen>
+
     <!-- loading list layout -->
     <dimen name="loading_progress_size">30dp</dimen>
 

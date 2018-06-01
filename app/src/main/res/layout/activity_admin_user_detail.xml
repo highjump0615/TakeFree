@@ -27,6 +27,7 @@
         android:id="@+id/imgview_user"
         android:layout_width="@dimen/profile_photo_size"
         android:layout_height="@dimen/profile_photo_size"
+        android:layout_margin="30dp"
         android:src="@drawable/user_default"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -43,13 +44,12 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <EditText
+        <TextView
+            android:id="@+id/edit_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="Full Name"
-            android:maxLines="1"
-            android:singleLine="true"/>
+            android:textSize="@dimen/admin_user_name_font_size"
+            android:background="@null" />
     </RelativeLayout>
 
     <!-- email -->
@@ -60,25 +60,35 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_firstname">
-        <EditText
+        <TextView
+            android:id="@+id/edit_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:hint="E-mail"
-            android:maxLines="1"
-            android:singleLine="true"/>
+            android:textSize="@dimen/admin_user_name_font_size" />
     </LinearLayout>
 
-    <!-- done button -->
-    <Button
-        android:id="@+id/but_done"
-        style="@style/ButtonWhiteRound"
-        android:layout_marginLeft="@dimen/user_profile_but_margin"
-        android:layout_marginRight="@dimen/user_profile_but_margin"
+    <!-- button -->
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_email"
-        android:layout_marginTop="50dp"
-        android:text="Unban this user" />
+        android:layout_marginLeft="@dimen/user_profile_but_margin"
+        android:layout_marginRight="@dimen/user_profile_but_margin"
+        android:layout_marginTop="50dp">
+        <Button
+            android:id="@+id/but_ban"
+            android:layout_width="match_parent"
+            style="@style/ButtonWhiteRound"
+            android:text="Ban this user" />
+        <Button
+            android:id="@+id/but_unban"
+            android:layout_width="match_parent"
+            style="@style/ButtonWhiteRound"
+            android:text="Unban this user"
+            android:visibility="gone" />
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
