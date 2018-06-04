@@ -99,7 +99,7 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageList
         }
 
         // name
-        if (TextUtils.isEmpty(strName)) {
+        if (Utils.isStringEmpty(strName)) {
             Utils.createErrorAlertDialog(this, "Invalid Name", "Name cannot be empty").show()
             edit_name.requestFocus()
             return
@@ -107,7 +107,7 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageList
 
         // generate id
         val database = FirebaseDatabase.getInstance().reference
-        val strKey = database.child(Item.TABLE_NAME).push().key;
+        val strKey = database.child(Item.TABLE_NAME).push().key
 
         showSaveProgress()
 

@@ -73,13 +73,13 @@ class ProfileEditActivity : BaseActivity(), View.OnClickListener, SFUpdateImageL
         //
 
         // first name
-        if (TextUtils.isEmpty(strFirstName)) {
+        if (Utils.isStringEmpty(strFirstName)) {
             Utils.createErrorAlertDialog(this, "Invalid Name", "First name cannot be empty").show()
             return
         }
 
         // last name
-        if (TextUtils.isEmpty(strLastName)) {
+        if (Utils.isStringEmpty(strLastName)) {
             Utils.createErrorAlertDialog(this, "Invalid Name", "Last name cannot be empty").show()
             return
         }

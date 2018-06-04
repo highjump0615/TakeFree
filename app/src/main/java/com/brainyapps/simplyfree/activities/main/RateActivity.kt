@@ -10,6 +10,7 @@ import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.models.Notification
 import com.brainyapps.simplyfree.models.Review
 import com.brainyapps.simplyfree.models.User
+import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.activity_rate.*
 
 class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickListener {
@@ -67,7 +68,7 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
         }
 
         val strReview = edit_review.text.toString()
-        if (TextUtils.isEmpty(strReview)) {
+        if (Utils.isStringEmpty(strReview)) {
             Toast.makeText(this, "Please write review", Toast.LENGTH_SHORT).show()
             return
         }

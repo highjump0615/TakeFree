@@ -42,6 +42,10 @@ class Utils {
             }
         }
 
+        fun isStringEmpty(string: String?): Boolean {
+            return string == null || string.isEmpty() || string.trim().isEmpty()
+        }
+
         fun isNetworkAvailable(context: Context): Boolean {
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetworkInfo = connectivityManager.activeNetworkInfo

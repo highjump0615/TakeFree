@@ -324,7 +324,7 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
      */
     private fun doSendMessage() {
         val strMessage = edit_message.text.toString()
-        if (TextUtils.isEmpty(strMessage)) {
+        if (Utils.isStringEmpty(strMessage)) {
             return
         }
         if (item == null) {

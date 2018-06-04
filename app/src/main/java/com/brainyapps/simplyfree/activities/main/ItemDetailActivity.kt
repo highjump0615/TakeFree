@@ -140,7 +140,7 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
     private fun sendComment() {
         val strComment = edit_comment.text.toString()
         // send comment
-        if (TextUtils.isEmpty(strComment)) {
+        if (Utils.isStringEmpty(strComment)) {
             return
         }
 
