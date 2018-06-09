@@ -3,9 +3,9 @@ package com.brainyapps.simplyfree.views.main
 import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import com.brainyapps.e2fix.views.admin.ViewHolderBase
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.models.Item
+import com.brainyapps.simplyfree.views.admin.ViewHolderBase
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.layout_home_item_list_item.view.*

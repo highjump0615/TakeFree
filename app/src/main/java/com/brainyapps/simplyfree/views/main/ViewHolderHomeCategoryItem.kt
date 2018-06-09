@@ -4,10 +4,10 @@ import android.content.Context
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import com.brainyapps.e2fix.views.admin.ViewHolderBase
 import com.brainyapps.simplyfree.adapters.main.HomeCategoryItemAdapter
 import com.brainyapps.simplyfree.models.Category
 import com.brainyapps.simplyfree.models.Item
+import com.brainyapps.simplyfree.views.admin.ViewHolderBase
 import kotlinx.android.synthetic.main.layout_home_category_list_item.view.*
 
 /**

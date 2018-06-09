@@ -2,7 +2,6 @@ package com.brainyapps.simplyfree.views.admin
 
 import android.content.Context
 import android.view.View
-import com.brainyapps.e2fix.views.admin.ViewHolderBase
 import com.brainyapps.simplyfree.models.User
 import kotlinx.android.synthetic.main.layout_admin_user_list_item.view.*
 

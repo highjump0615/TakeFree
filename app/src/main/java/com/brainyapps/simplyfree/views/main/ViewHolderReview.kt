@@ -2,10 +2,10 @@ package com.brainyapps.simplyfree.views.main
 
 import android.content.Context
 import android.view.View
-import com.brainyapps.e2fix.views.admin.ViewHolderBase
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.models.Review
 import com.brainyapps.simplyfree.models.User
+import com.brainyapps.simplyfree.views.admin.ViewHolderBase
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.layout_item_review_list_item.view.*

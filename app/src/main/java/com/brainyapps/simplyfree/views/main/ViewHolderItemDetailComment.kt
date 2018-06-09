@@ -2,9 +2,9 @@ package com.brainyapps.simplyfree.views.main
 
 import android.content.Context
 import android.view.View
-import com.brainyapps.e2fix.views.admin.ViewHolderBase
 import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.models.Comment
+import com.brainyapps.simplyfree.views.admin.ViewHolderBase
 import kotlinx.android.synthetic.main.layout_item_comment_item.view.*
 
 /**

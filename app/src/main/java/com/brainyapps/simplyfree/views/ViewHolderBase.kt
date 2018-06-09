@@ -1,4 +1,4 @@
-package com.brainyapps.e2fix.views.admin
+package com.brainyapps.simplyfree.views.admin
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView

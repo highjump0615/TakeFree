@@ -8,10 +8,10 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
 import android.widget.TextView
-import com.brainyapps.e2fix.views.admin.ViewHolderBase
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.models.Notification
 import com.brainyapps.simplyfree.utils.FontManager
+import com.brainyapps.simplyfree.views.admin.ViewHolderBase
 import kotlinx.android.synthetic.main.layout_notification_list_item.view.*
 
 /**

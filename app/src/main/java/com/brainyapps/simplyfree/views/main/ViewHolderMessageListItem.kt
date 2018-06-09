@@ -2,11 +2,11 @@ package com.brainyapps.simplyfree.views.main
 
 import android.content.Context
 import android.view.View
-import com.brainyapps.e2fix.views.admin.ViewHolderBase
 import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.models.Message
 import com.brainyapps.simplyfree.utils.FontManager
 import com.brainyapps.simplyfree.utils.Utils
+import com.brainyapps.simplyfree.views.admin.ViewHolderBase
 import kotlinx.android.synthetic.main.layout_message_list_item.view.*
 import java.util.*
 

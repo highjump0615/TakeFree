@@ -4,12 +4,12 @@ import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.TextView
-import com.brainyapps.e2fix.views.admin.ViewHolderBase
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.main.ItemMessageActivity
 import com.brainyapps.simplyfree.models.Message
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.FontManager
+import com.brainyapps.simplyfree.views.admin.ViewHolderBase
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import de.hdodenhof.circleimageview.CircleImageView
