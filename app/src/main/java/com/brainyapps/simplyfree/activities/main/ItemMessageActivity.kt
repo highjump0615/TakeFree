@@ -320,7 +320,13 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
     }
 
     private fun doSendRequest() {
+        // if item is his own, skip
+        if (item?.userId == User.currentUser!!.id) {
+            return
+        }
+
         // send request
+        item?.userIdTaken = User.currentUser!!.id
         item?.saveToDatabase(item?.id, Item.FIELD_USER_TAKEN, User.currentUser!!.id)
 
         val newMsg = Message()
