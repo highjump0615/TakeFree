@@ -86,6 +86,8 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageList
      * Post an item
      */
     private fun onButPost() {
+        but_post.isEnabled = false
+
         val strName = edit_name.text.toString()
 
         //
@@ -95,12 +97,14 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageList
         // photo
         if (helper!!.byteData == null) {
             Utils.createErrorAlertDialog(this, "Invalid Photo", "Photo cannot be empty").show()
+            but_post.isEnabled = true
             return
         }
 
         // name
         if (Utils.isStringEmpty(strName)) {
             Utils.createErrorAlertDialog(this, "Invalid Name", "Name cannot be empty").show()
+            but_post.isEnabled = true
             edit_name.requestFocus()
             return
         }
@@ -122,6 +126,7 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageList
             Log.d(TAG, it.toString())
 
             Toast.makeText(this, "Failed save photo data", Toast.LENGTH_SHORT).show()
+            but_post.isEnabled = true
         })
     }
 
@@ -143,8 +148,6 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageList
         if (Globals.mLocation != null) {
 
             showSaveProgress()
-
-            this.but_post.isEnabled = false
 
             geoFire.setLocation(withId, GeoLocation(Globals.mLocation!!.latitude, Globals.mLocation!!.longitude)) { key, error ->
                 if (error != null) {
@@ -173,6 +176,7 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageList
             Toast.makeText(this, "Cannot get current location", Toast.LENGTH_SHORT).show()
 
             closeSaveProgress()
+            but_post.isEnabled = true
         }
     }
 
