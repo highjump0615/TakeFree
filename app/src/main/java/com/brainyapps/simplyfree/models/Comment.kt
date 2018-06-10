@@ -23,9 +23,6 @@ class Comment() : BaseModel() {
             override fun onFetchedReviews() {
             }
 
-            override fun onFetchedNotifications() {
-            }
-
             override fun onFetchedItems() {
             }
 

@@ -191,9 +191,6 @@ open class LoginBaseActivity : BaseActivity(), GoogleApiClient.OnConnectionFaile
             override fun onFetchedReviews() {
             }
 
-            override fun onFetchedNotifications() {
-            }
-
             override fun onFetchedItems() {
             }
 

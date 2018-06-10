@@ -129,9 +129,6 @@ class Item() : BaseModel(), Parcelable {
             override fun onFetchedReviews() {
             }
 
-            override fun onFetchedNotifications() {
-            }
-
             override fun onFetchedItems() {
             }
 
@@ -154,9 +151,6 @@ class Item() : BaseModel(), Parcelable {
 
         User.readFromDatabase(userIdTaken, object: User.FetchDatabaseListener {
             override fun onFetchedReviews() {
-            }
-
-            override fun onFetchedNotifications() {
             }
 
             override fun onFetchedItems() {

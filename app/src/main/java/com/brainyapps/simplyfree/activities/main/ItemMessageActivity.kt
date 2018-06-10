@@ -140,9 +140,6 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
                 override fun onFetchedItems() {
                 }
 
-                override fun onFetchedNotifications() {
-                }
-
                 override fun onFetchedReviews() {
                 }
 

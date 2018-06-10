@@ -39,9 +39,6 @@ class SplashActivity : BaseActivity() {
                 override fun onFetchedReviews() {
                 }
 
-                override fun onFetchedNotifications() {
-                }
-
                 override fun onFetchedItems() {
                 }
 

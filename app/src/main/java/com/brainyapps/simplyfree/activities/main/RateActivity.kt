@@ -113,9 +113,6 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
     override fun onFetchedItems() {
     }
 
-    override fun onFetchedNotifications() {
-    }
-
     override fun onFetchedReviews() {
     }
 }

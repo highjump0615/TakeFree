@@ -89,9 +89,6 @@ class Message() : BaseModel() {
             override fun onFetchedReviews() {
             }
 
-            override fun onFetchedNotifications() {
-            }
-
             override fun onFetchedItems() {
             }
 

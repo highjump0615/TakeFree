@@ -94,9 +94,6 @@ class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLay
             override fun onFetchedReviews() {
             }
 
-            override fun onFetchedNotifications() {
-            }
-
             override fun onFetchedUser(u: User?, success: Boolean) {
             }
 

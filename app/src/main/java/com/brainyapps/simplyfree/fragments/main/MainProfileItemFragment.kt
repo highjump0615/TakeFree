@@ -75,9 +75,6 @@ class MainProfileItemFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
             override fun onFetchedReviews() {
             }
 
-            override fun onFetchedNotifications() {
-            }
-
             override fun onFetchedUser(u: User?, success: Boolean) {
             }
 

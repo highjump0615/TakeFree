@@ -17,8 +17,10 @@ import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.adapters.main.NotificationAdapter
 import com.brainyapps.simplyfree.models.Notification
 import com.brainyapps.simplyfree.models.User
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_main_notification.*
 import kotlinx.android.synthetic.main.fragment_main_notification.view.*
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -67,48 +69,77 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
     }
 
     override fun onRefresh() {
-        getNotifications(true, false)
+        stopRefresh()
     }
 
     /**
      * get User data
      */
     private fun getNotifications(bRefresh: Boolean, bAnimation: Boolean) {
-        if (!bRefresh) {
-            if (!swiperefresh.isRefreshing) {
-                swiperefresh.isRefreshing = true
-            }
-        }
 
-        User.currentUser?.fetchNotifications(object: User.FetchDatabaseListener {
-            override fun onFetchedReviews() {
-            }
+        val user = User.currentUser!!
 
-            override fun onFetchedUser(u: User?, success: Boolean) {
-            }
+        val database = FirebaseDatabase.getInstance().reference.child(User.TABLE_NAME + "/" + user.id)
+        val query = database.child(User.FIELD_NOTIFICATIONS)
 
-            override fun onFetchedItems() {
+        var countFound = 0
+        var countFetched = 0
+
+        query.addChildEventListener(object : ChildEventListener {
+            override fun onChildRemoved(p0: DataSnapshot?) {
             }
 
-            override fun onFetchedNotifications() {
-                // clear
-                if (bAnimation) {
-                    this@MainNotificationFragment.adapter!!.notifyItemRangeRemoved(0, User.currentUser?.notifications!!.count())
-                }
+            override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
+            }
 
+            override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
+            }
+
+            override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {
+
+                val notifi = dataSnapshot?.getValue(Notification::class.java)
+                notifi!!.id = dataSnapshot.key
+
+                // fetch its user
+                User.readFromDatabase(notifi.userId, object: User.FetchDatabaseListener {
+                    override fun onFetchedUser(u: User?, success: Boolean) {
+
+                        notifi.userPosted = u
+
+                        user.notifications.add(notifi)
+                        countFetched++
+
+                        // if all notification users are fetched
+                        if (countFound == countFetched) {
+                            // sort
+                            Collections.sort(user.notifications, Collections.reverseOrder())
+
+                            updateList(bAnimation)
+                        }
+                    }
+
+                    override fun onFetchedItems() {
+                    }
+
+                    override fun onFetchedReviews() {
+                    }
+                })
+
+                countFound++
+            }
+
+            override fun onCancelled(error: DatabaseError) {
                 updateList(bAnimation)
-
-                if (User.currentUser?.notifications!!.isEmpty()) {
-                    this@MainNotificationFragment.text_empty_notice.visibility = View.VISIBLE
-                }
-                else {
-                    this@MainNotificationFragment.text_empty_notice.visibility = View.GONE
-                }
             }
         })
     }
 
     fun updateList(bAnimation: Boolean) {
+        // clear
+        if (bAnimation) {
+            this@MainNotificationFragment.adapter!!.notifyItemRangeRemoved(0, User.currentUser?.notifications!!.count())
+        }
+
         stopRefresh()
 
         if (bAnimation) {
@@ -116,6 +147,13 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
         }
         else {
             adapter!!.notifyDataSetChanged()
+        }
+
+        if (User.currentUser?.notifications!!.isEmpty()) {
+            this@MainNotificationFragment.text_empty_notice.visibility = View.VISIBLE
+        }
+        else {
+            this@MainNotificationFragment.text_empty_notice.visibility = View.GONE
         }
     }
 

@@ -40,9 +40,6 @@ class AdminReportDetailActivity : BaseActivity(), View.OnClickListener {
             override fun onFetchedItems() {
             }
 
-            override fun onFetchedNotifications() {
-            }
-
             override fun onFetchedUser(user: User?, success: Boolean)
             {
                 but_user.text = user?.userFullName()

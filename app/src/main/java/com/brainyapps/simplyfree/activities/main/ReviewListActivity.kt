@@ -80,10 +80,6 @@ class ReviewListActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener 
             override fun onFetchedItems() {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
-
-            override fun onFetchedNotifications() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
         })
     }
 

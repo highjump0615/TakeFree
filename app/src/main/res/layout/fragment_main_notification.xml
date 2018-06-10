@@ -55,8 +55,7 @@
                 android:layout_marginTop="@dimen/notice_top_margin"
                 android:layout_centerHorizontal="true"
                 android:text="There is no notifications yet"
-                android:textColor="@color/colorGrey"
-                android:visibility="gone"/>
+                android:textColor="@color/colorGrey" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/list"
