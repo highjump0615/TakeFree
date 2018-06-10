@@ -7,11 +7,12 @@ import android.os.Bundle
 import android.view.View
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
+import com.brainyapps.simplyfree.activities.BaseSettingActivity
 import com.brainyapps.simplyfree.activities.LandingActivity
 import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.activity_setting.*
 
-class SettingActivity : BaseActivity(), View.OnClickListener {
+class SettingActivity : BaseSettingActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +28,8 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(view: View?) {
+        super.onClick(view)
+
         when (view?.id) {
             R.id.layout_about -> {
                 Utils.moveNextActivity(this, AboutActivity::class.java)
@@ -56,12 +59,6 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
 
                 emailintent.data = Uri.parse(uriText)
                 startActivity(emailintent)
-            }
-
-            // log out
-            R.id.but_logout -> {
-                signOutClear()
-                Utils.moveNextActivity(this, LandingActivity::class.java, true, true)
             }
         }
     }
