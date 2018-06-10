@@ -71,6 +71,7 @@ class User() : BaseModel(), Parcelable {
         const val FIELD_NOTIFICATIONS = "notifications"
         const val FIELD_REVIEWS = "reviews"
         const val FIELD_REPORTS = "reports"
+        const val FIELD_RATING = "rating"
     }
 
     var type: Int = USER_TYPE_CUSTOMER

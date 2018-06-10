@@ -44,7 +44,7 @@ class UserDetailActivity : BaseActivity(), View.OnClickListener, SwipeRefreshLay
         helperUser = UserDetailHelper(findViewById<View>(android.R.id.content))
 
         // fill user info
-        helperUser.fillUserInfoSimple(user)
+        helperUser.fillUserWithRating(user)
 
         // init list
         list.layoutManager = LinearLayoutManager(this)

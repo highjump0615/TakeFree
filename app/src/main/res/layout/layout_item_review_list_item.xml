@@ -50,7 +50,7 @@
                     android:layout_width="66dp"
                     android:layout_height="13dp"
                     android:layout_marginTop="3dp"
-                    app:starValue="5.0"/>
+                    app:starValue="0.0"/>
 
                 <!-- review -->
                 <TextView

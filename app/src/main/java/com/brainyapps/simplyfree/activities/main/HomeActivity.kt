@@ -220,6 +220,9 @@ class HomeActivity : BaseActivity(),
         this.toolbar.visibility = View.GONE
         if (tag == FRAG_PROFILE) {
             this.toolbar.visibility = View.VISIBLE
+
+            // update user info
+            frag.onResume()
         }
 
         fragCurrent = frag

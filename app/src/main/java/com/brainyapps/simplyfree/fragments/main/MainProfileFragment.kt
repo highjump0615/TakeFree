@@ -31,7 +31,7 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener {
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
     var aryFragment = ArrayList<MainProfileItemFragment>()
 
-    lateinit var helperUser: UserDetailHelper
+    private var helperUser: UserDetailHelper? = null
 
     companion object {
         const val ITEM_AVAILABLE = 0
@@ -101,7 +101,7 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener {
         //
         // fill user info
         //
-        helperUser.fillUserWithRating(User.currentUser)
+        helperUser?.fillUserWithRating(User.currentUser)
     }
 
     /**

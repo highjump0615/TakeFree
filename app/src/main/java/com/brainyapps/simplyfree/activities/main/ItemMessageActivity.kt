@@ -288,9 +288,9 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
         val user = User.currentUser!!
         val newNotification = Notification(notificationType = Notification.NOTIFICATION_TOOK)
         newNotification.itemId = item!!.id
-        newNotification.userId = item!!.userId
+        newNotification.userId = user.id
 
-        user.addNotification(newNotification)
+        userTo?.addNotification(newNotification)
 
         // send accept message
         val newMsg = Message()

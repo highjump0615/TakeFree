@@ -59,14 +59,14 @@
                     android:layout_width="100dp"
                     android:layout_height="20dp"
                     android:layout_marginTop="6dp"
-                    app:starValue="5.0"/>
+                    app:starValue="0.0"/>
                 <TextView
                     android:id="@+id/text_rate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="6dp"
                     android:textColor="@android:color/white"
-                    android:text="5.0/5.0" />
+                    android:text="0.0 / 5.0" />
 
             </LinearLayout>
 

@@ -87,9 +87,12 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
         user?.let {
             // calculate average user rate
             val dSum = it.rating * it.reviews.count() + dRate
+
             it.rating = dSum / (it.reviews.count() + 1)
+            it.saveToDatabaseChild(User.FIELD_RATING, it.rating)
 
             it.reviews.add(newReview)
+            it.saveToDatabaseChild(User.FIELD_REVIEWS, it.reviews)
 
             // add notification
             val newNotification = Notification(notificationType = Notification.NOTIFICATION_RATED)

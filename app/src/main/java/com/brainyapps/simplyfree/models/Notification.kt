@@ -23,6 +23,7 @@ class Notification() : BaseModel() {
 
     var type: Int = NOTIFICATION_RATED
 
+    // target user id
     var userId = ""
     var itemId = ""
 
