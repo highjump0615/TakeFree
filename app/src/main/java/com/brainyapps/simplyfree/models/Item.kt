@@ -144,6 +144,11 @@ class Item() : BaseModel(), Parcelable {
      * fetch user taken
      */
     fun fetchUserTaken(fetchListener: FetchDatabaseListener?) {
+        if (TextUtils.isEmpty(userIdTaken)) {
+            fetchListener?.onFetchedUser(false)
+            return
+        }
+
         if (userTaken != null) {
             fetchListener?.onFetchedUser(true)
             return

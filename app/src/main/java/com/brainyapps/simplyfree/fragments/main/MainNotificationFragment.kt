@@ -78,6 +78,7 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
     private fun getNotifications(bRefresh: Boolean, bAnimation: Boolean) {
 
         val user = User.currentUser!!
+        user.notifications.clear()
 
         val database = FirebaseDatabase.getInstance().reference.child(User.TABLE_NAME + "/" + user.id)
         val query = database.child(User.FIELD_NOTIFICATIONS)

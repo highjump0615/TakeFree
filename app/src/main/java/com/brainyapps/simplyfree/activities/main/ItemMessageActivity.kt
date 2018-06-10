@@ -230,6 +230,11 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
                     }
 
                     override fun onFetchedUser(success: Boolean) {
+                        // no user submitted
+                        if (!success) {
+                            return
+                        }
+
                         // show confirm dialog
                         AlertDialog.Builder(this@ItemMessageActivity)
                                 .setTitle("Do you accept the take request?")

@@ -16,10 +16,7 @@ import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.adapters.main.MessageListAdapter
 import com.brainyapps.simplyfree.models.Message
 import com.brainyapps.simplyfree.models.User
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_main_message.*
 import kotlinx.android.synthetic.main.fragment_main_message.view.*
 import java.util.*
@@ -61,26 +58,21 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
         return viewMain
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        getMessages(aryMessage.isEmpty(), false)
+        // load data
+        getMessages(false, false)
     }
 
     override fun onRefresh() {
-        getMessages(false, false)
+        stopRefresh()
     }
 
     /**
      * get Message data
      */
     private fun getMessages(bRefresh: Boolean, bAnimation: Boolean) {
-        if (bRefresh) {
-            if (!this.swiperefresh.isRefreshing) {
-                this.swiperefresh.isRefreshing = true
-            }
-        }
-
         // clear
         if (bAnimation) {
             this@MainMessageFragment.adapter!!.notifyItemRangeRemoved(0, aryMessage.count())
@@ -93,46 +85,71 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
         var countFound = 0
         var countFetched = 0
 
-        database.addListenerForSingleValueEvent(object : ValueEventListener {
+        database.addChildEventListener(object : ChildEventListener {
+            override fun onChildRemoved(p0: DataSnapshot?) {
+            }
+
+            override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
+            }
+
+            override fun onChildChanged(dataSnapshot: DataSnapshot?, previousChildName: String?) {
+                //
+                // latest message has been updated
+                //
+
+                val msg = parseDatasnapshot(dataSnapshot!!)
+                for (m in aryMessage) {
+                    if (m.itemId == msg.itemId && m.targetUserId == msg.targetUserId) {
+                        // update message
+                        m.text = msg.text
+                        m.type = msg.type
+
+                        // update list
+                        updateList(false)
+
+                        break
+                    }
+                }
+            }
+
             override fun onCancelled(p0: DatabaseError?) {
                 stopRefresh()
             }
 
-            override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                for (itemItem in dataSnapshot!!.children) {
-                    val itemId = itemItem.key
-                    val itemUsers = itemItem.value as HashMap<String, Any>
-                    val entryUser = itemUsers.entries.first()
-                    val userId = entryUser.key
-                    val entryMsg = (entryUser.value as HashMap<String, Any>).get(Message.FIELD_LATEST_MSG)
-                    val msg = Message(entryMsg as HashMap<String, Any>)
-                    msg.targetUserId = userId
-                    msg.itemId = itemId
+            override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {
+                val msg = parseDatasnapshot(dataSnapshot!!)
 
-                    countFound++
+                countFound++
 
-                    msg.fetchTargetUser(object: Message.FetchDatabaseListener {
-                        override fun onFetchedTargetUser(success: Boolean) {
-                            aryMessage.add(msg)
-                            countFetched++
+                msg.fetchTargetUser(object: Message.FetchDatabaseListener {
+                    override fun onFetchedTargetUser(success: Boolean) {
+                        aryMessage.add(msg)
+                        countFetched++
 
-                            // if all messages users are fetched
-                            if (countFound == countFetched) {
-                                // sort
-                                Collections.sort(aryMessage, Collections.reverseOrder())
+                        // if all messages users are fetched
+                        if (countFound == countFetched) {
+                            // sort
+                            Collections.sort(aryMessage, Collections.reverseOrder())
 
-                                updateList(bAnimation)
-                            }
+                            updateList(bAnimation)
                         }
-                    })
-                }
-
-                // no found
-                if (countFound == 0) {
-                    updateList(bAnimation)
-                }
+                    }
+                })
             }
         })
+    }
+
+    private fun parseDatasnapshot(data: DataSnapshot): Message {
+        val itemId = data.key
+        val itemUsers = data.value as HashMap<String, Any>
+        val entryUser = itemUsers.entries.first()
+        val userId = entryUser.key
+        val entryMsg = (entryUser.value as HashMap<String, Any>).get(Message.FIELD_LATEST_MSG)
+        val msg = Message(entryMsg as HashMap<String, Any>)
+        msg.targetUserId = userId
+        msg.itemId = itemId
+
+        return msg
     }
 
     private fun updateList(bAnimation: Boolean) {

@@ -48,14 +48,20 @@ open class BaseModel() : Comparable<BaseModel> {
     fun readFromParcelBase(parcel: Parcel) {
         id = parcel.readString()
         createdAt = parcel.readLong()
-        deletedAt = parcel.readLong()
+        val dDeleteAt = parcel.readLong()
+        if (dDeleteAt > 0) {
+            deletedAt = parcel.readLong()
+        }
     }
 
     fun writeToParcelBase(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeLong(createdAt)
-        deletedAt?.let {
-            parcel.writeLong(it)
+        if (deletedAt != null) {
+            parcel.writeLong(deletedAt!!)
+        }
+        else {
+            parcel.writeLong(0)
         }
     }
 
