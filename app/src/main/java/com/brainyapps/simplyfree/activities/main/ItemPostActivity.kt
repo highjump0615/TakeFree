@@ -178,7 +178,7 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageList
 
     private fun showSaveProgress() {
         if (progressDlg == null) {
-            progressDlg = Utils.createProgressDialog(this, "Submitting Item", "Your item will is being posted right now")
+            progressDlg = Utils.createProgressDialog(this, "Submitting Item", "Your item is currently being posted")
         }
     }
 
