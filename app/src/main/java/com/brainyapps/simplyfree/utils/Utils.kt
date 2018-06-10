@@ -92,27 +92,6 @@ class Utils {
                     .setPositiveButton(android.R.string.ok, listener).create()
         }
 
-        fun createEditDialog(context: Context,
-                             title: String,
-                             message: String,
-                             listener: DialogInterface.OnClickListener? = null): Dialog {
-            val builder = AlertDialog.Builder(context)
-            val inflater = (context as Activity).layoutInflater
-            val view = inflater.inflate(R.layout.layout_dialog_edit, null)
-
-            // placeholder
-            view.edit_content.hint = message
-
-            val dialog = builder.setTitle(title)
-                    .setView(view)
-                    .setPositiveButton(android.R.string.ok, listener)
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .setCancelable(true)
-                    .create()
-
-            return dialog
-        }
-
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
         fun checkStoragePermission(context: Context): Boolean {
             val currentAPIVersion = Build.VERSION.SDK_INT
