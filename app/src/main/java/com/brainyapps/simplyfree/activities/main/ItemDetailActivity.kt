@@ -163,6 +163,13 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         edit_comment.clearFocus()
         Utils.hideKeyboard(this)
 
+        //
+        // if items is not mine, add notification
+        //
+        if (item!!.userId == user.id) {
+            return
+        }
+
         // add notification
         item!!.userPosted?.let {
             val newNotification = Notification(notificationType = Notification.NOTIFICATION_COMMENT)
