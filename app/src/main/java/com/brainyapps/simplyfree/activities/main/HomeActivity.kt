@@ -12,11 +12,13 @@ import kotlinx.android.synthetic.main.activity_home.*
 import android.graphics.Typeface
 import android.location.Location
 import android.net.Uri
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.fragments.main.MainHomeFragment
 import com.brainyapps.simplyfree.fragments.main.MainMessageFragment
@@ -137,6 +139,20 @@ class HomeActivity : BaseActivity(),
         if (Globals.mLocation == null) {
             startLocationUpdates()
         }
+    }
+
+    private var doubleBackToExitPressedOnce = false
+
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed()
+            return
+        }
+
+        this.doubleBackToExitPressedOnce = true
+        Toast.makeText(this, "Please tap BACK again to exit", Toast.LENGTH_SHORT).show()
+
+        Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
     }
 
     private val mLocationCallback = object : LocationCallback() {
