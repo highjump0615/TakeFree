@@ -26,8 +26,10 @@ class ProfileItemAdapter(val ctx: Context, private val aryItem: ArrayList<Item>)
     : BaseItemAdapter(ctx) {
 
     companion object {
-        val ITEM_VIEW_TYPE_ITEM = 1
+        const val ITEM_VIEW_TYPE_ITEM = 1
     }
+
+    var deleteListener: DeletePostListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -88,13 +90,15 @@ class ProfileItemAdapter(val ctx: Context, private val aryItem: ArrayList<Item>)
 
                             aryItem.removeAt(position)
                             notifyItemRemoved(position)
+
+                            // update list
+                            deleteListener?.onDeletedPost()
                         })
                         .setNegativeButton(android.R.string.no, DialogInterface.OnClickListener { dialog, which ->
                         })
                         .create()
                         .show()
             }
-
             else -> {
                 Globals.selectedItem = aryItem[position]
 
@@ -102,5 +106,12 @@ class ProfileItemAdapter(val ctx: Context, private val aryItem: ArrayList<Item>)
                 this.context!!.startActivity(intent)
             }
         }
+    }
+
+    /**
+     * interface for delete post
+     */
+    interface DeletePostListener {
+        fun onDeletedPost()
     }
 }

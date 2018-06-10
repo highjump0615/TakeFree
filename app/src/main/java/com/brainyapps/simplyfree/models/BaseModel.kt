@@ -20,12 +20,14 @@ open class BaseModel() : Comparable<BaseModel> {
         // table info
         //
         const val FIELD_DATE = "createdAt"
+        const val FIELD_DELETED_AT = "deletedAt"
     }
 
     @get:Exclude
     var id = ""
 
     var createdAt: Long
+    var deletedAt: Long? = null
 
     init {
         this.createdAt = Utils.getServerLongTime()
@@ -46,15 +48,20 @@ open class BaseModel() : Comparable<BaseModel> {
     fun readFromParcelBase(parcel: Parcel) {
         id = parcel.readString()
         createdAt = parcel.readLong()
+        deletedAt = parcel.readLong()
     }
 
     fun writeToParcelBase(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeLong(createdAt)
+        deletedAt?.let {
+            parcel.writeLong(it)
+        }
     }
 
     fun saveToDatabaseBase(node: DatabaseReference) {
         node.child(FIELD_DATE).setValue(this.createdAt)
+        node.child(FIELD_DELETED_AT).setValue(deletedAt)
     }
 
     /**
@@ -65,9 +72,14 @@ open class BaseModel() : Comparable<BaseModel> {
         database.child(this.id).child(fieldName).setValue(data)
     }
 
-    fun deleteFromDatabase() {
-        val database = FirebaseDatabase.getInstance().reference.child(tableName())
-        database.child(this.id).removeValue()
+    fun deleteFromDatabase(softDelete: Boolean = false) {
+        if (softDelete) {
+            saveToDatabaseChild(FIELD_DELETED_AT, Utils.getServerLongTime())
+        }
+        else {
+            val database = FirebaseDatabase.getInstance().reference.child(tableName())
+            database.child(this.id).removeValue()
+        }
     }
 
 }

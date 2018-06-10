@@ -154,6 +154,11 @@ class HomeMapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraId
             val item = it.getValue(Item::class.java)
             item!!.id = it.key
 
+            if (item.deletedAt != null) {
+                // deleted item, skip it
+                return
+            }
+
             // add on map
             location?.let {
                 val latlng = LatLng(it.latitude, it.longitude)

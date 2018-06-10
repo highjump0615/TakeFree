@@ -19,6 +19,7 @@ import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.main.HomeActivity
 import com.brainyapps.simplyfree.activities.main.ItemPostActivity
 import com.brainyapps.simplyfree.adapters.main.HomeCategoryAdapter
+import com.brainyapps.simplyfree.models.BaseModel
 import com.brainyapps.simplyfree.models.Category
 import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.utils.FontManager
@@ -124,7 +125,9 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
         }
 
         val database = FirebaseDatabase.getInstance().reference
-        val query = database.child(Item.TABLE_NAME).orderByChild(Item.FIELD_TAKEN).equalTo(false)
+        val query = database.child(Item.TABLE_NAME)
+                .orderByChild(Item.FIELD_TAKEN)
+                .equalTo(false)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // store all items
@@ -133,8 +136,16 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
                     val item = iItem.getValue(Item::class.java)
                     item!!.id = iItem.key
 
+                    if (item.deletedAt != null) {
+                        // deleted item, skip it
+                        continue
+                    }
+
                     aryItemAll.add(item)
                 }
+
+                // sort
+                Collections.sort(aryItemAll, Collections.reverseOrder())
 
                 updateList(bAnimation)
             }

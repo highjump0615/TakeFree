@@ -142,6 +142,11 @@ class User() : BaseModel(), Parcelable {
                     item!!.id = itemItem.key
                     item.userPosted = this@User
 
+                    if (item.deletedAt != null) {
+                        // deleted item, skip it
+                        continue
+                    }
+
                     this@User.items.add(item)
                 }
 
@@ -379,7 +384,7 @@ class User() : BaseModel(), Parcelable {
         }
 
         if (itemDelete.isNotEmpty()) {
-            itemDelete[0].deleteFromDatabase()
+            itemDelete[0].deleteFromDatabase(true)
             items.remove(itemDelete[0])
         }
     }

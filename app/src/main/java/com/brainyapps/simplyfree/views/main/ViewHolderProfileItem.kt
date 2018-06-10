@@ -37,7 +37,10 @@ class ViewHolderProfileItem(itemView: View, ctx: Context) : ViewHolderBase(itemV
                 .into(itemView.imgview_photo)
 
         // hide delete button on other users
-        if (!data.userPosted?.id.equals(User.currentUser?.id)) {
+        if (data.userId == User.currentUser?.id) {
+            itemView.but_delete.visibility = View.VISIBLE
+        }
+        else {
             itemView.but_delete.visibility = View.GONE
         }
     }

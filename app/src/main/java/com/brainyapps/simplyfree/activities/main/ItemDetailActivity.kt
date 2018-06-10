@@ -187,7 +187,7 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         initView()
     }
     override fun onFetchedUser(success: Boolean) {
-        adapter!!.notifyItemChanged(0)
+        adapter!!.notifyDataSetChanged()
     }
     override fun onFetchedComments(success: Boolean) {
         for (comment in item!!.comments) {

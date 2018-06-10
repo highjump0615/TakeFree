@@ -24,7 +24,7 @@ import java.util.ArrayList
 /**
  * Created by Administrator on 2/19/18.
  */
-class MainProfileItemFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class MainProfileItemFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, ProfileItemAdapter.DeletePostListener {
 
     var adapter: ProfileItemAdapter? = null
     var aryItem = ArrayList<Item>()
@@ -44,6 +44,7 @@ class MainProfileItemFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
         recyclerView.setLayoutManager(layoutManager)
 
         this.adapter = ProfileItemAdapter(this.activity!!, this.aryItem)
+        adapter?.deleteListener = this
         recyclerView.setAdapter(this.adapter)
         recyclerView.setItemAnimator(DefaultItemAnimator())
 
@@ -157,5 +158,12 @@ class MainProfileItemFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
 
     override fun onRefresh() {
         getItems(true, false)
+    }
+
+    //
+    // ProfileItemAdapter.DeletePostListener
+    //
+    override fun onDeletedPost() {
+        updateList()
     }
 }
