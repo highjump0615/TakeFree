@@ -306,7 +306,7 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
 
     // add item listener
     private fun onAddedItem(item: Item) {
-        aryItemAll.add(item)
+        aryItemAll.add(0, item)
         updateList()
     }
 

@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.adapters.main.ChatAdapter
@@ -161,6 +162,11 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
                 .into(imgview_photo)
 
         updateTakeButton()
+
+        // check if item has been deleted
+        if (item?.deletedAt != null) {
+            Toast.makeText(this, "The item has already been deleted", Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun getMessages(bRefresh: Boolean, bAnimation: Boolean) {

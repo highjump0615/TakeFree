@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.adapters.main.ItemDetailAdapter
@@ -89,6 +90,11 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
 
         // refresh menu
         invalidateOptionsMenu()
+
+        // check if item has been deleted
+        if (item?.deletedAt != null) {
+            Toast.makeText(this, "The item has already been deleted", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -140,43 +146,39 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
     private fun sendComment() {
         val strComment = edit_comment.text.toString()
         // send comment
-        if (Utils.isStringEmpty(strComment)) {
-            return
+        if (!Utils.isStringEmpty(strComment)) {
+            val newComment = Comment()
+            val user = User.currentUser!!
+
+            newComment.content = strComment
+            newComment.userId = user.id
+            newComment.userPosted = user
+            item!!.comments.add(0, newComment)
+
+            // save data
+            item?.saveToDatabaseChild(Item.FIELD_COMMENTS, item!!.comments)
+
+            // update list
+            adapter!!.notifyDataSetChanged()
+
+            //
+            // if items is not mine, add notification
+            //
+            if (item!!.userId != user.id) {
+                // add notification
+                item!!.userPosted?.let {
+                    val newNotification = Notification(notificationType = Notification.NOTIFICATION_COMMENT)
+                    newNotification.itemId = item!!.id
+
+                    it.addNotification(newNotification)
+                }
+            }
         }
-
-        val newComment = Comment()
-        val user = User.currentUser!!
-
-        newComment.content = strComment
-        newComment.userId = user.id
-        newComment.userPosted = user
-        item!!.comments.add(0, newComment)
-
-        // save data
-        item?.saveToDatabaseChild(Item.FIELD_COMMENTS, item!!.comments)
-
-        // update list
-        adapter!!.notifyDataSetChanged()
 
         // clear edit & hide keyboard
         edit_comment.setText("")
         edit_comment.clearFocus()
         Utils.hideKeyboard(this)
-
-        //
-        // if items is not mine, add notification
-        //
-        if (item!!.userId == user.id) {
-            return
-        }
-
-        // add notification
-        item!!.userPosted?.let {
-            val newNotification = Notification(notificationType = Notification.NOTIFICATION_COMMENT)
-            newNotification.itemId = item!!.id
-
-            it.addNotification(newNotification)
-        }
     }
 
     //
