@@ -21,7 +21,13 @@ class ViewHolderItemDetailComment(itemView: View, ctx: Context) : ViewHolderBase
     fun showCount(show: Boolean, count: Int) {
         if (show) {
             itemView.text_count.visibility = View.VISIBLE
-            itemView.text_count.text = "${count} comments"
+
+            if (count == 1) {
+                itemView.text_count.text = "${count} comment"
+            }
+            else {
+                itemView.text_count.text = "${count} comments"
+            }
         }
         else {
             itemView.text_count.visibility = View.GONE
