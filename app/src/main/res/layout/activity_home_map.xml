@@ -10,7 +10,8 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/img_bg_toolbar_admin" />
+        android:src="@drawable/img_bg_toolbar_admin"
+        android:scaleType="fitXY"/>
 
     <!-- toolbar -->
     <com.brainyapps.simplyfree.views.main.ViewToolbar

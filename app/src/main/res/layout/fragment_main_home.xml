@@ -9,7 +9,8 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/img_bg_signup" />
+        android:src="@drawable/img_bg_signup"
+        android:scaleType="fitXY"/>
 
     <com.brainyapps.simplyfree.views.main.ViewToolbar
         android:layout_width="match_parent"
