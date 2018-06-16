@@ -3,8 +3,10 @@ package com.brainyapps.simplyfree.activities
 import android.content.DialogInterface
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.utils.FirebaseManager
 import com.brainyapps.simplyfree.utils.Utils
@@ -38,6 +40,10 @@ class ForgetActivity : BaseActivity(), View.OnClickListener {
         //
         // check if input is valid
         //
+        if (TextUtils.isEmpty(strEmail)) {
+            Toast.makeText(this, "Please input email address", Toast.LENGTH_SHORT).show()
+            return
+        }
         if (!Utils.isValidEmail(strEmail)) {
             Utils.createErrorAlertDialog(this, "Invalid Email", "Please input valid email address").show()
             edit_email.requestFocus()
