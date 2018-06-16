@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.widget.Toast
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.helpers.PhotoActivityHelper
@@ -103,6 +104,9 @@ class ProfileEditActivity : BaseActivity(), View.OnClickListener, SFUpdateImageL
      */
     private fun saveUserData(user: User) {
         user.saveToDatabase(user.id)
+
+        Toast.makeText(this, "Profile has been updated successfully", Toast.LENGTH_SHORT).show()
+
         finish()
     }
 
