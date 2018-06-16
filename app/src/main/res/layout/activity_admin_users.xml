@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/img_bg_toolbar_admin"
-        android:scaleType="fitXY££££"/>
+        android:scaleType="fitXY"/>
 
     <!-- toolbar -->
     <include

@@ -99,7 +99,7 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
 
                 val msg = parseDatasnapshot(dataSnapshot!!)
                 for (m in aryMessage) {
-                    if (m.itemId == msg.itemId && m.targetUserId == msg.targetUserId) {
+                    if (m.itemId == msg?.itemId && m.targetUserId == msg.targetUserId) {
                         // update message
                         m.text = msg.text
                         m.type = msg.type
@@ -119,37 +119,45 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
             override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {
                 val msg = parseDatasnapshot(dataSnapshot!!)
 
-                countFound++
+                if (msg != null) {
+                    countFound++
 
-                msg.fetchTargetUser(object: Message.FetchDatabaseListener {
-                    override fun onFetchedTargetUser(success: Boolean) {
-                        aryMessage.add(msg)
-                        countFetched++
+                    msg.fetchTargetUser(object : Message.FetchDatabaseListener {
+                        override fun onFetchedTargetUser(success: Boolean) {
+                            aryMessage.add(msg)
+                            countFetched++
 
-                        // if all messages users are fetched
-                        if (countFound == countFetched) {
-                            // sort
-                            Collections.sort(aryMessage, Collections.reverseOrder())
+                            // if all messages users are fetched
+                            if (countFound == countFetched) {
+                                // sort
+                                Collections.sort(aryMessage, Collections.reverseOrder())
 
-                            updateList(bAnimation)
+                                updateList(bAnimation)
+                            }
                         }
-                    }
-                })
+                    })
+                }
             }
         })
     }
 
-    private fun parseDatasnapshot(data: DataSnapshot): Message {
+    private fun parseDatasnapshot(data: DataSnapshot): Message? {
         val itemId = data.key
         val itemUsers = data.value as HashMap<String, Any>
         val entryUser = itemUsers.entries.first()
         val userId = entryUser.key
         val entryMsg = (entryUser.value as HashMap<String, Any>).get(Message.FIELD_LATEST_MSG)
-        val msg = Message(entryMsg as HashMap<String, Any>)
-        msg.targetUserId = userId
-        msg.itemId = itemId
 
-        return msg
+        // latest msg is not existing
+        if (entryMsg != null) {
+            val msg = Message(entryMsg as HashMap<String, Any>)
+            msg.targetUserId = userId
+            msg.itemId = itemId
+
+            return msg
+        }
+
+        return null
     }
 
     private fun updateList(bAnimation: Boolean) {
@@ -171,7 +179,7 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
     }
 
     fun stopRefresh() {
-        this.swiperefresh.isRefreshing = false
+        this.swiperefresh?.isRefreshing = false
     }
 
     override fun onAttach(context: Context?) {
