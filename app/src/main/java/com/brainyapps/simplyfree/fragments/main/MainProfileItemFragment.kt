@@ -99,14 +99,14 @@ class MainProfileItemFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
         // add items
         if (arguments!!.getInt(ARG_ITEM_LIST_TYPE) == MainProfileFragment.ITEM_AVAILABLE) {
             for (item in user.items) {
-                if (item.userIdTaken.isEmpty()) {
+                if (!item.taken) {
                     aryItem.add(item)
                 }
             }
         }
         else {
             for (item in user.items) {
-                if (!item.userIdTaken.isEmpty()) {
+                if (item.taken) {
                     aryItem.add(item)
                 }
             }
