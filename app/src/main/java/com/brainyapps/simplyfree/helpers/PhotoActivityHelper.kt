@@ -87,6 +87,7 @@ class PhotoActivityHelper(val owner: SFUpdateImageListener) {
                                             executor.cancel()
                                         })
                                         .create()
+                                        .show()
                             }
                             .onGranted {
                                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -210,9 +211,9 @@ class PhotoActivityHelper(val owner: SFUpdateImageListener) {
             }
         }
 
-        var uri = data!!.data
+        var uri = data?.data
         if (uri == null) {
-            val thumbnail = data.extras!!.get("data")
+            val thumbnail = data?.extras?.get("data")
 
             if (thumbnail != null) {
                 uri = getImageUri(activity.applicationContext, thumbnail as Bitmap)

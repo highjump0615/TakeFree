@@ -3,6 +3,7 @@ package com.brainyapps.simplyfree.activities.main
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
@@ -50,7 +51,7 @@ class ProfileEditActivity : BaseActivity(), View.OnClickListener, SFUpdateImageL
         when (view?.id) {
             // Photo
             R.id.layout_photo -> {
-                this.helper!!.showMenuDialog()
+                this.helper?.showMenuDialog()
             }
 
             R.id.but_done -> {
@@ -62,7 +63,7 @@ class ProfileEditActivity : BaseActivity(), View.OnClickListener, SFUpdateImageL
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        helper!!.onActivityResult(requestCode, resultCode, data)
+        helper?.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun onButDone() {
@@ -85,18 +86,20 @@ class ProfileEditActivity : BaseActivity(), View.OnClickListener, SFUpdateImageL
             return
         }
 
-        val user = User.currentUser!!
-        user.firstName = strFirstName
-        user.lastName = strLastName
+        val user = User.currentUser
+        user?.let { user
+            user.firstName = strFirstName
+            user.lastName = strLastName
 
-        // save photo image
-        if (this.helper!!.byteData != null) {
-            Utils.createProgressDialog(this, "Saving profile...", "Uploading profile photo")
+            // save photo image
+            if (this.helper!!.byteData != null) {
+                Utils.createProgressDialog(this, "Saving profile...", "Uploading profile photo")
+            }
+
+            user.updateProfilePhoto(this, this.helper!!.byteData, {
+                saveUserData(user)
+            })
         }
-
-        user.updateProfilePhoto(this, this.helper!!.byteData, {
-            saveUserData(user)
-        })
     }
 
     /**
