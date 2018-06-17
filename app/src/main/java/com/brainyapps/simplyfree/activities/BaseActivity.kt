@@ -12,6 +12,7 @@ import com.brainyapps.simplyfree.activities.main.HomeActivity
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.FirebaseManager
 import com.brainyapps.simplyfree.utils.Utils
+import com.facebook.login.LoginManager
 
 /**
  * Created by Administrator on 2/14/18.
@@ -77,6 +78,7 @@ open class BaseActivity : AppCompatActivity() {
      */
     fun signOutClear() {
         FirebaseManager.mAuth.signOut()
+        LoginManager.getInstance().logOut()
         User.currentUser = null
     }
 
