@@ -35,6 +35,8 @@ class MessageListAdapter(val ctx: Context, private val aryData: ArrayList<Messag
         const val ITEM_VIEW_TYPE_MESSAGE_ITEM = 1
     }
 
+    var updateInterface: ListUpdateInterface? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         // create a new view
@@ -95,6 +97,8 @@ class MessageListAdapter(val ctx: Context, private val aryData: ArrayList<Messag
                             // delete message
                             aryData.removeAt(position)
                             notifyItemRemoved(position)
+
+                            updateInterface?.onListUpdated()
                         })
                         .setNegativeButton(android.R.string.no, DialogInterface.OnClickListener { dialog, which ->
                             // close the drawer
@@ -105,5 +109,12 @@ class MessageListAdapter(val ctx: Context, private val aryData: ArrayList<Messag
                         .show()
             }
         }
+    }
+
+    /**
+     * interface for reading from database
+     */
+    interface ListUpdateInterface {
+        fun onListUpdated()
     }
 }

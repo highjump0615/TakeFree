@@ -2,7 +2,6 @@ package com.brainyapps.simplyfree.fragments.main
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
@@ -29,7 +28,7 @@ import java.util.*
  * Use the [MainMessageFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, MessageListAdapter.ListUpdateInterface {
 
     private val TAG = MainMessageFragment::class.java.getSimpleName()
 
@@ -37,6 +36,9 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
     var adapter: MessageListAdapter? = null
 
     var mListener: OnFragmentInteractionListener? = null
+
+    var countFound = 0
+    var countFetched = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -48,9 +50,11 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
 
         viewMain.list.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
 
-        this.adapter = MessageListAdapter(activity!!, this.aryMessage)
-        viewMain.list.setAdapter(this.adapter)
-        viewMain.list.setItemAnimator(DefaultItemAnimator())
+        adapter = MessageListAdapter(activity!!, this.aryMessage)
+        adapter?.updateInterface = this
+
+        viewMain.list.adapter = adapter
+        viewMain.list.itemAnimator = DefaultItemAnimator()
 
         viewMain.swiperefresh.setOnRefreshListener(this)
 
@@ -69,6 +73,47 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
         stopRefresh()
     }
 
+    private fun addMessage(msg: Message?, bAnimation: Boolean = false) {
+        if (msg == null) {
+            return
+        }
+
+        var bExist = false
+
+        for (m in aryMessage) {
+            if (m.itemId == msg?.itemId && m.targetUserId == msg.targetUserId) {
+                // update message
+                m.text = msg.text
+                m.type = msg.type
+
+                // update list
+                updateList(false)
+                bExist = true
+
+                break
+            }
+        }
+
+        if (!bExist) {
+            countFound++
+
+            msg.fetchTargetUser(object : Message.FetchDatabaseListener {
+                override fun onFetchedTargetUser(success: Boolean) {
+                    aryMessage.add(msg)
+                    countFetched++
+
+                    // if all messages users are fetched
+                    if (countFound == countFetched) {
+                        // sort
+                        Collections.sort(aryMessage, Collections.reverseOrder())
+
+                        updateList(bAnimation)
+                    }
+                }
+            })
+        }
+    }
+
     /**
      * get Message data
      */
@@ -82,9 +127,6 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
         val userCurrent = User.currentUser!!
         val database = FirebaseDatabase.getInstance().reference.child(Message.TABLE_NAME + "/" + userCurrent.id)
 
-        var countFound = 0
-        var countFetched = 0
-
         database.addChildEventListener(object : ChildEventListener {
             override fun onChildRemoved(p0: DataSnapshot?) {
             }
@@ -96,20 +138,8 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
                 //
                 // latest message has been updated
                 //
-
                 val msg = parseDatasnapshot(dataSnapshot!!)
-                for (m in aryMessage) {
-                    if (m.itemId == msg?.itemId && m.targetUserId == msg.targetUserId) {
-                        // update message
-                        m.text = msg.text
-                        m.type = msg.type
-
-                        // update list
-                        updateList(false)
-
-                        break
-                    }
-                }
+                addMessage(msg)
             }
 
             override fun onCancelled(p0: DatabaseError?) {
@@ -118,25 +148,7 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
 
             override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {
                 val msg = parseDatasnapshot(dataSnapshot!!)
-
-                if (msg != null) {
-                    countFound++
-
-                    msg.fetchTargetUser(object : Message.FetchDatabaseListener {
-                        override fun onFetchedTargetUser(success: Boolean) {
-                            aryMessage.add(msg)
-                            countFetched++
-
-                            // if all messages users are fetched
-                            if (countFound == countFetched) {
-                                // sort
-                                Collections.sort(aryMessage, Collections.reverseOrder())
-
-                                updateList(bAnimation)
-                            }
-                        }
-                    })
-                }
+                addMessage(msg)
             }
         })
     }
@@ -170,6 +182,10 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
             this@MainMessageFragment.adapter!!.notifyDataSetChanged()
         }
 
+        updateEmptyNotice()
+    }
+
+    private fun updateEmptyNotice() {
         if (aryMessage.isEmpty()) {
             this@MainMessageFragment.text_empty_notice.visibility = View.VISIBLE
         }
@@ -218,5 +234,12 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
     }
 
     override fun getInteractionListener() = mListener
+
+    //
+    // MessageListAdapter.ListUpdateInterface
+    //
+    override fun onListUpdated() {
+        updateEmptyNotice()
+    }
 
 }// Required empty public constructor
