@@ -85,11 +85,17 @@ class Utils {
         /**
          * Create error AlertDialog.
          */
-        fun createErrorAlertDialog(context: Context, title: String, message: String, listener: DialogInterface.OnClickListener? = null): Dialog {
+        fun createErrorAlertDialog(context: Context,
+                                   title: String,
+                                   message: String,
+                                   listener: DialogInterface.OnClickListener? = null,
+                                   cancelListener: DialogInterface.OnCancelListener? = null): Dialog {
             return AlertDialog.Builder(context)
                     .setTitle(title)
                     .setMessage(message)
-                    .setPositiveButton(android.R.string.ok, listener).create()
+                    .setPositiveButton(android.R.string.ok, listener)
+                    .setOnCancelListener(cancelListener)
+                    .create()
         }
 
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

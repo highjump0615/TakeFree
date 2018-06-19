@@ -2,6 +2,7 @@ package com.brainyapps.simplyfree.activities.main
 
 import android.app.Activity
 import android.app.ProgressDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -96,15 +97,31 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageList
 
         // photo
         if (helper!!.byteData == null) {
-            Utils.createErrorAlertDialog(this, "Invalid Photo", "Photo cannot be empty").show()
-            but_post.isEnabled = true
+            Utils.createErrorAlertDialog(this,
+                    "Invalid Photo",
+                    "Photo cannot be empty",
+                    DialogInterface.OnClickListener({ _, _ ->
+                        but_post.isEnabled = true
+                    }),
+                    DialogInterface.OnCancelListener {
+                        but_post.isEnabled = true
+                    })
+                    .show()
             return
         }
 
         // name
         if (Utils.isStringEmpty(strName)) {
-            Utils.createErrorAlertDialog(this, "Invalid Name", "Name cannot be empty").show()
-            but_post.isEnabled = true
+            Utils.createErrorAlertDialog(this,
+                    "Invalid Name",
+                    "Name cannot be empty",
+                    DialogInterface.OnClickListener({ _, _ ->
+                        but_post.isEnabled = true
+                    }),
+                    DialogInterface.OnCancelListener {
+                        but_post.isEnabled = true
+                    })
+                    .show()
             edit_name.requestFocus()
             return
         }
