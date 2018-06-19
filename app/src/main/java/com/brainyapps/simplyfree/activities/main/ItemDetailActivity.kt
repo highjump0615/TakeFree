@@ -69,7 +69,10 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
 
         adapter = ItemDetailAdapter(this, item!!)
         list.adapter = this.adapter
-        list.itemAnimator = DefaultItemAnimator()
+
+        val animator = DefaultItemAnimator()
+        animator.supportsChangeAnimations = false
+        list.itemAnimator = animator
 
         this.swiperefresh.setOnRefreshListener(this)
 
@@ -159,7 +162,7 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
             item?.saveToDatabaseChild(Item.FIELD_COMMENTS, item!!.comments)
 
             // update list
-            adapter!!.notifyDataSetChanged()
+            adapter!!.notifyItemInserted(0)
 
             //
             // if items is not mine, add notification
@@ -192,11 +195,14 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         adapter!!.notifyDataSetChanged()
     }
     override fun onFetchedComments(success: Boolean) {
-        for (comment in item!!.comments) {
+        for (i in 0 until item!!.comments.count()) {
+            val comment = item!!.comments[i]
+
+            // fetch & update user info
             comment.fetchUser(object : Comment.FetchDatabaseListener {
                 override fun onFetchedUser(success: Boolean) {
                     // update list
-                    adapter!!.notifyDataSetChanged()
+                    adapter!!.notifyItemChanged(i + 1)
                 }
             })
         }

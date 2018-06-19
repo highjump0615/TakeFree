@@ -15,6 +15,7 @@ import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.views.main.ViewHolderItemDetailComment
+import com.brainyapps.simplyfree.views.main.ViewHolderItemDetailCount
 import com.brainyapps.simplyfree.views.main.ViewHolderItemDetailItem
 
 /**
@@ -26,7 +27,8 @@ class ItemDetailAdapter(val ctx: Context, private val item: Item)
 
     companion object {
         const val ITEM_VIEW_TYPE_ITEM = 1
-        const val ITEM_VIEW_TYPE_COMMENT = 2
+        const val ITEM_VIEW_TYPE_COUNT = 2
+        const val ITEM_VIEW_TYPE_COMMENT = 3
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -40,6 +42,14 @@ class ItemDetailAdapter(val ctx: Context, private val item: Item)
 
             val vh = ViewHolderItemDetailItem(v, ctx)
             vh.setOnItemClickListener(this)
+            vhRes = vh
+        }
+        else if (viewType == ITEM_VIEW_TYPE_COUNT) {
+            // create a new view
+            val v = LayoutInflater.from(parent.context).inflate(R.layout.layout_item_comment_count, parent, false)
+            // set the view's size, margins, paddings and layout parameters
+
+            val vh = ViewHolderItemDetailCount(v, ctx)
             vhRes = vh
         }
         else if (viewType == ITEM_VIEW_TYPE_COMMENT) {
@@ -58,11 +68,11 @@ class ItemDetailAdapter(val ctx: Context, private val item: Item)
         if (holder is ViewHolderItemDetailItem) {
             holder.fillContent(item)
         }
-        else if (holder is ViewHolderItemDetailComment) {
-            holder.showCount(position == 1, item.comments.size)
-            holder.fillContent(item.comments[position - 1])
+        else if (holder is ViewHolderItemDetailCount) {
+            holder.showCount(item.comments.size)
         }
-        else {
+        else if (holder is ViewHolderItemDetailComment) {
+            holder.fillContent(item.comments[position - 2])
         }
     }
 
@@ -71,6 +81,9 @@ class ItemDetailAdapter(val ctx: Context, private val item: Item)
         var nCount = 1
 
         // comment
+        if (item.comments.size > 0) {
+            nCount++
+        }
         nCount += item.comments.size
 
         if (mbNeedMore) {
@@ -85,7 +98,10 @@ class ItemDetailAdapter(val ctx: Context, private val item: Item)
         return if (position == 0) {
             ITEM_VIEW_TYPE_ITEM
         }
-        else if (position < item.comments.size + 1) {
+        else if (position == 1) {
+            ITEM_VIEW_TYPE_COUNT
+        }
+        else if (position < item.comments.size + 2) {
             ITEM_VIEW_TYPE_COMMENT
         }
         else {

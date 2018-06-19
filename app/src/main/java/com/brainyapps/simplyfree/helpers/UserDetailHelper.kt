@@ -16,12 +16,12 @@ import com.google.firebase.database.FirebaseDatabase
  */
 class UserDetailHelper(private val contentView: View) {
 
+    private var textName: TextView = contentView.findViewById<TextView>(R.id.text_username)
+    private var imgViewPhoto: ImageView = contentView.findViewById<ImageView>(R.id.imgview_user)
+
     companion object {
         const val KEY_USER = "user"
         const val KEY_USER_ID = "user_id"
-    }
-
-    init {
     }
 
     fun fillUserInfoSimple(user: User?) {
@@ -30,15 +30,13 @@ class UserDetailHelper(private val contentView: View) {
         //
 
         // name
-        val text = contentView.findViewById<TextView>(R.id.text_username)
-        text.text = user?.userFullName()
+        textName.text = user?.userFullName()
 
         // photo
-        val imgview = contentView.findViewById<ImageView>(R.id.imgview_user)
         Glide.with(contentView.context)
                 .load(user?.photoUrl)
                 .apply(RequestOptions.placeholderOf(R.drawable.user_default).fitCenter())
-                .into(imgview)
+                .into(imgViewPhoto)
     }
 
     fun fillUserWithRating(user: User?) {

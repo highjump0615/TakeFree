@@ -18,22 +18,6 @@ class ViewHolderItemDetailComment(itemView: View, ctx: Context) : ViewHolderBase
         helperUser = UserDetailHelper(itemView)
     }
 
-    fun showCount(show: Boolean, count: Int) {
-        if (show) {
-            itemView.text_count.visibility = View.VISIBLE
-
-            if (count == 1) {
-                itemView.text_count.text = "${count} comment"
-            }
-            else {
-                itemView.text_count.text = "${count} comments"
-            }
-        }
-        else {
-            itemView.text_count.visibility = View.GONE
-        }
-    }
-
     fun fillContent(data: Comment) {
         // comment
         itemView.text_comment.text = data.content
