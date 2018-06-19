@@ -136,7 +136,7 @@ class Utils {
                 return "Yesterday " + SimpleDateFormat("HH:mm").format(date)
             }
 
-            return SimpleDateFormat("MM/dd, yyyy").format(date)
+            return SimpleDateFormat("dd/MM/yyyy").format(date)
         }
 
         fun getFormattedDate(date: Date): String {
