@@ -25,13 +25,10 @@ import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_item_message.*
 
-class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     companion object {
         const val KEY_ITEM_ID = "item_id"
@@ -40,7 +37,6 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
     private val TAG = ItemMessageActivity::class.java.simpleName
 
     private var itemId: String? = null
-    private var item: Item? = null
 
     private var mLinearLayoutManager: LinearLayoutManager? = null
 
@@ -67,6 +63,7 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
         if (item != null) {
             initItemView()
             itemId = item?.id
+            monitorItemUpdate()
         }
         else {
             // get item id from intent
@@ -164,9 +161,7 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
         updateTakeButton()
 
         // check if item has been deleted
-        if (item?.deletedAt != null) {
-            Toast.makeText(this, "The item has already been deleted", Toast.LENGTH_LONG).show()
-        }
+        checkItemRemoval()
     }
 
     private fun getMessages(bRefresh: Boolean, bAnimation: Boolean) {
@@ -201,6 +196,9 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
         })
     }
 
+    /**
+     * update take item button
+     */
     private fun updateTakeButton() {
         if (item == null) {
             return
@@ -226,9 +224,14 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
             // simple "Available" if item is his own
             if (item?.userId.equals(user.id)) {
                 // normal
-                but_take.text = "Available"
+                but_take.text = if (item?.deletedAt == null) "Available" else "Deleted"
                 but_take.setTextColor(ContextCompat.getColor(this, R.color.colorTheme))
                 but_take.setBackgroundResource(R.drawable.bg_item_status_but_round)
+
+                // return if deleted
+                if (checkItemRemoval()) {
+                    return
+                }
 
                 // check request
                 item?.fetchUserTaken(object : Item.FetchDatabaseListener {
@@ -307,6 +310,11 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
                     return
                 }
 
+                // return if deleted
+                if (checkItemRemoval()) {
+                    return
+                }
+
                 doSendRequest()
 
                 updateTakeButton()
@@ -365,12 +373,43 @@ class ItemMessageActivity : BaseActivity(), Item.FetchDatabaseListener, View.OnC
         swiperefresh.isRefreshing = false
     }
 
+    private fun monitorItemUpdate() {
+        //
+        // monitor item update
+        //
+        val database = FirebaseDatabase.getInstance().reference
+        val query = database.child(Item.TABLE_NAME + "/" + itemId)
+
+        // Read from the database
+        query.addChildEventListener(object : ChildEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+            }
+
+            override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
+            }
+
+            override fun onChildChanged(dataSnapshot: DataSnapshot?, previousChildName: String?) {
+            }
+
+            override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {
+                if (dataSnapshot?.key == "deletedAt") {
+                    item?.deletedAt = dataSnapshot.value as Long
+                }
+            }
+
+            override fun onChildRemoved(p0: DataSnapshot?) {
+            }
+        })
+
+    }
+
     //
     // Item.FetchDatabaseListener
     //
     override fun onFetchedItem(i: Item?) {
         item = i
         initItemView()
+        monitorItemUpdate()
     }
     override fun onFetchedUser(success: Boolean) {
         // update user info

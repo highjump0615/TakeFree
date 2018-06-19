@@ -21,7 +21,7 @@ import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.activity_item_detail.*
 
-class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, Item.FetchDatabaseListener {
+class ItemDetailActivity : BaseItemActivity(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, Item.FetchDatabaseListener {
 
     companion object {
         const val KEY_ITEM_ID = "item_id"
@@ -30,8 +30,6 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
     var adapter: ItemDetailAdapter? = null
 
     private lateinit var reportHelper: ReportHelper
-
-    var item: Item? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,10 +52,6 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         }
 
         reportHelper = ReportHelper(this)
-    }
-
-    override fun onStart() {
-        super.onStart()
     }
 
     private fun initView() {
@@ -95,9 +89,7 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         invalidateOptionsMenu()
 
         // check if item has been deleted
-        if (item?.deletedAt != null) {
-            Toast.makeText(this, "The item has already been deleted", Toast.LENGTH_LONG).show()
-        }
+        checkItemRemoval()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -141,7 +133,9 @@ class ItemDetailActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.imgview_comment_send -> {
-                sendComment()
+                if (!checkItemRemoval()) {
+                    sendComment()
+                }
             }
         }
     }
