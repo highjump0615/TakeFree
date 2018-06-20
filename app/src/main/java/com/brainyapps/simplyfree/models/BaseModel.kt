@@ -5,9 +5,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.text.TextUtils
 import com.brainyapps.simplyfree.utils.Utils
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.Exclude
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import java.util.*
 
 /**
@@ -68,6 +66,21 @@ open class BaseModel() : Comparable<BaseModel> {
     fun saveToDatabaseBase(node: DatabaseReference) {
         node.child(FIELD_DATE).setValue(this.createdAt)
         node.child(FIELD_DELETED_AT).setValue(deletedAt)
+    }
+
+    /**
+     * read specific field to
+     */
+    fun readFromDatabaseChild(fieldName: String, onGet:(data: Any?) -> Unit) {
+        val database = FirebaseDatabase.getInstance().reference.child(tableName())
+        database.child(this.id).child(fieldName).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError?) {
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                onGet(dataSnapshot?.value)
+            }
+        })
     }
 
     /**

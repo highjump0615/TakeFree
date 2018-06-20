@@ -76,7 +76,7 @@ class LoginActivity : LoginBaseActivity(), View.OnClickListener {
             return
         }
 
-        progressDlg = Utils.createProgressDialog(this, "Loggin in...", "Submitting user credentials")
+        progressDlg = Utils.createProgressDialog(this, "Logging in...", "Submitting user credentials")
         but_signin.isEnabled = false
 
         FirebaseManager.mAuth.signInWithEmailAndPassword(strEmail, strPassword)

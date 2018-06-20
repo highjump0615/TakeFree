@@ -20,11 +20,13 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.brainyapps.simplyfree.activities.BaseActivity
+import com.brainyapps.simplyfree.activities.LandingActivity
 import com.brainyapps.simplyfree.fragments.main.MainHomeFragment
 import com.brainyapps.simplyfree.fragments.main.MainMessageFragment
 import com.brainyapps.simplyfree.fragments.main.MainNotificationFragment
 import com.brainyapps.simplyfree.fragments.main.MainProfileFragment
 import com.brainyapps.simplyfree.models.Item
+import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
 import com.google.android.gms.common.ConnectionResult
@@ -71,6 +73,11 @@ class HomeActivity : BaseActivity(),
 
         // init location
         initLocation()
+    }
+
+    private fun signOutAndExit() {
+        signOutClear()
+        Utils.moveNextActivity(this, LandingActivity::class.java, true, true)
     }
 
     private fun initLocation() {
@@ -139,6 +146,28 @@ class HomeActivity : BaseActivity(),
         if (Globals.mLocation == null) {
             startLocationUpdates()
         }
+
+        // check user availability
+        User.currentUser?.readFromDatabaseChild(User.FIELD_BANNED, {
+            it?.let {
+                val banned = it as Boolean
+                User.currentUser?.banned = banned
+
+                if (banned) {
+                    // Force log out
+                    Utils.createErrorAlertDialog(this,
+                            "Cannot log in",
+                            "You are banned, contact to Administrator to continue using",
+                            DialogInterface.OnClickListener { _, _ ->
+                                signOutAndExit()
+                            },
+                            DialogInterface.OnCancelListener{ _ ->
+                                signOutAndExit()
+                            })
+                            .show()
+                }
+            }
+        })
     }
 
     private var doubleBackToExitPressedOnce = false
