@@ -20,6 +20,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.brainyapps.simplyfree.activities.BaseActivity
+import com.brainyapps.simplyfree.activities.BaseHomeActivity
 import com.brainyapps.simplyfree.activities.LandingActivity
 import com.brainyapps.simplyfree.fragments.main.MainHomeFragment
 import com.brainyapps.simplyfree.fragments.main.MainMessageFragment
@@ -38,7 +39,7 @@ import com.yanzhenjie.permission.Permission
 import kotlinx.android.synthetic.main.layout_main_app_bar.*
 
 
-class HomeActivity : BaseActivity(),
+class HomeActivity : BaseHomeActivity(),
         MainHomeFragment.OnFragmentInteractionListener,
         MainNotificationFragment.OnFragmentInteractionListener,
         MainMessageFragment.OnFragmentInteractionListener,
@@ -168,20 +169,6 @@ class HomeActivity : BaseActivity(),
                 }
             }
         })
-    }
-
-    private var doubleBackToExitPressedOnce = false
-
-    override fun onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed()
-            return
-        }
-
-        this.doubleBackToExitPressedOnce = true
-        Toast.makeText(this, "Please tap BACK again to exit", Toast.LENGTH_SHORT).show()
-
-        Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
     }
 
     private val mLocationCallback = object : LocationCallback() {

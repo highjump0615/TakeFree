@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.View
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
+import com.brainyapps.simplyfree.activities.BaseHomeActivity
 import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.activity_admin_home.*
 
-class AdminHomeActivity : BaseActivity(), View.OnClickListener {
+class AdminHomeActivity : BaseHomeActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
