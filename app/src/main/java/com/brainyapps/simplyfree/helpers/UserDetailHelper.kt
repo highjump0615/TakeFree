@@ -58,7 +58,8 @@ class UserDetailHelper(private val contentView: View) {
 
                 // rate
                 val textRate = contentView.findViewById<TextView>(R.id.text_rate)
-                textRate.text = "${u?.rating} / 5.0"
+                val strRating = String.format("%.1f", u?.rating)
+                textRate.text = "${strRating} / 5.0"
 
                 val viewStar = contentView.findViewById<ViewRateStar>(R.id.view_star_user)
                 viewStar.updateStar(u?.rating!!)

@@ -196,7 +196,7 @@ class ItemDetailActivity : BaseItemActivity(), SwipeRefreshLayout.OnRefreshListe
             comment.fetchUser(object : Comment.FetchDatabaseListener {
                 override fun onFetchedUser(success: Boolean) {
                     // update list
-                    adapter!!.notifyItemChanged(i + 1)
+                    adapter!!.notifyItemChanged(i + 2)
                 }
             })
         }
