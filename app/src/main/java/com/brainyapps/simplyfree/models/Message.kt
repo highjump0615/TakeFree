@@ -10,7 +10,7 @@ import java.util.*
  * Created by Administrator on 4/10/18.
  */
 
-class Message() : BaseModel() {
+open class Message() : BaseModel() {
 
     companion object {
         const val MESSAGE_TYPE_CHAT = 0
@@ -21,8 +21,7 @@ class Message() : BaseModel() {
         // table info
         //
         const val TABLE_NAME = "messages"
-        const val FIELD_CHAT = "chats"
-        const val FIELD_LATEST_MSG = "latest"
+        const val TABLE_NAME_CHAT = "chats"
 
         const val FIELD_SENDER_ID = "senderId"
         const val FIELD_TEXT = "text"
@@ -56,24 +55,26 @@ class Message() : BaseModel() {
         type = msgType
 
         val database = FirebaseDatabase.getInstance().reference.child(TABLE_NAME)
+        val dbChat = FirebaseDatabase.getInstance().reference.child(TABLE_NAME_CHAT)
 
         // add to history of oneself
         addToChatDatabase(database.child(senderId).child(item.id).child(userIdTo))
+        // add to chat for latest
+        dbChat.child(senderId).child(item.id).child(userIdTo).setValue(this)
+
         // add to history of target
         addToChatDatabase(database.child(userIdTo).child(item.id).child(senderId))
+        dbChat.child(userIdTo).child(item.id).child(senderId).setValue(this)
     }
 
     private fun addToChatDatabase(db: DatabaseReference) {
         // update latest msg
 
         // generate new id
-        id = db.child(FIELD_CHAT).push().key
+        id = db.push().key
 
         // save chat message
-        db.child(FIELD_CHAT).child(id).setValue(this)
-
-        // save latest message
-        db.child(FIELD_LATEST_MSG).setValue(this)
+        db.child(id).setValue(this)
     }
 
     /**

@@ -125,7 +125,7 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
         aryMessage.clear()
 
         val userCurrent = User.currentUser!!
-        val database = FirebaseDatabase.getInstance().reference.child(Message.TABLE_NAME + "/" + userCurrent.id)
+        val database = FirebaseDatabase.getInstance().reference.child(Message.TABLE_NAME_CHAT + "/" + userCurrent.id)
 
         database.addChildEventListener(object : ChildEventListener {
             override fun onChildRemoved(p0: DataSnapshot?) {
@@ -154,19 +154,13 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
     }
 
     private fun parseDatasnapshot(data: DataSnapshot): Message? {
-        val itemId = data.key
-        val itemUsers = data.value as HashMap<String, Any>
-        val entryUser = itemUsers.entries.first()
-        val userId = entryUser.key
-        val entryMsg = (entryUser.value as HashMap<String, Any>).get(Message.FIELD_LATEST_MSG)
 
-        // latest msg is not existing
-        if (entryMsg != null) {
-            val msg = Message(entryMsg as HashMap<String, Any>)
-            msg.targetUserId = userId
-            msg.itemId = itemId
+        for (chatItem in data.children) {
+            val chat = chatItem.getValue(Message::class.java)
+            chat?.itemId = data.key
+            chat?.targetUserId = chatItem.key
 
-            return msg
+            return chat
         }
 
         return null

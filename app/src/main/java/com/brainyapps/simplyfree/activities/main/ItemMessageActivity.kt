@@ -169,7 +169,6 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
         val query = database.child(User.currentUser!!.id)
                 .child(itemId)
                 .child(userToId)
-                .child(Message.FIELD_CHAT)
 
         Log.e(TAG, "${itemId}, ${userToId}")
 

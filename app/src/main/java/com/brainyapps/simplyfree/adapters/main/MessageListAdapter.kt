@@ -88,11 +88,11 @@ class MessageListAdapter(val ctx: Context, private val aryData: ArrayList<Messag
                         .setMessage("The deleted message cannot be restored")
                         .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, which ->
                             // remove from db
-                            val database = FirebaseDatabase.getInstance().reference.child(Message.TABLE_NAME)
+                            val database = FirebaseDatabase.getInstance().reference.child(Message.TABLE_NAME_CHAT)
                             val query = database.child(User.currentUser!!.id)
                                     .child(aryData[position].itemId)
                                     .child(aryData[position].targetUserId)
-                            query.child(Message.FIELD_LATEST_MSG).removeValue()
+                            query.removeValue()
 
                             // delete message
                             aryData.removeAt(position)
