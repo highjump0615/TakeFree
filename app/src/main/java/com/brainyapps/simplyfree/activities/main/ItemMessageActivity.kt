@@ -285,7 +285,7 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
 
         // update item status
         item!!.taken = true
-        item!!.saveToDatabase(item!!.id, Item.FIELD_TAKEN, true)
+        item!!.saveToDatabaseChild(Item.FIELD_TAKEN, true)
 
         // send notification to user
         val user = User.currentUser!!
@@ -335,7 +335,7 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
 
         // send request
         item?.userIdTaken = User.currentUser!!.id
-        item?.saveToDatabase(item?.id, Item.FIELD_USER_TAKEN, User.currentUser!!.id)
+        item?.saveToDatabaseChild(Item.FIELD_USER_TAKEN, User.currentUser!!.id)
 
         val newMsg = Message()
         newMsg.addMessageTo(item!!, userToId!!, "", Message.MESSAGE_TYPE_REQUEST)

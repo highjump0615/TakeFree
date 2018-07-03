@@ -153,10 +153,17 @@ class ItemDetailActivity : BaseItemActivity(), SwipeRefreshLayout.OnRefreshListe
             item!!.comments.add(0, newComment)
 
             // save data
-            item?.saveToDatabaseChild(Item.FIELD_COMMENTS, item!!.comments)
+            newComment.saveToDatabase(parent = item!!.id)
 
             // update list
-            adapter!!.notifyItemInserted(0)
+            if (item!!.comments.count() == 1) {
+                // includes comments count cell
+                adapter?.notifyItemRangeInserted(1, 2)
+            }
+            else {
+                adapter?.notifyItemChanged(1)
+                adapter?.notifyItemInserted(2)
+            }
 
             //
             // if items is not mine, add notification
@@ -189,17 +196,11 @@ class ItemDetailActivity : BaseItemActivity(), SwipeRefreshLayout.OnRefreshListe
         adapter!!.notifyDataSetChanged()
     }
     override fun onFetchedComments(success: Boolean) {
-        for (i in 0 until item!!.comments.count()) {
-            val comment = item!!.comments[i]
-
-            // fetch & update user info
-            comment.fetchUser(object : Comment.FetchDatabaseListener {
-                override fun onFetchedUser(success: Boolean) {
-                    // update list
-                    adapter!!.notifyItemChanged(i + 2)
-                }
-            })
+        if (!success) {
+            return
         }
+
+        adapter!!.notifyItemRangeChanged(1, item!!.comments.count() + 1)
 
         stopRefresh()
     }

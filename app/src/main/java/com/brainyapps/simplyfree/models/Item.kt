@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.text.TextUtils
 import android.util.Log
+import com.brainyapps.simplyfree.models.User.FetchDatabaseListener
 import com.google.firebase.database.*
 import java.util.*
 
@@ -88,6 +89,7 @@ class Item() : BaseModel(), Parcelable {
     @get:Exclude
     var userTaken: User? = null
 
+    @get:Exclude
     var comments = ArrayList<Comment>()
 
     override fun tableName() = TABLE_NAME
@@ -179,8 +181,12 @@ class Item() : BaseModel(), Parcelable {
      * fetch comments of the item
      */
     fun fetchComments(fetchListener: FetchDatabaseListener) {
-        val database = FirebaseDatabase.getInstance().reference.child(Item.TABLE_NAME + "/" + id)
-        val query = database.child(Item.FIELD_COMMENTS)
+
+        val database = FirebaseDatabase.getInstance().reference.child(Comment.TABLE_NAME)
+        val query = database.child(id)
+
+        var nFetchedCount = 0
+        var nFetchedUserCount = 0
 
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -191,43 +197,39 @@ class Item() : BaseModel(), Parcelable {
                     comment!!.id = itemComment.key
 
                     comments.add(comment)
+                    nFetchedCount++
+
+                    // Fetch user
+                    User.readFromDatabase(comment.userId, object:User.FetchDatabaseListener {
+                        override fun onFetchedUser(u: User?, success: Boolean) {
+                            comment.userPosted = u
+                            nFetchedUserCount++
+
+                            if (nFetchedCount == nFetchedUserCount) {
+                                fetchListener.onFetchedComments(true)
+                            }
+                        }
+
+                        override fun onFetchedItems() {
+                        }
+
+                        override fun onFetchedReviews() {
+                        }
+                    })
                 }
 
                 // sort
                 Collections.sort(comments, Collections.reverseOrder())
 
-                fetchListener.onFetchedComments(true)
+                if (nFetchedCount == 0) {
+                    fetchListener.onFetchedComments(true)
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
                 fetchListener.onFetchedComments(false)
             }
         })
-    }
-
-    fun saveToDatabase(withId: String? = null, key: String? = null, value: Any? = null) {
-        if (!TextUtils.isEmpty(withId)) {
-            this.id = withId!!
-        }
-
-        val database = FirebaseDatabase.getInstance().reference
-        val node = database.child(tableName()).child(id)
-
-        if (key != null && value != null) {
-            node.child(key).setValue(value)
-        }
-        else {
-            node.child(FIELD_NAME).setValue(name)
-            node.child(FIELD_DESC).setValue(description)
-            node.child(FIELD_PHOTO_URL).setValue(photoUrl)
-            node.child(FIELD_CATEGORY).setValue(category)
-            node.child(FIELD_CONDITION).setValue(condition)
-            node.child(FIELD_USER).setValue(userId)
-            node.child(FIELD_USER_TAKEN).setValue(userIdTaken)
-            node.child(FIELD_TAKEN).setValue(taken)
-        }
-
-        saveToDatabaseBase(node)
     }
 
     /**

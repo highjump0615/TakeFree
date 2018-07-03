@@ -63,11 +63,6 @@ open class BaseModel() : Comparable<BaseModel> {
         }
     }
 
-    fun saveToDatabaseBase(node: DatabaseReference) {
-        node.child(FIELD_DATE).setValue(this.createdAt)
-        node.child(FIELD_DELETED_AT).setValue(deletedAt)
-    }
-
     /**
      * read specific field to
      */
@@ -89,6 +84,25 @@ open class BaseModel() : Comparable<BaseModel> {
     fun saveToDatabaseChild(fieldName: String, data: Any) {
         val database = FirebaseDatabase.getInstance().reference.child(tableName())
         database.child(this.id).child(fieldName).setValue(data)
+    }
+
+    /**
+     * Save all data to db
+     */
+    fun saveToDatabase(withId: String? = null, parent: String? = null) {
+        var database = FirebaseDatabase.getInstance().reference.child(tableName())
+        parent?.let {
+            database = database.child(it)
+        }
+
+        if (!TextUtils.isEmpty(withId)) {
+            this.id = withId!!
+        }
+        else if (TextUtils.isEmpty(this.id)) {
+            // generate new id
+            this.id = database.push().key
+        }
+        database.child(this.id).setValue(this)
     }
 
     fun deleteFromDatabase(softDelete: Boolean = false) {

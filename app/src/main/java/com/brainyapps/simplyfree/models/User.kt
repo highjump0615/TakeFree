@@ -285,22 +285,6 @@ class User() : BaseModel(), Parcelable {
     }
 
     /**
-     * Save all data to db
-     */
-    fun saveToDatabase(withId: String? = null) {
-        val database = FirebaseDatabase.getInstance().reference.child(tableName())
-
-        if (!TextUtils.isEmpty(withId)) {
-            this.id = withId!!
-        }
-        else if (TextUtils.isEmpty(this.id)) {
-            // generate new id
-            this.id = database.push().key
-        }
-        database.child(this.id).setValue(this)
-    }
-
-    /**
      * remove item from list
      */
     fun deleteItem(id: String) {

@@ -9,6 +9,10 @@ import com.google.firebase.database.Exclude
 class Comment() : BaseModel() {
 
     companion object {
+        //
+        // table info
+        //
+        const val TABLE_NAME = "comments"
     }
 
     var userId = ""
@@ -17,6 +21,8 @@ class Comment() : BaseModel() {
     // user posted
     @get:Exclude
     var userPosted: User? = null
+
+    override fun tableName() = TABLE_NAME
 
     fun fetchUser(fetchListener: FetchDatabaseListener?) {
         User.readFromDatabase(userId, object: User.FetchDatabaseListener {
