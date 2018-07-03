@@ -17,6 +17,7 @@ class Item() : BaseModel(), Parcelable {
         // table info
         //
         const val TABLE_NAME = "items"
+        const val TABLE_NAME_GEOLOCATION = "geolocationsItem"
 
         const val FIELD_NAME = "name"
         const val FIELD_DESC = "description"

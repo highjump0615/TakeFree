@@ -161,7 +161,7 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageList
         newItem.userId = User.currentUser!!.id
 
         // geofire
-        val geoFire = GeoFire(FirebaseDatabase.getInstance().getReference(Item.TABLE_NAME))
+        val geoFire = GeoFire(FirebaseDatabase.getInstance().getReference(Item.TABLE_NAME_GEOLOCATION))
         if (Globals.mLocation != null) {
 
             showSaveProgress()

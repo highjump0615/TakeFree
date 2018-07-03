@@ -1,9 +1,11 @@
 package com.brainyapps.simplyfree.activities.main
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.text.TextUtils
 import android.util.Log
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
@@ -11,6 +13,7 @@ import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.utils.Globals
 import com.firebase.geofire.GeoFire
 import com.firebase.geofire.GeoLocation
+import com.firebase.geofire.GeoQuery
 import com.firebase.geofire.GeoQueryDataEventListener
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -18,19 +21,22 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 
 
-class HomeMapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener {
+class HomeMapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnMarkerClickListener {
 
     private val TAG = HomeMapActivity::class.java.simpleName
 
     private lateinit var mMap: GoogleMap
 
-    private val aryLocation = ArrayList<GeoLocation>()
+    private val maryMarker = ArrayList<Marker>()
+    private val maryItem = ArrayList<Item>()
+    private var geoQuery: GeoQuery? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +72,7 @@ class HomeMapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraId
         }
 
         mMap.setOnCameraIdleListener(this)
+        mMap.setOnMarkerClickListener(this)
     }
 
     override fun onCameraIdle() {
@@ -109,10 +116,12 @@ class HomeMapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraId
         // query items
         //
 
+        geoQuery?.removeAllListeners()
+
         // geofire
-        val geoFire = GeoFire(FirebaseDatabase.getInstance().getReference(Item.TABLE_NAME))
-        val geoQuery = geoFire.queryAtLocation(GeoLocation(location.latitude, location.longitude), distance / 1000.0)
-        geoQuery.addGeoQueryDataEventListener(object: GeoQueryDataEventListener {
+        val geoFire = GeoFire(FirebaseDatabase.getInstance().getReference(Item.TABLE_NAME_GEOLOCATION))
+        geoQuery = geoFire.queryAtLocation(GeoLocation(location.latitude, location.longitude), distance / 1000.0)
+        geoQuery?.addGeoQueryDataEventListener(object: GeoQueryDataEventListener {
             override fun onGeoQueryReady() {
                 Log.d(TAG, "addGeoQueryEventListener:onGeoQueryReady")
             }
@@ -128,14 +137,25 @@ class HomeMapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraId
             override fun onDataEntered(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
                 Log.d(TAG, "addGeoQueryEventListener:onDataEntered$dataSnapshot")
 
-                // check if existing
-                for (lc in aryLocation) {
-                    if (lc.latitude == location?.latitude && lc.longitude == location.longitude) {
-                        return
-                    }
+                // get item id
+                val itemId = dataSnapshot?.key
+
+                // fetch item
+                if (TextUtils.isEmpty(itemId)) {
+                    return
                 }
 
-                addItem(dataSnapshot, location)
+                Item.readFromDatabase(itemId!!, object : Item.FetchDatabaseListener {
+                    override fun onFetchedItem(i: Item?) {
+                        addItem(i, location)
+                    }
+
+                    override fun onFetchedUser(success: Boolean) {
+                    }
+
+                    override fun onFetchedComments(success: Boolean) {
+                    }
+                })
             }
 
             override fun onDataMoved(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
@@ -149,12 +169,9 @@ class HomeMapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraId
         })
     }
 
-    private fun addItem(data: DataSnapshot?, location: GeoLocation?) {
+    private fun addItem(data: Item?, location: GeoLocation?) {
         data?.let {
-            val item = it.getValue(Item::class.java)
-            item!!.id = it.key
-
-            if (item.deletedAt != null) {
+            if (data.deletedAt != null) {
                 // deleted item, skip it
                 return
             }
@@ -162,8 +179,29 @@ class HomeMapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraId
             // add on map
             location?.let {
                 val latlng = LatLng(it.latitude, it.longitude)
-                mMap.addMarker(MarkerOptions().position(latlng).title(item.name))
+                val marker = mMap.addMarker(MarkerOptions().position(latlng).title(data.name))
+
+                // add to list
+                maryMarker.add(marker)
+                maryItem.add(data)
             }
         }
+    }
+
+    override fun onMarkerClick(marker: Marker?): Boolean {
+        // get item for the marker
+        var item = maryItem[0]
+        for (i in 0 until maryMarker.size) {
+            if (maryMarker[i] == marker) {
+                item = maryItem[i]
+            }
+        }
+
+        // go to item detail page
+        Globals.selectedItem = item
+        val intent = Intent(this, ItemDetailActivity::class.java)
+        startActivity(intent)
+
+        return true
     }
 }
