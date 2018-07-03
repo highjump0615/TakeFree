@@ -38,7 +38,8 @@ class ViewHolderItemDetailItem(itemView: View, ctx: Context) : ViewHolderBase(it
         itemView.text_date.text = Utils.getFormattedDate(dtCreatedAt)
 
         // condition
-        itemView.text_condition.text = data.condition.toString()
+        val aryStrCondition = context!!.resources.getStringArray(R.array.item_condition_array);
+        itemView.text_condition.text = aryStrCondition[data.condition]
 
         // category
         itemView.text_category.text = Globals.Categories[data.category].name

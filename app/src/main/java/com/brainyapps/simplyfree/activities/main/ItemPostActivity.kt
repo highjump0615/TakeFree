@@ -157,7 +157,7 @@ class ItemPostActivity : BaseActivity(), View.OnClickListener, SFUpdateImageList
         newItem.description = strDesc
         newItem.photoUrl = urlPic
         newItem.category = spinner_category.selectedItemPosition
-        newItem.condition = 10 - spinner_condition.selectedItemPosition
+        newItem.condition = spinner_condition.selectedItemPosition
         newItem.userId = User.currentUser!!.id
 
         // geofire

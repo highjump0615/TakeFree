@@ -13,6 +13,11 @@ import java.util.*
 class Item() : BaseModel(), Parcelable {
 
     companion object {
+        const val ITEM_CONDITION_EXCELLENT = 0
+        const val ITEM_CONDITION_GOOD = 1
+        const val ITEM_CONDITION_FAIR = 2
+        const val ITEM_CONDITION_BAD = 3
+
         //
         // table info
         //

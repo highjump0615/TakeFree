@@ -26,16 +26,10 @@
     </string-array>
 
     <string-array name="item_condition_array">
-        <item>10 </item>
-        <item>9</item>
-        <item>8</item>
-        <item>7</item>
-        <item>6</item>
-        <item>5</item>
-        <item>4</item>
-        <item>3</item>
-        <item>2</item>
-        <item>1</item>
+        <item>Excellent</item>
+        <item>Good</item>
+        <item>Fair</item>
+        <item>Bad</item>
     </string-array>
 
     <string name="title_activity_home_map">Map</string>
