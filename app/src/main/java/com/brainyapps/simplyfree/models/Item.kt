@@ -196,7 +196,6 @@ class Item() : BaseModel(), Parcelable {
                     val comment = itemComment.getValue(Comment::class.java)
                     comment!!.id = itemComment.key
 
-                    comments.add(comment)
                     nFetchedCount++
 
                     // Fetch user
@@ -205,8 +204,13 @@ class Item() : BaseModel(), Parcelable {
                             comment.userPosted = u
                             nFetchedUserCount++
 
+                            comments.add(comment)
+
                             if (nFetchedCount == nFetchedUserCount) {
                                 fetchListener.onFetchedComments(true)
+
+                                // sort
+                                Collections.sort(comments, Collections.reverseOrder())
                             }
                         }
 
@@ -217,9 +221,6 @@ class Item() : BaseModel(), Parcelable {
                         }
                     })
                 }
-
-                // sort
-                Collections.sort(comments, Collections.reverseOrder())
 
                 if (nFetchedCount == 0) {
                     fetchListener.onFetchedComments(true)

@@ -80,8 +80,8 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
         val user = User.currentUser!!
         user.notifications.clear()
 
-        val database = FirebaseDatabase.getInstance().reference.child(User.TABLE_NAME + "/" + user.id)
-        val query = database.child(User.FIELD_NOTIFICATIONS)
+        val database = FirebaseDatabase.getInstance().reference.child(Notification.TABLE_NAME)
+        val query = database.child(user.id)
 
         var countFound = 0
         var countFetched = 0

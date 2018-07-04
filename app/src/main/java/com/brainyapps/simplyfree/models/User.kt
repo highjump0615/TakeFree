@@ -301,6 +301,8 @@ class User() : BaseModel(), Parcelable {
 
     fun addNotification(data: Notification) {
         notifications.add(data)
-        saveToDatabaseChild(User.FIELD_NOTIFICATIONS, notifications)
+
+        // save to database
+        data.saveToDatabase(parent = id)
     }
 }
