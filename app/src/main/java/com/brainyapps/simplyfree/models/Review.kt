@@ -11,7 +11,13 @@ import com.google.firebase.database.Exclude
 class Review() : BaseModel() {
 
     companion object {
+        //
+        // table info
+        //
+        const val TABLE_NAME = "reviews"
     }
+
+    override fun tableName() = TABLE_NAME
 
     var userId = ""
     @get:Exclude

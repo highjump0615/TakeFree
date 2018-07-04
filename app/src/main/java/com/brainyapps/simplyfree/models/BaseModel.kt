@@ -81,8 +81,11 @@ open class BaseModel() : Comparable<BaseModel> {
     /**
      * Save specific field to db
      */
-    fun saveToDatabaseChild(fieldName: String, data: Any) {
-        val database = FirebaseDatabase.getInstance().reference.child(tableName())
+    fun saveToDatabaseChild(fieldName: String, data: Any, parent: String? = null) {
+        var database = FirebaseDatabase.getInstance().reference.child(tableName())
+        parent?.let {
+            database = database.child(it)
+        }
         database.child(this.id).child(fieldName).setValue(data)
     }
 

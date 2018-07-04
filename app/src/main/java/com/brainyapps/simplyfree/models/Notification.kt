@@ -19,6 +19,7 @@ class Notification() : BaseModel() {
         // table info
         //
         const val TABLE_NAME = "notifications"
+        const val FIELD_READ_AT = "readAt"
     }
 
     var type: Int = NOTIFICATION_RATED
@@ -26,6 +27,9 @@ class Notification() : BaseModel() {
     // target user id
     var userId = ""
     var itemId = ""
+
+    // time when notification has been read
+    var readAt: Long? = null
 
     // user posted
     @get:Exclude

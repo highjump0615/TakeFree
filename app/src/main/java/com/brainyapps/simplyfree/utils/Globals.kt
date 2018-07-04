@@ -5,6 +5,7 @@ import android.location.Location
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.models.Category
 import com.brainyapps.simplyfree.models.Item
+import com.brainyapps.simplyfree.models.Notification
 
 /**
  * Created by Administrator on 5/11/18.
@@ -14,6 +15,7 @@ object Globals {
 
     var Categories = ArrayList<Category>()
     var selectedItem: Item? = null
+    var selectedNotification: Notification? = null
 
     fun initCategories(ctx: Context) {
         val aryCategoryName = ctx.resources.getStringArray(R.array.item_category_array);

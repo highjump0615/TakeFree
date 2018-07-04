@@ -11,14 +11,21 @@ import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.adapters.main.ReviewListAdapter
 import com.brainyapps.simplyfree.helpers.UserDetailHelper
+import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.models.Review
 import com.brainyapps.simplyfree.models.User
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_review_list.*
+import java.util.*
 
 class ReviewListActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     lateinit var user: User
     var adapter: ReviewListAdapter? = null
+    var reviews = ArrayList<Review>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +42,7 @@ class ReviewListActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener 
         val layoutManager = LinearLayoutManager(this)
         list.setLayoutManager(layoutManager)
 
-        this.adapter = ReviewListAdapter(this, user.reviews)
+        this.adapter = ReviewListAdapter(this, reviews)
         list.setAdapter(this.adapter)
         list.setItemAnimator(DefaultItemAnimator())
 
@@ -56,41 +63,73 @@ class ReviewListActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener 
             }
         }
 
-        user.fetchReviews(object: User.FetchDatabaseListener {
-            override fun onFetchedReviews() {
-                // clear
-                if (bAnimation) {
-                    this@ReviewListActivity.adapter!!.notifyItemRangeRemoved(0, user.reviews.count())
+        val database = FirebaseDatabase.getInstance().reference.child(Review.TABLE_NAME + "/" + user.id)
+
+        var countFound = 0
+        var countFetched = 0
+
+        database.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                reviews.clear()
+
+                for (itemReview in dataSnapshot.children) {
+
+                    val review = itemReview.getValue(Review::class.java)
+                    review!!.id = itemReview.key
+
+                    countFound++
+
+                    // fetch its user
+                    Item.readFromDatabase(review.itemId, object: Item.FetchDatabaseListener {
+                        override fun onFetchedItem(i: Item?) {
+                            review.itemRelated = i
+
+                            reviews.add(review)
+                            countFetched++
+
+                            // if all notification users are fetched
+                            if (countFound == countFetched) {
+                                // sort
+                                Collections.sort(reviews, Collections.reverseOrder())
+
+                                updateList()
+                            }
+                        }
+
+                        override fun onFetchedUser(success: Boolean) {
+                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        }
+
+                        override fun onFetchedComments(success: Boolean) {
+                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        }
+                    })
                 }
 
-                updateList(bAnimation)
-
-                if (user.reviews.isEmpty()) {
-                    this@ReviewListActivity.text_empty_notice.visibility = View.VISIBLE
-                }
-                else {
-                    this@ReviewListActivity.text_empty_notice.visibility = View.GONE
+                // not found new, fetched callback
+                if (countFound == 0) {
+                    updateList()
                 }
             }
 
-            override fun onFetchedUser(u: User?, success: Boolean) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onFetchedItems() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun onCancelled(error: DatabaseError) {
+                updateList()
             }
         })
     }
 
-    fun updateList(bAnimation: Boolean) {
+    fun updateList() {
         stopRefresh()
 
-        if (bAnimation) {
-            adapter!!.notifyItemRangeInserted(0, user.reviews.count())
+        // clear
+        adapter!!.notifyDataSetChanged()
+
+        if (reviews.isEmpty()) {
+            text_empty_notice.visibility = View.VISIBLE
         }
         else {
-            adapter!!.notifyDataSetChanged()
+            text_empty_notice.visibility = View.GONE
         }
     }
 

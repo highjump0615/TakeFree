@@ -65,6 +65,8 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
     }
 
     override fun onResume() {
+        updateList(false)
+
         super.onResume()
     }
 
@@ -100,6 +102,11 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
 
                 val notifi = dataSnapshot?.getValue(Notification::class.java)
                 notifi!!.id = dataSnapshot.key
+
+                if (notifi.readAt != null) {
+                    // read notifications, skip it
+                    return
+                }
 
                 // fetch its user
                 User.readFromDatabase(notifi.userId, object: User.FetchDatabaseListener {

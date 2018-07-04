@@ -10,7 +10,12 @@ import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.models.Notification
 import com.brainyapps.simplyfree.models.Review
 import com.brainyapps.simplyfree.models.User
+import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_rate.*
 
 class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickListener {
@@ -19,6 +24,8 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
     lateinit var helperUser: UserDetailHelper
 
     var itemId = ""
+
+    var mnReviewCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +45,8 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
         User.readFromDatabase(withId = userId, fetchListener = this)
 
         but_submit.setOnClickListener(this)
+
+        getReviewCount(userId)
     }
 
     private fun initView() {
@@ -45,6 +54,21 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
         
         // title
         setNavbar(user?.userFullName(), true)
+    }
+
+    private fun getReviewCount(userId: String) {
+        val database = FirebaseDatabase.getInstance().reference.child(Review.TABLE_NAME)
+        val query = database.child(userId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                dataSnapshot?.let {
+                    mnReviewCount = it.childrenCount.toInt()
+                }
+            }
+        })
     }
 
     override fun onClick(view: View?) {
@@ -56,6 +80,8 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
     }
 
     private fun submitReview() {
+        val userCurrent = User.currentUser!!
+
         //
         // check input validate
         //
@@ -76,8 +102,8 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
         // add review
         val newReview = Review()
 
-        newReview.userId = User.currentUser!!.id
-        newReview.user = User.currentUser
+        newReview.userId = userCurrent.id
+        newReview.user = userCurrent
 
         newReview.rate = dRate
         newReview.review = strReview
@@ -86,19 +112,25 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
 
         user?.let {
             // calculate average user rate
-            val dSum = it.rating * it.reviews.count() + dRate
+            val dSum = it.rating * mnReviewCount + dRate
 
-            it.rating = dSum / (it.reviews.count() + 1)
+            it.rating = dSum / (mnReviewCount + 1)
             it.saveToDatabaseChild(User.FIELD_RATING, it.rating)
 
-            it.reviews.add(newReview)
-            it.saveToDatabaseChild(User.FIELD_REVIEWS, it.reviews)
+            // save to database
+            newReview.saveToDatabase(parent = it.id)
 
             // add notification
             val newNotification = Notification(notificationType = Notification.NOTIFICATION_RATED)
 
             // save
             it.addNotification(newNotification)
+
+            // mark notification as read
+            val notify = Globals.selectedNotification!!
+            notify.readAt = Utils.getServerLongTime()
+            notify.saveToDatabaseChild(Notification.FIELD_READ_AT, Utils.getServerLongTime(), userCurrent.id)
+            userCurrent.notifications.remove(notify)
 
             // done, back to prev page
             finish()

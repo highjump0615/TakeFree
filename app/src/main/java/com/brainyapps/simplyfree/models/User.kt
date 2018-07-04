@@ -89,7 +89,6 @@ class User() : BaseModel(), Parcelable {
     var rating = 0.0
 
     var notifications = ArrayList<Notification>()
-    var reviews = ArrayList<Review>()
     var reports = ArrayList<Report>()
 
     override fun tableName() = TABLE_NAME
@@ -163,85 +162,6 @@ class User() : BaseModel(), Parcelable {
         })
     }
 
-    /**
-     * fetch notifications of the user
-     */
-    fun fetchNotifications(fetchListener: FetchDatabaseListener) {
-
-    }
-
-    /**
-     * fetch reviews of the user
-     */
-    fun fetchReviews(fetchListener: FetchDatabaseListener) {
-        val database = FirebaseDatabase.getInstance().reference.child(User.TABLE_NAME + "/" + id)
-        val query = database.child(User.FIELD_REVIEWS)
-
-        var countFound = 0
-        var countFetched = 0
-        val aryReviewId = ArrayList<String>()
-
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                for (itemReview in dataSnapshot.children) {
-
-                    val strId = itemReview.key
-                    aryReviewId.add(strId)
-
-                    //
-                    // add new ones only
-                    //
-                    val reviewExists = reviews.filter { element ->
-                        element.id.equals(strId)
-                    }
-                    if (reviewExists.isNotEmpty()) {
-                        continue
-                    }
-
-                    val review = itemReview.getValue(Review::class.java)
-                    review!!.id = strId
-
-                    countFound++
-
-                    // fetch its user
-                    Item.readFromDatabase(review.itemId, object: Item.FetchDatabaseListener {
-                        override fun onFetchedItem(i: Item?) {
-                            review.itemRelated = i
-
-                            reviews.add(review)
-                            countFetched++
-
-                            // if all notification users are fetched
-                            if (countFound == countFetched) {
-                                // sort
-                                Collections.sort(reviews, Collections.reverseOrder())
-
-                                fetchListener.onFetchedReviews()
-                            }
-                        }
-
-                        override fun onFetchedUser(success: Boolean) {
-                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                        }
-
-                        override fun onFetchedComments(success: Boolean) {
-                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                        }
-                    })
-                }
-
-                // not found new, fetched callback
-                if (countFound == 0) {
-                    fetchListener.onFetchedReviews()
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                fetchListener.onFetchedReviews()
-            }
-        })
-    }
 
     /**
      * interface for reading from database

@@ -13,6 +13,7 @@ import com.brainyapps.simplyfree.activities.main.RateActivity
 import com.brainyapps.simplyfree.activities.main.UserDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import com.brainyapps.simplyfree.models.Notification
+import com.brainyapps.simplyfree.utils.Globals
 import java.util.ArrayList
 import com.brainyapps.simplyfree.views.main.ViewHolderNotification
 
@@ -89,6 +90,7 @@ class NotificationAdapter(val ctx: Context, private val aryData: ArrayList<Notif
         }
         else if (notification.type == Notification.NOTIFICATION_TOOK) {
             val intent = Intent(context, RateActivity::class.java)
+            Globals.selectedNotification = notification
             intent.putExtra(UserDetailHelper.KEY_USER_ID, notification.userId)
             intent.putExtra(ItemDetailActivity.KEY_ITEM_ID, notification.itemId)
             context!!.startActivity(intent)

@@ -17,10 +17,7 @@ import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.adapters.main.ChatAdapter
 import com.brainyapps.simplyfree.helpers.UserDetailHelper
-import com.brainyapps.simplyfree.models.Item
-import com.brainyapps.simplyfree.models.Message
-import com.brainyapps.simplyfree.models.Notification
-import com.brainyapps.simplyfree.models.User
+import com.brainyapps.simplyfree.models.*
 import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
 import com.bumptech.glide.Glide
@@ -179,7 +176,7 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
             override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
             }
 
-            override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
+            override fun onChildChanged(dataSnapshot: DataSnapshot?, p1: String?) {
             }
 
             override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {
@@ -388,10 +385,18 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot?, previousChildName: String?) {
+                if (dataSnapshot?.key == Item.FIELD_USER_TAKEN) {
+                    item?.userIdTaken = dataSnapshot.value as String
+                    updateTakeButton()
+                }
+                else if (dataSnapshot?.key == Item.FIELD_TAKEN) {
+                    item?.taken = dataSnapshot.value as Boolean
+                    updateTakeButton()
+                }
             }
 
             override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {
-                if (dataSnapshot?.key == "deletedAt") {
+                if (dataSnapshot?.key == BaseModel.FIELD_DELETED_AT) {
                     item?.deletedAt = dataSnapshot.value as Long
                 }
             }
