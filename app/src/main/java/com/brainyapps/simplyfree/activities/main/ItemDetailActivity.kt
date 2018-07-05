@@ -147,6 +147,9 @@ class ItemDetailActivity : BaseItemActivity(), SwipeRefreshLayout.OnRefreshListe
             val newComment = Comment()
             val user = User.currentUser!!
 
+            // replace "check it up" to "check it out"
+            strComment.replace("check it up", "check it out")
+
             newComment.content = strComment
             newComment.userId = user.id
             newComment.userPosted = user
