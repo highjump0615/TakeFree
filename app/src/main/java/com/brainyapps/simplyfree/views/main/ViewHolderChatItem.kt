@@ -45,6 +45,7 @@ class ViewHolderChatItem(itemView: View, ctx: Context) : ViewHolderBase(itemView
                         .apply(RequestOptions.placeholderOf(R.drawable.user_default).fitCenter())
                         .into(it)
             }
+            imgViewUser?.setOnClickListener(this)
 
             // text
             textMessage?.text = data.text

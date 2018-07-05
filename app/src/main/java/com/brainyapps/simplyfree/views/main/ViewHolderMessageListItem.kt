@@ -26,6 +26,7 @@ class ViewHolderMessageListItem(itemView: View, ctx: Context) : ViewHolderBase(i
 
         itemView.but_delete.setOnClickListener(this)
         itemView.imgview_user.setOnClickListener(this)
+        itemView.text_username.setOnClickListener(this)
 
         // surface view
         itemView.layout_surface.setOnClickListener(this)

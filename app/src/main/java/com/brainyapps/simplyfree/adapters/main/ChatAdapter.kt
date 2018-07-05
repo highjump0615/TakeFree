@@ -52,6 +52,7 @@ class ChatAdapter(val ctx: Context, private val aryData: ArrayList<Message>)
         }
 
         val vh = ViewHolderChatItem(v!!, ctx)
+        vh.setOnItemClickListener(this)
         vhRes = vh
 
         return vhRes
@@ -79,5 +80,15 @@ class ChatAdapter(val ctx: Context, private val aryData: ArrayList<Message>)
             else {
                 CHAT_VIEW_TYPE_FROM
             }
+    }
+
+    override fun onItemClick(view: View?, position: Int) {
+        when (view?.id) {
+            R.id.imgview_user -> {
+                val intent = Intent(ctx, UserDetailActivity::class.java)
+                intent.putExtra(UserDetailHelper.KEY_USER, aryData[position].targetUser)
+                ctx.startActivity(intent)
+            }
+        }
     }
 }

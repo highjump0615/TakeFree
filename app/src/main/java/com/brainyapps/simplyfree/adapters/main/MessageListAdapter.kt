@@ -81,7 +81,7 @@ class MessageListAdapter(val ctx: Context, private val aryData: ArrayList<Messag
             }
 
             // user
-            R.id.imgview_user -> {
+            R.id.text_username, R.id.imgview_user -> {
                 val intent = Intent(ctx, UserDetailActivity::class.java)
                 intent.putExtra(UserDetailHelper.KEY_USER, aryData[position].targetUser)
                 ctx.startActivity(intent)

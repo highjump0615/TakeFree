@@ -182,6 +182,7 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
             override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {
                 // A new message has been added, add it to the displayed list
                 val msg = dataSnapshot?.getValue(Message::class.java)!!
+                msg.targetUser = userTo
 
                 aryChat.add(msg)
                 adapter?.notifyItemInserted(aryChat.size - 1)
