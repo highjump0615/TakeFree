@@ -80,6 +80,13 @@ class MessageListAdapter(val ctx: Context, private val aryData: ArrayList<Messag
                 ctx.startActivity(intent)
             }
 
+            // user
+            R.id.imgview_user -> {
+                val intent = Intent(ctx, UserDetailActivity::class.java)
+                intent.putExtra(UserDetailHelper.KEY_USER, aryData[position].targetUser)
+                ctx.startActivity(intent)
+            }
+
             // delete
             R.id.but_delete -> {
                 // show confirm dialog

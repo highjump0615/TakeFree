@@ -14,6 +14,8 @@ class Report() : BaseModel(), Parcelable {
         //
         // table info
         //
+        const val TABLE_NAME = "reports"
+
         @JvmField
         val CREATOR = object : Parcelable.Creator<Report> {
             override fun createFromParcel(parcel: Parcel): Report {
@@ -25,6 +27,8 @@ class Report() : BaseModel(), Parcelable {
             }
         }
     }
+
+    override fun tableName() = TABLE_NAME
 
     var userId = ""
     @get:Exclude

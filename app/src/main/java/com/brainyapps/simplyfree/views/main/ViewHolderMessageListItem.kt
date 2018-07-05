@@ -25,6 +25,7 @@ class ViewHolderMessageListItem(itemView: View, ctx: Context) : ViewHolderBase(i
         itemView.swipe.isClickToClose = true
 
         itemView.but_delete.setOnClickListener(this)
+        itemView.imgview_user.setOnClickListener(this)
 
         // surface view
         itemView.layout_surface.setOnClickListener(this)

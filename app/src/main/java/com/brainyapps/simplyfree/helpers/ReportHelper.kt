@@ -64,8 +64,7 @@ class ReportHelper(private val owner: Activity) {
         newReport.user = User.currentUser
         newReport.content = content
 
-        user.reports.add(newReport)
-        user.saveToDatabaseChild(User.FIELD_REPORTS, user.reports)
+        newReport.saveToDatabase(parent = user.id)
 
         Toast.makeText(owner, "Reported successfully", Toast.LENGTH_SHORT).show()
 

@@ -20,7 +20,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_admin_reported_user.*
-import java.util.ArrayList
+import java.util.*
 
 class AdminReportedUserActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
@@ -67,33 +67,62 @@ class AdminReportedUserActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshLi
             }
         }
 
-        val database = FirebaseDatabase.getInstance().reference
-        val query = database.child(User.TABLE_NAME).orderByChild(BaseModel.FIELD_DATE)
+        var countFound = 0
+        var countFetched = 0
 
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
+        val database = FirebaseDatabase.getInstance().reference.child(Report.TABLE_NAME)
+
+        database.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 aryReport.clear()
 
-                for (reportItem in dataSnapshot.children) {
-                    val u = reportItem.getValue(User::class.java)
-                    u?.id = reportItem.key
-                    if (u?.reports!!.isEmpty()) {
+                for (userItem in dataSnapshot.children) {
+                    val reports = userItem as DataSnapshot
+                    val userId = reports.key
+                    var r: Report? = null
+
+                    for (reportItem in reports.children) {
+                        r = reportItem.getValue(Report::class.java)
+                        r!!.id = reportItem.key
+
+                        countFound++
+
+                        break
+                    }
+
+                    // not found report
+                    if (r == null) {
                         continue
                     }
 
-                    val report = u.reports[0]
-                    report.userReported = u
-                    aryReport.add(report)
+                    // fetch its user
+                    User.readFromDatabase(userId, object: User.FetchDatabaseListener {
+                        override fun onFetchedUser(u: User?, success: Boolean) {
+                            r.userReported = u
+                            aryReport.add(r)
+
+                            countFetched++
+
+                            // if all notification users are fetched
+                            if (countFound == countFetched) {
+                                // sort
+                                Collections.sort(aryReport, Collections.reverseOrder())
+
+                                updateList()
+                            }
+                        }
+
+                        override fun onFetchedItems() {
+                        }
+
+                        override fun onFetchedReviews() {
+                        }
+                    })
                 }
 
-                updateList()
-
-                if (aryReport.isEmpty()) {
-                    this@AdminReportedUserActivity.text_empty_notice.visibility = View.VISIBLE
-                }
-                else {
-                    this@AdminReportedUserActivity.text_empty_notice.visibility = View.GONE
+                if (countFound == 0) {
+                    updateList()
                 }
             }
 
@@ -105,7 +134,14 @@ class AdminReportedUserActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshLi
 
     fun updateList() {
         stopRefresh()
-        this@AdminReportedUserActivity.adapter!!.notifyDataSetChanged()
+        adapter!!.notifyDataSetChanged()
+
+        if (aryReport.isEmpty()) {
+            this@AdminReportedUserActivity.text_empty_notice.visibility = View.VISIBLE
+        }
+        else {
+            this@AdminReportedUserActivity.text_empty_notice.visibility = View.GONE
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

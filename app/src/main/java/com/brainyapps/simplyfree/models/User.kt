@@ -89,7 +89,6 @@ class User() : BaseModel(), Parcelable {
     var rating = 0.0
 
     var notifications = ArrayList<Notification>()
-    var reports = ArrayList<Report>()
 
     override fun tableName() = TABLE_NAME
 
