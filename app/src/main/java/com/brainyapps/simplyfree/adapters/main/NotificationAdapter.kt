@@ -97,6 +97,7 @@ class NotificationAdapter(val ctx: Context, private val aryData: ArrayList<Notif
             context!!.startActivity(intent)
         }
         else {
+            Globals.selectedItem = null
             val intent = Intent(context, ItemDetailActivity::class.java)
             intent.putExtra(ItemDetailActivity.KEY_ITEM_ID, notification.itemId)
             context!!.startActivity(intent)

@@ -1,13 +1,16 @@
 package com.brainyapps.simplyfree.adapters.main
 
 import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.main.ItemDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import com.brainyapps.simplyfree.models.Review
+import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.views.main.ViewHolderReview
 
 
@@ -69,5 +72,11 @@ class ReviewListAdapter(val ctx: Context, private val aryReview: ArrayList<Revie
     }
 
     override fun onItemClick(view: View?, position: Int) {
+        val review = aryReview[position]
+
+        Globals.selectedItem = null
+        val intent = Intent(context, ItemDetailActivity::class.java)
+        intent.putExtra(ItemDetailActivity.KEY_ITEM_ID, review.itemId)
+        context!!.startActivity(intent)
     }
 }

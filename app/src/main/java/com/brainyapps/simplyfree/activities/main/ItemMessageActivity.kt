@@ -1,6 +1,7 @@
 package com.brainyapps.simplyfree.activities.main
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -87,6 +88,7 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
 
         // message send
         imgview_comment_send.setOnClickListener(this)
+        imgview_photo.setOnClickListener(this)
 
         updateTakeButton()
 
@@ -320,6 +322,15 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
             // send message
             R.id.imgview_comment_send -> {
                 doSendMessage()
+            }
+
+            // item image
+            R.id.imgview_photo -> {
+                item?.let {
+                    Globals.selectedItem = it
+                    val intent = Intent(this, ItemDetailActivity::class.java)
+                    startActivity(intent)
+                }
             }
         }
     }
