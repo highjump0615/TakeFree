@@ -44,30 +44,38 @@
                     app:civ_border_width="2dp"
                     app:layout_collapseMode="pin"/>
 
-                <!-- name -->
-                <TextView
-                    android:id="@+id/text_username"
+                <LinearLayout
+                    android:id="@+id/layout_review"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:text="Fernando Gimenez"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:clickable="true">
+                    <!-- name -->
+                    <TextView
+                        android:id="@+id/text_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:text="Fernando Gimenez"
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
 
-                <!-- rate -->
-                <com.brainyapps.simplyfree.views.ViewRateStar
-                    android:id="@+id/view_star_user"
-                    android:layout_width="100dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="6dp"
-                    app:starValue="0.0"/>
-                <TextView
-                    android:id="@+id/text_rate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:textColor="@android:color/white"
-                    android:text="0.0 / 5.0" />
+                    <!-- rate -->
+                    <com.brainyapps.simplyfree.views.ViewRateStar
+                        android:id="@+id/view_star_user"
+                        android:layout_width="100dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="6dp"
+                        app:starValue="0.0"/>
+                    <TextView
+                        android:id="@+id/text_rate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
+                        android:textColor="@android:color/white"
+                        android:text="0.0 / 5.0" />
+                </LinearLayout>
 
             </LinearLayout>
 

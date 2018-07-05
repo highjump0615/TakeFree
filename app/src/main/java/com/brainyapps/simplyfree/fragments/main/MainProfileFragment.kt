@@ -1,6 +1,7 @@
 package com.brainyapps.simplyfree.fragments.main
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
@@ -12,6 +13,7 @@ import android.view.*
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.activities.main.ProfileEditActivity
+import com.brainyapps.simplyfree.activities.main.ReviewListActivity
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.fragment_main_profile.*
@@ -65,6 +67,8 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener {
 
         // Set up the ViewPager with the sections adapter.
         pager_item.adapter = mSectionsPagerAdapter
+
+        layout_review.setOnClickListener(this)
 
         pager_item.addOnPageChangeListener(PageChangeListener())
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(pager_item))
@@ -137,6 +141,11 @@ class MainProfileFragment : MainBaseFragment(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.id) {
+            R.id.layout_review -> {
+                val intent = Intent(context, ReviewListActivity::class.java)
+                intent.putExtra(UserDetailHelper.KEY_USER, User.currentUser)
+                startActivity(intent)
+            }
         }
     }
 
