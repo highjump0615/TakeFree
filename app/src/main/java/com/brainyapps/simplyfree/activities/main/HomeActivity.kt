@@ -143,10 +143,22 @@ class HomeActivity : BaseHomeActivity(),
     }
 
     override fun onResume() {
+        val bToProfile = Globals.isBackToRoot
+
+        // already backed, restore flag
+        Globals.isBackToRoot = false
+
         super.onResume()
         if (Globals.mLocation == null) {
             startLocationUpdates()
         }
+
+        if (bToProfile) {
+            // change to profile tab
+            loadFragByTag(FRAG_PROFILE)
+            navigation.menu.getItem(3).isChecked = true
+        }
+
 
         // check user availability
         User.currentUser?.readFromDatabaseChild(User.FIELD_BANNED, {

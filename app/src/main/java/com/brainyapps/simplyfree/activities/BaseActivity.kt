@@ -11,6 +11,7 @@ import com.brainyapps.simplyfree.activities.admin.AdminHomeActivity
 import com.brainyapps.simplyfree.activities.main.HomeActivity
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.FirebaseManager
+import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
 import com.facebook.login.LoginManager
 
@@ -21,6 +22,14 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (Globals.isBackToRoot) {
+            finish()
+        }
     }
 
     override fun onDestroy() {

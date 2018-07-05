@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.main.HomeActivity
+import com.brainyapps.simplyfree.activities.main.ItemDetailActivity
 import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.activities.main.ItemMessageActivity
 import com.brainyapps.simplyfree.activities.main.UserDetailActivity
@@ -116,6 +118,12 @@ class ItemDetailAdapter(val ctx: Context, private val item: Item)
                 item.userPosted.let {
                     // go to profile page for other users only
                     if (it?.id!!.equals(User.currentUser?.id)) {
+                        // go to main page profile tab
+                        Globals.isBackToRoot = true
+
+                        val activity = context as ItemDetailActivity
+                        activity.finish()
+
                         return
                     }
 

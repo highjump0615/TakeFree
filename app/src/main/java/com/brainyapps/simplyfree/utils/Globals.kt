@@ -16,6 +16,7 @@ object Globals {
     var Categories = ArrayList<Category>()
     var selectedItem: Item? = null
     var selectedNotification: Notification? = null
+    var isBackToRoot = false
 
     fun initCategories(ctx: Context) {
         val aryCategoryName = ctx.resources.getStringArray(R.array.item_category_array);
