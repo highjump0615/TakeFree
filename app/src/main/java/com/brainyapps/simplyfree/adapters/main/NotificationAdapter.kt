@@ -10,6 +10,7 @@ import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.activities.main.ItemDetailActivity
 import com.brainyapps.simplyfree.activities.main.RateActivity
+import com.brainyapps.simplyfree.activities.main.ReviewListActivity
 import com.brainyapps.simplyfree.activities.main.UserDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import com.brainyapps.simplyfree.models.Notification
@@ -84,7 +85,7 @@ class NotificationAdapter(val ctx: Context, private val aryData: ArrayList<Notif
         val notification = listNotification[position]
 
         if (notification.type == Notification.NOTIFICATION_RATED) {
-            val intent = Intent(context, UserDetailActivity::class.java)
+            val intent = Intent(context, ReviewListActivity::class.java)
             intent.putExtra(UserDetailHelper.KEY_USER, notification.userPosted)
             context!!.startActivity(intent)
         }
