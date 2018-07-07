@@ -177,7 +177,7 @@ class ItemDetailActivity : BaseItemActivity(), SwipeRefreshLayout.OnRefreshListe
                     it.addNotification(newNotification)
 
                     // push notification
-                    sendPushNotification(user.token, Notification.NOTIFICATION_COMMENT, item!!.id)
+                    sendPushNotification(it.token, Notification.NOTIFICATION_COMMENT, item!!.id)
                 }
             }
         }

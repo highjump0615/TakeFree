@@ -13,11 +13,8 @@ import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import com.brainyapps.simplyfree.R
-import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.adapters.main.ChatAdapter
-import com.brainyapps.simplyfree.api.APIManager
 import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.models.*
 import com.brainyapps.simplyfree.utils.Globals
@@ -26,11 +23,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_item_message.*
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Response
-import org.json.JSONObject
-import java.io.IOException
 
 class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
@@ -49,6 +41,12 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
 
     var userTo: User? = null
     private var userToId: String? = null
+
+    private var mDbMsgQuery: DatabaseReference? = null
+    private var mMsgChildListener: ChildEventListener? = null
+
+    private var mDbItemQuery: DatabaseReference? = null
+    private var mItemChildListener: ChildEventListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,9 +120,27 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
         })
 
         swiperefresh.setOnRefreshListener(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         // load message data
         getMessages(true, true)
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        // remove listener
+        mDbMsgQuery?.removeEventListener(mMsgChildListener)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // remove listener
+        mDbItemQuery?.removeEventListener(mItemChildListener)
     }
 
     private fun initUserId() {
@@ -174,13 +190,13 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
 
     private fun getMessages(bRefresh: Boolean, bAnimation: Boolean) {
         val database = FirebaseDatabase.getInstance().reference.child(Message.TABLE_NAME)
-        val query = database.child(User.currentUser!!.id)
+        mDbMsgQuery = database.child(User.currentUser!!.id)
                 .child(itemId)
                 .child(userToId)
 
         Log.e(TAG, "${itemId}, ${userToId}")
 
-        query.addChildEventListener(object: ChildEventListener {
+        mMsgChildListener = mDbMsgQuery?.addChildEventListener(object: ChildEventListener {
             override fun onCancelled(p0: DatabaseError?) {
             }
 
@@ -401,10 +417,10 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
         // monitor item update
         //
         val database = FirebaseDatabase.getInstance().reference
-        val query = database.child(Item.TABLE_NAME + "/" + itemId)
+        mDbItemQuery = database.child(Item.TABLE_NAME + "/" + itemId)
 
         // Read from the database
-        query.addChildEventListener(object : ChildEventListener {
+        mItemChildListener = mDbItemQuery?.addChildEventListener(object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError?) {
             }
 

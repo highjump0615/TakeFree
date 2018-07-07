@@ -40,6 +40,9 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
     var countFound = 0
     var countFetched = 0
 
+    private var mDbQuery: DatabaseReference? = null
+    private var mChildListener: ChildEventListener? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val viewMain = inflater.inflate(R.layout.fragment_main_message, container, false)
@@ -60,6 +63,12 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
 
         // Inflate the layout for this fragment
         return viewMain
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        mDbQuery?.removeEventListener(mChildListener)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -125,9 +134,9 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
         aryMessage.clear()
 
         val userCurrent = User.currentUser!!
-        val database = FirebaseDatabase.getInstance().reference.child(Message.TABLE_NAME_CHAT + "/" + userCurrent.id)
+        mDbQuery = FirebaseDatabase.getInstance().reference.child(Message.TABLE_NAME_CHAT + "/" + userCurrent.id)
 
-        database.addChildEventListener(object : ChildEventListener {
+        mChildListener = mDbQuery?.addChildEventListener(object : ChildEventListener {
             override fun onChildRemoved(p0: DataSnapshot?) {
             }
 

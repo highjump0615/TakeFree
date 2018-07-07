@@ -38,6 +38,9 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
 
     private var mListener: OnFragmentInteractionListener? = null
 
+    private var mDbQuery: DatabaseReference? = null
+    private var mChildListener: ChildEventListener? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val viewMain = inflater.inflate(R.layout.fragment_main_notification, container, false)
@@ -64,6 +67,12 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
         getNotifications(false, false)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        mDbQuery?.removeEventListener(mChildListener)
+    }
+
     override fun onResume() {
         updateList(false)
 
@@ -83,12 +92,12 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
         user.notifications.clear()
 
         val database = FirebaseDatabase.getInstance().reference.child(Notification.TABLE_NAME)
-        val query = database.child(user.id)
+        mDbQuery = database.child(user.id)
 
         var countFound = 0
         var countFetched = 0
 
-        query.addChildEventListener(object : ChildEventListener {
+        mChildListener = mDbQuery?.addChildEventListener(object : ChildEventListener {
             override fun onChildRemoved(p0: DataSnapshot?) {
             }
 

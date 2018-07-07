@@ -62,7 +62,7 @@ class HomeActivity : BaseHomeActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        navigation.onNavigationItemSelectedListener = mOnNavigationItemSelectedListener
 
         navigation.enableShiftingMode(false)
         navigation.setTextVisibility(false)
