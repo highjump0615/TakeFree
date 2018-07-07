@@ -2,42 +2,35 @@ package com.brainyapps.simplyfree.activities.main
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
-import android.support.v7.app.AppCompatActivity
 import com.brainyapps.simplyfree.R
 import kotlinx.android.synthetic.main.activity_home.*
-import android.graphics.Typeface
 import android.location.Location
-import android.net.Uri
-import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.activities.BaseHomeActivity
 import com.brainyapps.simplyfree.activities.LandingActivity
 import com.brainyapps.simplyfree.fragments.main.MainHomeFragment
 import com.brainyapps.simplyfree.fragments.main.MainMessageFragment
 import com.brainyapps.simplyfree.fragments.main.MainNotificationFragment
 import com.brainyapps.simplyfree.fragments.main.MainProfileFragment
-import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
-import com.google.android.gms.tasks.Task
 import com.google.firebase.iid.FirebaseInstanceId
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.Permission
 import kotlinx.android.synthetic.main.layout_main_app_bar.*
+import q.rorbin.badgeview.Badge
+import q.rorbin.badgeview.QBadgeView
 
 
 class HomeActivity : BaseHomeActivity(),
@@ -57,6 +50,9 @@ class HomeActivity : BaseHomeActivity(),
     lateinit var googleApiClient: GoogleApiClient
 
     private var fusedLocationClient: FusedLocationProviderClient? = null
+
+    lateinit var mBadgeNotification: Badge
+    lateinit var mBadgeMessage: Badge
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +80,10 @@ class HomeActivity : BaseHomeActivity(),
             userCurrent.token = it
             userCurrent.saveToDatabaseChild(User.FIELD_TOKEN, it)
         }
+
+        // add badge
+        mBadgeNotification = addBadgeAt(0)
+        mBadgeMessage = addBadgeAt(1);
     }
 
     private fun signOutAndExit() {
@@ -97,6 +97,11 @@ class HomeActivity : BaseHomeActivity(),
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build()
+    }
+
+    fun showBadge() {
+        mBadgeMessage.badgeNumber = if (Globals.hasNewMessage) -1 else 0
+        mBadgeNotification.badgeNumber = if (Globals.hasNewNotification) -1 else 0
     }
 
     private fun gotNewLocation(location: Location?) {
@@ -134,6 +139,8 @@ class HomeActivity : BaseHomeActivity(),
 
         // Initiating the connection
         googleApiClient.connect()
+
+        Globals.activityMain = this
     }
 
     override fun onStop() {
@@ -141,6 +148,8 @@ class HomeActivity : BaseHomeActivity(),
 
         // Disconnecting the connection
         googleApiClient.disconnect()
+
+        Globals.activityMain = null
     }
 
     override fun onPause() {
@@ -169,6 +178,8 @@ class HomeActivity : BaseHomeActivity(),
             navigation.menu.getItem(3).isChecked = true
         }
 
+        // show badge
+        showBadge()
 
         // check user availability
         User.currentUser?.readFromDatabaseChild(User.FIELD_BANNED, {
@@ -264,6 +275,13 @@ class HomeActivity : BaseHomeActivity(),
         }
 
         fragCurrent = frag
+    }
+
+    private fun addBadgeAt(position: Int) : Badge {
+        return QBadgeView(this)
+                .setBadgeNumber(-1)
+                .setGravityOffset(16.0F, 4.0F, true)
+                .bindTarget(navigation.getBottomNavigationItemView(position))
     }
 
     /**

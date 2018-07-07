@@ -14,9 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.main.HomeActivity
 import com.brainyapps.simplyfree.adapters.main.NotificationAdapter
 import com.brainyapps.simplyfree.models.Notification
 import com.brainyapps.simplyfree.models.User
+import com.brainyapps.simplyfree.utils.Globals
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_main_notification.*
 import kotlinx.android.synthetic.main.fragment_main_notification.view.*
@@ -77,6 +79,11 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
         updateList(false)
 
         super.onResume()
+
+        // hide badge
+        Globals.hasNewNotification = false
+        val activityHome = activity as HomeActivity
+        activityHome.showBadge()
     }
 
     override fun onRefresh() {

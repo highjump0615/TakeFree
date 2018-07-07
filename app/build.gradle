@@ -54,6 +54,8 @@ dependencies {
     compile 'com.android.support:cardview-v7:27.1.1'
     compile 'com.android.support:multidex:1.0.3'
 
+    compile 'q.rorbin:badgeview:1.1.3'
+
     compile 'me.relex:circleindicator:1.2.2@aar'
     compile 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
     implementation 'de.hdodenhof:circleimageview:2.2.0'

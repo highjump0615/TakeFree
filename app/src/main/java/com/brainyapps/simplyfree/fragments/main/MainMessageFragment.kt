@@ -12,9 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.main.HomeActivity
 import com.brainyapps.simplyfree.adapters.main.MessageListAdapter
 import com.brainyapps.simplyfree.models.Message
 import com.brainyapps.simplyfree.models.User
+import com.brainyapps.simplyfree.utils.Globals
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_main_message.*
 import kotlinx.android.synthetic.main.fragment_main_message.view.*
@@ -63,6 +65,15 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
 
         // Inflate the layout for this fragment
         return viewMain
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // hide badge
+        Globals.hasNewMessage = false
+        val activityHome = activity as HomeActivity
+        activityHome.showBadge()
     }
 
     override fun onDestroyView() {

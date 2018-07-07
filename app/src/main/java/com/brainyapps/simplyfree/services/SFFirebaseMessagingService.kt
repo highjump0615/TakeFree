@@ -16,6 +16,9 @@ import android.text.TextUtils
 import android.util.Log
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.models.User
+import com.brainyapps.simplyfree.utils.Globals
+
+
 
 
 /**
@@ -60,6 +63,20 @@ class SFFirebaseMessagingService : FirebaseMessagingService() {
         notifyNew.type = type!!
         notifyNew.userId = userId!!
         notifyNew.itemId = itemId!!
+
+        // show badge
+        if (type == com.brainyapps.simplyfree.models.Notification.NOTIFICATION_MESSAGE) {
+            Globals.hasNewMessage = true
+        }
+        else {
+            Globals.hasNewNotification = true
+        }
+        Globals.activityMain?.let {
+            it.runOnUiThread {
+                // Stuff that updates the UI
+                it.showBadge()
+            }
+        }
 
         // fetch its user
         User.readFromDatabase(notifyNew.userId, object: User.FetchDatabaseListener {

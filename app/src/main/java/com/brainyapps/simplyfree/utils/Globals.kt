@@ -3,6 +3,7 @@ package com.brainyapps.simplyfree.utils
 import android.content.Context
 import android.location.Location
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.main.HomeActivity
 import com.brainyapps.simplyfree.models.Category
 import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.models.Notification
@@ -17,6 +18,10 @@ object Globals {
     var selectedItem: Item? = null
     var selectedNotification: Notification? = null
     var isBackToRoot = false
+
+    var activityMain: HomeActivity? = null
+    var hasNewNotification = false
+    var hasNewMessage = false
 
     fun initCategories(ctx: Context) {
         val aryCategoryName = ctx.resources.getStringArray(R.array.item_category_array);
