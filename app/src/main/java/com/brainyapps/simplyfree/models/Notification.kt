@@ -107,7 +107,7 @@ class Notification() : BaseModel() {
             Notification.NOTIFICATION_COMMENT -> {
                 // content
                 val strUserName = userPosted?.userFullName()
-                strDesc = "$strUserName commented on your posted item. Check it up!"
+                strDesc = "$strUserName commented on your posted item. Check it out!"
             }
         }
 
