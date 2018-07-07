@@ -65,6 +65,7 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.7.1'
 
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

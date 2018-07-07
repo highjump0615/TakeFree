@@ -126,6 +126,9 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
             // save
             it.addNotification(newNotification)
 
+            // push notification
+            sendPushNotification(it.token, Notification.NOTIFICATION_RATED)
+
             // mark notification as read
             val notify = Globals.selectedNotification!!
             notify.readAt = Utils.getServerLongTime()

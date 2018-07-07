@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Parcel
 import android.os.Parcelable
 import com.brainyapps.simplyfree.activities.main.ItemDetailActivity
+import com.brainyapps.simplyfree.activities.main.ItemMessageActivity
 import com.brainyapps.simplyfree.activities.main.RateActivity
 import com.brainyapps.simplyfree.activities.main.ReviewListActivity
 import com.brainyapps.simplyfree.helpers.UserDetailHelper
@@ -22,6 +23,8 @@ class Notification() : BaseModel() {
         const val NOTIFICATION_TOOK = 1
         const val NOTIFICATION_COMMENT = 2
 
+        const val NOTIFICATION_MESSAGE = 3
+
         //
         // table info
         //
@@ -30,6 +33,9 @@ class Notification() : BaseModel() {
         const val FIELD_TYPE = "type"
         const val FIELD_USER = "userId"
         const val FIELD_ITEM = "itemId"
+
+        // push notification
+        const val FIELD_MSG = "message"
     }
 
     var type: Int = NOTIFICATION_RATED
@@ -70,6 +76,11 @@ class Notification() : BaseModel() {
             intent.putExtra(UserDetailHelper.KEY_USER_ID, userId)
             intent.putExtra(ItemDetailActivity.KEY_ITEM_ID, itemId)
         }
+        else if (type == Notification.NOTIFICATION_MESSAGE) {
+            intent = Intent(ctx, ItemMessageActivity::class.java)
+            intent.putExtra(UserDetailHelper.KEY_USER_ID, userId)
+            intent.putExtra(ItemMessageActivity.KEY_ITEM_ID, itemId)
+        }
         else {
             Globals.selectedItem = null
             intent = Intent(ctx, ItemDetailActivity::class.java)
@@ -86,6 +97,11 @@ class Notification() : BaseModel() {
             Notification.NOTIFICATION_RATED -> {
                 val strUserName = userPosted?.userFullName()
                 strDesc = "$strUserName left you a rating"
+            }
+
+            Notification.NOTIFICATION_MESSAGE -> {
+                val strUserName = userPosted?.userFullName()
+                strDesc = "$strUserName sent you a message"
             }
 
             Notification.NOTIFICATION_COMMENT -> {

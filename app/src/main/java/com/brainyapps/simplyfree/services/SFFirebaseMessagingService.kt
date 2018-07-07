@@ -12,6 +12,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.support.v4.app.NotificationCompat
+import android.text.TextUtils
 import android.util.Log
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.models.User
@@ -48,6 +49,7 @@ class SFFirebaseMessagingService : FirebaseMessagingService() {
         val type = row[com.brainyapps.simplyfree.models.Notification.FIELD_TYPE]?.toInt()
         val userId = row[com.brainyapps.simplyfree.models.Notification.FIELD_USER]
         val itemId = row[com.brainyapps.simplyfree.models.Notification.FIELD_ITEM]
+        val strMessage = row[com.brainyapps.simplyfree.models.Notification.FIELD_MSG]
 
         Log.e(TAG, "Notification information")
         Log.d(TAG, "type: $type")
@@ -78,7 +80,7 @@ class SFFirebaseMessagingService : FirebaseMessagingService() {
                         .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher))
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle(notifyNew.getDescription())
-                        .setContentText("Tap to check details")
+                        .setContentText(if (TextUtils.isEmpty(strMessage)) "Tap to check details" else strMessage)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(contentIntent)

@@ -101,6 +101,7 @@ class User() : BaseModel(), Parcelable {
         lastName = parcel.readString()
         photoUrl = parcel.readString()
         rating = parcel.readDouble()
+        token = parcel.readString()
 
         readFromParcelBase(parcel)
     }
@@ -117,6 +118,7 @@ class User() : BaseModel(), Parcelable {
         parcel.writeString(lastName)
         parcel.writeString(photoUrl)
         parcel.writeDouble(rating)
+        parcel.writeString(token)
 
         writeToParcelBase(parcel, flags)
     }

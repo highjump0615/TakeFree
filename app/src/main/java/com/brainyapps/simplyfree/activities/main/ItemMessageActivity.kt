@@ -17,6 +17,7 @@ import android.widget.Toast
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
 import com.brainyapps.simplyfree.adapters.main.ChatAdapter
+import com.brainyapps.simplyfree.api.APIManager
 import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.models.*
 import com.brainyapps.simplyfree.utils.Globals
@@ -25,6 +26,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_item_message.*
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Response
+import org.json.JSONObject
+import java.io.IOException
 
 class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
@@ -75,6 +81,9 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
         //
 
         // from message tab item
+        if (intent.hasExtra(UserDetailHelper.KEY_USER_ID)) {
+            userToId = bundle?.getString(UserDetailHelper.KEY_USER_ID)
+        }
         if (intent.hasExtra(UserDetailHelper.KEY_USER)) {
             userTo = bundle?.getParcelable<User>(UserDetailHelper.KEY_USER)!!
             userToId = userTo!!.id
@@ -294,6 +303,8 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
 
         userTo?.addNotification(newNotification)
 
+        sendPushNotification(userTo?.token, Notification.NOTIFICATION_TOOK, item!!.id)
+
         // send accept message
         val newMsg = Message()
         newMsg.addMessageTo(item!!, userToId!!, "", Message.MESSAGE_TYPE_ACCEPT)
@@ -347,6 +358,8 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
 
         val newMsg = Message()
         newMsg.addMessageTo(item!!, userToId!!, "", Message.MESSAGE_TYPE_REQUEST)
+
+        sendPushNotification(userTo?.token, Notification.NOTIFICATION_MESSAGE, item!!.id, "Sent request for your item")
     }
 
     /**
@@ -363,6 +376,8 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
 
         val newMsg = Message()
         newMsg.addMessageTo(item!!, userToId!!, strMessage)
+
+        sendPushNotification(userTo?.token, Notification.NOTIFICATION_MESSAGE, item!!.id, strMessage)
 
         // clear edit & hide keyboard
         edit_message.setText("")

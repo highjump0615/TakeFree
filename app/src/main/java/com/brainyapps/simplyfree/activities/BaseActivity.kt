@@ -9,11 +9,18 @@ import android.widget.TextView
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.admin.AdminHomeActivity
 import com.brainyapps.simplyfree.activities.main.HomeActivity
+import com.brainyapps.simplyfree.api.APIManager
+import com.brainyapps.simplyfree.models.Notification
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.FirebaseManager
 import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
 import com.facebook.login.LoginManager
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Response
+import org.json.JSONObject
+import java.io.IOException
 
 /**
  * Created by Administrator on 2/14/18.
@@ -80,6 +87,39 @@ open class BaseActivity : AppCompatActivity() {
                 Utils.moveNextActivity(this, HomeActivity::class.java, true, true)
             }
         }
+    }
+
+    /**
+     * Send push notification
+     */
+    fun sendPushNotification(token: String?, type: Int, itemId: String = "", message: String = "") {
+        val keyServer = resources.getString(R.string.server_key)
+
+        if (TextUtils.isEmpty(token)) {
+            return
+        }
+
+        // param
+        val jsonData = JSONObject()
+        jsonData.put(Notification.FIELD_TYPE, type.toString())
+        jsonData.put(Notification.FIELD_USER, User.currentUser!!.id)
+        jsonData.put(Notification.FIELD_MSG, message)
+        jsonData.put(Notification.FIELD_ITEM, itemId)
+
+        val jsonParam = JSONObject()
+        jsonParam.put("to", token)
+        jsonParam.put("data", jsonData)
+
+        APIManager.sendFcmMessage(jsonParam.toString(),
+                "key=$keyServer",
+                object : Callback {
+                    override fun onFailure(call: Call?, e: IOException?) {
+                    }
+
+                    override fun onResponse(call: Call?, response: Response?) {
+                    }
+
+                })
     }
 
     /**

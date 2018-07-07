@@ -181,10 +181,10 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
 
     private fun updateEmptyNotice() {
         if (aryMessage.isEmpty()) {
-            this@MainMessageFragment.text_empty_notice.visibility = View.VISIBLE
+            this@MainMessageFragment.text_empty_notice?.visibility = View.VISIBLE
         }
         else {
-            this@MainMessageFragment.text_empty_notice.visibility = View.GONE
+            this@MainMessageFragment.text_empty_notice?.visibility = View.GONE
         }
     }
 
