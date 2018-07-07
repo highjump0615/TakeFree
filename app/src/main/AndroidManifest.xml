@@ -13,11 +13,10 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
 
     <!--
@@ -42,12 +41,24 @@
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.brainyapps.simplyfree.provider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths"/>
+                android:resource="@xml/filepaths" />
         </provider>
+
+        <!-- FCM configuration -->
+        <service android:name=".services.SFFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".services.SFFirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -117,15 +128,13 @@
         <activity
             android:name=".activities.admin.AdminReportDetailActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activities.main.HomeActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
-
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
+            android:theme="@style/Base.Theme.AppCompat" />
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -144,8 +153,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.main.ItemDetailActivity"
-            android:screenOrientation="portrait"
-            android:label="" />
+            android:label=""
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.main.ProfileEditActivity"
             android:screenOrientation="portrait" />
@@ -158,7 +167,7 @@
         <activity
             android:name=".activities.main.UserDetailActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".activities.main.ReviewListActivity"
             android:screenOrientation="portrait" />
@@ -174,6 +183,7 @@
         <activity
             android:name=".activities.main.AboutActivity"
             android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

@@ -14,6 +14,7 @@ import com.brainyapps.simplyfree.activities.main.ReviewListActivity
 import com.brainyapps.simplyfree.activities.main.UserDetailActivity
 import com.brainyapps.simplyfree.adapters.BaseItemAdapter
 import com.brainyapps.simplyfree.models.Notification
+import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Globals
 import java.util.ArrayList
 import com.brainyapps.simplyfree.views.main.ViewHolderNotification
@@ -84,23 +85,7 @@ class NotificationAdapter(val ctx: Context, private val aryData: ArrayList<Notif
         val listNotification = getAvailableList()
         val notification = listNotification[position]
 
-        if (notification.type == Notification.NOTIFICATION_RATED) {
-            val intent = Intent(context, ReviewListActivity::class.java)
-            intent.putExtra(UserDetailHelper.KEY_USER, notification.userPosted)
-            context!!.startActivity(intent)
-        }
-        else if (notification.type == Notification.NOTIFICATION_TOOK) {
-            val intent = Intent(context, RateActivity::class.java)
-            Globals.selectedNotification = notification
-            intent.putExtra(UserDetailHelper.KEY_USER_ID, notification.userId)
-            intent.putExtra(ItemDetailActivity.KEY_ITEM_ID, notification.itemId)
-            context!!.startActivity(intent)
-        }
-        else {
-            Globals.selectedItem = null
-            val intent = Intent(context, ItemDetailActivity::class.java)
-            intent.putExtra(ItemDetailActivity.KEY_ITEM_ID, notification.itemId)
-            context!!.startActivity(intent)
-        }
+        val intent = notification.getIntentForDetail(context)
+        context!!.startActivity(intent)
     }
 }

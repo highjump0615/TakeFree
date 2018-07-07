@@ -62,8 +62,7 @@ class AdminReportDetailActivity : BaseActivity(), View.OnClickListener {
             R.id.but_delete -> {
                 // remove from database
                 report.userReported?.let {
-                    val database = FirebaseDatabase.getInstance().reference.child(User.TABLE_NAME)
-                    database.child(it.id).child(User.FIELD_REPORTS).child("0").removeValue()
+                    report.deleteFromDatabase(parent = it.id)
 
                     setResult(1)
                     finish()

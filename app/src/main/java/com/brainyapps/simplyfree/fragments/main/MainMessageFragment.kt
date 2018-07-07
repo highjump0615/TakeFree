@@ -81,7 +81,7 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
         var bExist = false
 
         for (m in aryMessage) {
-            if (m.itemId == msg?.itemId && m.targetUserId == msg.targetUserId) {
+            if (m.itemId == msg.itemId && m.targetUserId == msg.targetUserId) {
                 // update message
                 m.text = msg.text
                 m.type = msg.type

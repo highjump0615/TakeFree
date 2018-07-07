@@ -34,6 +34,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
+import com.google.firebase.iid.FirebaseInstanceId
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.Permission
 import kotlinx.android.synthetic.main.layout_main_app_bar.*
@@ -74,6 +75,15 @@ class HomeActivity : BaseHomeActivity(),
 
         // init location
         initLocation()
+
+        // get device token
+        val userCurrent = User.currentUser!!
+        val strToken = FirebaseInstanceId.getInstance().token
+
+        strToken?.let {
+            userCurrent.token = it
+            userCurrent.saveToDatabaseChild(User.FIELD_TOKEN, it)
+        }
     }
 
     private fun signOutAndExit() {

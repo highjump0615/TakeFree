@@ -27,6 +27,8 @@ class ViewHolderNotification(itemView: View, ctx: Context) : ViewHolderBase(item
     }
 
     fun fillContent(data: Notification) {
+        val strContent = data.getDescription()
+
         when (data.type) {
             Notification.NOTIFICATION_RATED -> {
                 // icon
@@ -34,7 +36,6 @@ class ViewHolderNotification(itemView: View, ctx: Context) : ViewHolderBase(item
 
                 // content
                 val strUserName = data.userPosted?.userFullName()
-                val strContent = "$strUserName left you a rating"
                 val spannable = SpannableString(strContent)
                 val colorTheme = ContextCompat.getColor(context!!, R.color.colorTheme)
                 strUserName?.let {
@@ -50,7 +51,7 @@ class ViewHolderNotification(itemView: View, ctx: Context) : ViewHolderBase(item
                 itemView.text_icon.text = "\uf00c"
 
                 // content
-                itemView.text_content.text = "You took an item. Rate owner!"
+                itemView.text_content.text = strContent
             }
 
             Notification.NOTIFICATION_COMMENT -> {
@@ -59,7 +60,6 @@ class ViewHolderNotification(itemView: View, ctx: Context) : ViewHolderBase(item
 
                 // content
                 val strUserName = data.userPosted?.userFullName()
-                val strContent = "$strUserName commented on your posted item. Check it up!"
                 val spannable = SpannableString(strContent)
                 val colorTheme = ContextCompat.getColor(context!!, R.color.colorTheme)
                 strUserName?.let {

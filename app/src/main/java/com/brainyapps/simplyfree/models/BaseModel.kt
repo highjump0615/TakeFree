@@ -108,12 +108,16 @@ open class BaseModel() : Comparable<BaseModel> {
         database.child(this.id).setValue(this)
     }
 
-    fun deleteFromDatabase(softDelete: Boolean = false) {
+    fun deleteFromDatabase(softDelete: Boolean = false, parent: String? = null) {
         if (softDelete) {
             saveToDatabaseChild(FIELD_DELETED_AT, Utils.getServerLongTime())
         }
         else {
-            val database = FirebaseDatabase.getInstance().reference.child(tableName())
+            var database = FirebaseDatabase.getInstance().reference.child(tableName())
+            parent?.let {
+                database = database.child(it)
+            }
+
             database.child(this.id).removeValue()
         }
     }

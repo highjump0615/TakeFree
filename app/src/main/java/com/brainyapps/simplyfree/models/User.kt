@@ -68,10 +68,8 @@ class User() : BaseModel(), Parcelable {
         const val FIELD_EMAIL = "email"
         const val FIELD_TYPE = "type"
         const val FIELD_BANNED = "banned"
-        const val FIELD_NOTIFICATIONS = "notifications"
-        const val FIELD_REVIEWS = "reviews"
-        const val FIELD_REPORTS = "reports"
         const val FIELD_RATING = "rating"
+        const val FIELD_TOKEN = "token"
     }
 
     var type: Int = USER_TYPE_CUSTOMER
@@ -82,6 +80,8 @@ class User() : BaseModel(), Parcelable {
     var firstName = ""
     var lastName = ""
     var photoUrl = ""
+
+    var token = ""
 
     @get:Exclude
     var items = ArrayList<Item>()
