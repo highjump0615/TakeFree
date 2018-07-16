@@ -1,5 +1,6 @@
 package com.brainyapps.simplyfree.activities.main
 
+import android.graphics.Color
 import android.os.Bundle
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
@@ -23,7 +24,7 @@ class TermActivity : BaseActivity() {
         var strTitle = "Terms and Conditions"
 
         // init webview
-        var strUrl = "https://termsfeed.com/terms-conditions/f9652d9b206800684d310081f9179206"
+        var strUrl = "file:///android_asset/html/term.html"
 
         // get type from intent
         val bundle = intent.extras
@@ -31,7 +32,7 @@ class TermActivity : BaseActivity() {
 
         if (this.type == TERM_POLICY) {
             strTitle = "Privacy Policy"
-            strUrl = "https://termsfeed.com/privacy-policy/2d0905ce662a7f916977aa3cfc55b735\n"
+            strUrl = "file:///android_asset/html/policy.html"
         }
 
         setNavbar(strTitle, true)
