@@ -5,6 +5,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.text.TextUtils
 import android.util.Log
+import com.brainyapps.simplyfree.activities.LoginBaseActivity
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.*
@@ -21,6 +22,9 @@ class User() : BaseModel(), Parcelable {
     companion object {
         const val USER_TYPE_ADMIN = 0
         const val USER_TYPE_CUSTOMER = 1
+
+        const val PAYMENT_TYPE_NONE = 0
+        const val PAYMENT_TYPE_PAY = 1
 
         var currentUser: User? = null
 
@@ -73,6 +77,7 @@ class User() : BaseModel(), Parcelable {
     }
 
     var type: Int = USER_TYPE_CUSTOMER
+    var paymentType: Int = PAYMENT_TYPE_NONE
     var banned: Boolean = false
 
     var email = ""
@@ -94,6 +99,7 @@ class User() : BaseModel(), Parcelable {
 
     constructor(parcel: Parcel) : this() {
         type = parcel.readInt()
+        paymentType = parcel.readInt()
 
         banned = parcel.readByte().toInt() != 0
         email = parcel.readString()
@@ -112,6 +118,7 @@ class User() : BaseModel(), Parcelable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(type)
+        parcel.writeInt(paymentType)
         parcel.writeByte((if (banned) 1 else 0).toByte())
         parcel.writeString(email)
         parcel.writeString(firstName)

@@ -42,14 +42,12 @@ open class LoginBaseActivity : BaseActivity(), GoogleApiClient.OnConnectionFaile
         const val KEY_PAYMENT_TYPE = "paymentType"
 
         const val PAYMENT_TYPE_NOT_DETERMINED = -1
-        const val PAYMENT_TYPE_NONE = 0
-        const val PAYMENT_TYPE_PAY = 1
     }
 
     private val TAG = LoginBaseActivity ::class.java.getSimpleName()
 
     protected var loginType: Int = 0
-    protected var paymentType: Int = 0
+    protected var paymentType: Int = PAYMENT_TYPE_NOT_DETERMINED
 
     private var googleApiClient: GoogleApiClient? = null
     private var RC_SIGN_IN = 2000
@@ -230,6 +228,8 @@ open class LoginBaseActivity : BaseActivity(), GoogleApiClient.OnConnectionFaile
                         }
 
                         intent.putExtra(LoginBaseActivity.KEY_LOGIN_TYPE, this@LoginBaseActivity.loginType)
+                        intent.putExtra(LoginBaseActivity.KEY_PAYMENT_TYPE, paymentType)
+
                         startActivity(intent)
                     }
                     else {

@@ -28,7 +28,7 @@ class SignupActivity : LoginBaseActivity(), View.OnClickListener {
         // get payment type from intent
         val bundle = intent.extras
         if (bundle != null) {
-            paymentType= bundle.getInt(KEY_PAYMENT_TYPE)
+            paymentType = bundle.getInt(KEY_PAYMENT_TYPE)
         }
 
         initFbButton()
@@ -129,6 +129,7 @@ class SignupActivity : LoginBaseActivity(), View.OnClickListener {
         val intent = Intent(this, SignupProfileActivity::class.java)
         intent.putExtra(SignupProfileActivity.KEY_EMAIL, edit_email.text.toString())
         intent.putExtra(SignupProfileActivity.KEY_PASSWORD, edit_password.text.toString())
+        intent.putExtra(LoginBaseActivity.KEY_PAYMENT_TYPE, paymentType)
         startActivity(intent)
     }
 }

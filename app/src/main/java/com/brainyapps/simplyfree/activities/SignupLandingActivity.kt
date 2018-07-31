@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.FontManager
 import com.brainyapps.simplyfree.utils.Utils
 import kotlinx.android.synthetic.main.activity_signup_landing.*
@@ -18,7 +19,7 @@ class SignupLandingActivity : LoginBaseActivity(), View.OnClickListener {
         // get payment type from intent
         val bundle = intent.extras
         if (bundle != null) {
-            loginType = bundle.getInt(KEY_PAYMENT_TYPE)
+            loginType = bundle.getInt(KEY_LOGIN_TYPE)
         }
 
         // font
@@ -41,10 +42,10 @@ class SignupLandingActivity : LoginBaseActivity(), View.OnClickListener {
                 }
 
                 if (view.id == R.id.layout_but_premium) {
-                    intent.putExtra(LoginBaseActivity.KEY_PAYMENT_TYPE, LoginBaseActivity.PAYMENT_TYPE_PAY)
+                    intent.putExtra(LoginBaseActivity.KEY_PAYMENT_TYPE, User.PAYMENT_TYPE_PAY)
                 }
                 else {
-                    intent.putExtra(LoginBaseActivity.KEY_PAYMENT_TYPE, LoginBaseActivity.PAYMENT_TYPE_NONE)
+                    intent.putExtra(LoginBaseActivity.KEY_PAYMENT_TYPE, User.PAYMENT_TYPE_NONE)
                 }
 
                 startActivity(intent)

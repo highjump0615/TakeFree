@@ -31,6 +31,7 @@ class SignupProfileActivity : BaseActivity(), View.OnClickListener, SFUpdateImag
 
     var email: String? = null
     var password: String? = null
+    var paymentType = User.PAYMENT_TYPE_NONE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +44,9 @@ class SignupProfileActivity : BaseActivity(), View.OnClickListener, SFUpdateImag
         if (bundle != null) {
             email = bundle.getString(KEY_EMAIL)
             password = bundle.getString(KEY_PASSWORD)
+
+            // get payment type from intent
+            paymentType = bundle.getInt(LoginBaseActivity.KEY_PAYMENT_TYPE)
         }
 
         this.layout_photo.setOnClickListener(this)
@@ -149,6 +153,7 @@ class SignupProfileActivity : BaseActivity(), View.OnClickListener, SFUpdateImag
         newUser.lastName = this.edit_lastname.text.toString()
 
         newUser.type = User.USER_TYPE_CUSTOMER
+        newUser.paymentType = paymentType
 
         User.currentUser = newUser
 

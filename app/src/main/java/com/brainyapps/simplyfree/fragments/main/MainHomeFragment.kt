@@ -22,6 +22,7 @@ import com.brainyapps.simplyfree.adapters.main.HomeCategoryAdapter
 import com.brainyapps.simplyfree.models.BaseModel
 import com.brainyapps.simplyfree.models.Category
 import com.brainyapps.simplyfree.models.Item
+import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.FontManager
 import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
@@ -287,10 +288,22 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
             }
 
             R.id.but_new -> {
-                val intent = Intent(activity, ItemPostActivity::class.java)
-                startActivityForResult(intent, RC_ADD_ITEM)
+                val userCurrent = User.currentUser!!
+
+                if (userCurrent.paymentType == User.PAYMENT_TYPE_NONE) {
+                    // show ads
+                    (activity as HomeActivity).showAds()
+                }
+                else {
+                    showPostItem()
+                }
             }
         }
+    }
+
+    fun showPostItem() {
+        val intent = Intent(activity, ItemPostActivity::class.java)
+        startActivityForResult(intent, RC_ADD_ITEM)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
