@@ -158,8 +158,7 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
                 //
                 // latest message has been updated
                 //
-                val msg = parseDatasnapshot(dataSnapshot!!)
-                addMessage(msg)
+                parseDatasnapshot(dataSnapshot!!)
             }
 
             override fun onCancelled(p0: DatabaseError?) {
@@ -167,23 +166,20 @@ class MainMessageFragment : MainBaseFragment(), View.OnClickListener, SwipeRefre
             }
 
             override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {
-                val msg = parseDatasnapshot(dataSnapshot!!)
-                addMessage(msg)
+                parseDatasnapshot(dataSnapshot!!)
             }
         })
     }
 
-    private fun parseDatasnapshot(data: DataSnapshot): Message? {
+    private fun parseDatasnapshot(data: DataSnapshot) {
 
         for (chatItem in data.children) {
             val chat = chatItem.getValue(Message::class.java)
             chat?.itemId = data.key
             chat?.targetUserId = chatItem.key
 
-            return chat
+            addMessage(chat)
         }
-
-        return null
     }
 
     private fun updateList(bAnimation: Boolean) {
