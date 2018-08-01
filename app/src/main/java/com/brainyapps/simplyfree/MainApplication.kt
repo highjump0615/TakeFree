@@ -3,6 +3,8 @@ package com.brainyapps.simplyfree
 import android.os.StrictMode
 import android.support.multidex.MultiDexApplication
 import android.widget.Toast
+import com.brainyapps.simplyfree.utils.FirebaseManager
+import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.PrefUtils
 import com.brainyapps.simplyfree.utils.Utils
 import com.google.firebase.FirebaseApp
@@ -25,5 +27,11 @@ class MainApplication : MultiDexApplication() {
 
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
+
+        // init firebase setting
+        FirebaseManager.initServerTime()
+
+        // init base data
+        Globals.initCategories(this)
     }
 }

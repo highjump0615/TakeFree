@@ -16,7 +16,7 @@ import com.google.firebase.database.Exclude
  * Created by Administrator on 4/10/18.
  */
 
-class Notification() : BaseModel() {
+class Notification() : BaseModel(), Parcelable {
 
     companion object {
         const val NOTIFICATION_RATED = 0
@@ -24,6 +24,17 @@ class Notification() : BaseModel() {
         const val NOTIFICATION_COMMENT = 2
 
         const val NOTIFICATION_MESSAGE = 3
+
+        @JvmField
+        val CREATOR: Parcelable.Creator<Notification> = object : Parcelable.Creator<Notification> {
+            override fun createFromParcel(parcel: Parcel): Notification {
+                return Notification(parcel)
+            }
+
+            override fun newArray(size: Int): Array<Notification?> {
+                return arrayOfNulls(size)
+            }
+        }
 
         //
         // table info
@@ -60,6 +71,28 @@ class Notification() : BaseModel() {
     constructor(notificationType: Int) : this() {
         type = notificationType
         userId = User.currentUser?.id!!
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    constructor(parcel: Parcel) : this() {
+        readFromParcelBase(parcel)
+
+        type = parcel.readInt()
+        itemId = parcel.readString()
+        userId = parcel.readString()
+        userPosted = parcel.readParcelable(User::class.java.classLoader)
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        writeToParcelBase(parcel, flags)
+
+        parcel.writeInt(type)
+        parcel.writeString(itemId)
+        parcel.writeString(userId)
+        parcel.writeParcelable(userPosted, flags)
     }
 
     fun getIntentForDetail(ctx: Context?) : Intent {

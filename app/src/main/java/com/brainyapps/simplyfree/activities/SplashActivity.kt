@@ -22,15 +22,9 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // init firebase setting
-        FirebaseManager.initServerTime()
-
-        // init base data
-        Globals.initCategories(this)
-
         // check login state
         val userId = FirebaseManager.mAuth.currentUser?.uid
-        if (TextUtils.isEmpty(userId)) {
+        if (TextUtils.isEmpty(userId) || User.currentUser != null) {
             Log.d(TAG, "fetched user")
             bFetchedUser = true
         }

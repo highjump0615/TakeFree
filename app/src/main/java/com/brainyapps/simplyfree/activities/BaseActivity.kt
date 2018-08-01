@@ -1,5 +1,6 @@
 package com.brainyapps.simplyfree.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -27,8 +28,20 @@ import java.io.IOException
  */
 open class BaseActivity : AppCompatActivity() {
 
+    companion object {
+        const val KEY_NOTIFICATION = "notification"
+    }
+
+    var notificationPending: Notification? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // get notification pending
+        val bundle = intent.extras
+        if (bundle != null) {
+            notificationPending = bundle.getParcelable(KEY_NOTIFICATION)
+        }
     }
 
     override fun onResume() {
@@ -84,7 +97,15 @@ open class BaseActivity : AppCompatActivity() {
                 Utils.moveNextActivity(this, AdminHomeActivity::class.java, true, true)
             }
             User.USER_TYPE_CUSTOMER -> {
-                Utils.moveNextActivity(this, HomeActivity::class.java, true, true)
+                // intent to home
+                val intent = Intent(this, HomeActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                notificationPending?.let {
+                    intent.putExtra(BaseActivity.KEY_NOTIFICATION, it)
+                }
+
+                startActivity(intent)
+                finish()
             }
         }
     }
@@ -109,6 +130,7 @@ open class BaseActivity : AppCompatActivity() {
         val jsonParam = JSONObject()
         jsonParam.put("to", token)
         jsonParam.put("data", jsonData)
+        jsonParam.put("priority", "high")
 
         APIManager.sendFcmMessage(jsonParam.toString(),
                 "key=$keyServer",
@@ -128,6 +150,9 @@ open class BaseActivity : AppCompatActivity() {
     fun signOutClear() {
         FirebaseManager.mAuth.signOut()
         LoginManager.getInstance().logOut()
+
+        // clear token
+        User.currentUser?.saveToDatabaseChild(User.FIELD_TOKEN, "")
         User.currentUser = null
     }
 

@@ -3,7 +3,6 @@ package com.brainyapps.simplyfree.services
 import android.app.Notification
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import android.content.Context.NOTIFICATION_SERVICE
 import android.app.NotificationManager
 import com.brainyapps.simplyfree.R.mipmap.ic_launcher
 import android.graphics.BitmapFactory
@@ -15,6 +14,9 @@ import android.support.v4.app.NotificationCompat
 import android.text.TextUtils
 import android.util.Log
 import com.brainyapps.simplyfree.R
+import com.brainyapps.simplyfree.activities.BaseActivity
+import com.brainyapps.simplyfree.activities.SignupProfileActivity
+import com.brainyapps.simplyfree.activities.SplashActivity
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Globals
 
@@ -42,11 +44,6 @@ class SFFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun sendNotification(messageTitle: String?, messageBody: String?, row: Map<String, String>) {
-
-        if (User.currentUser == null) {
-            // not logged in, return
-            return
-        }
 
         // check data
         val type = row[com.brainyapps.simplyfree.models.Notification.FIELD_TYPE]?.toInt()
@@ -84,8 +81,9 @@ class SFFirebaseMessagingService : FirebaseMessagingService() {
 
                 notifyNew.userPosted = u
 
-                // send notification
-                val intent = notifyNew.getIntentForDetail(this@SFFirebaseMessagingService)
+                // intent to splash
+                val intent = Intent(this@SFFirebaseMessagingService, SplashActivity::class.java)
+                intent.putExtra(BaseActivity.KEY_NOTIFICATION, notifyNew)
 
                 val contentIntent = PendingIntent.getActivity(this@SFFirebaseMessagingService,
                         0,
