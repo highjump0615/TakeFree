@@ -33,42 +33,39 @@ class ViewHolderNotification(itemView: View, ctx: Context) : ViewHolderBase(item
             Notification.NOTIFICATION_RATED -> {
                 // icon
                 itemView.text_icon.text = "\uf005"
-
-                // content
-                val strUserName = data.userPosted?.userFullName()
-                val spannable = SpannableString(strContent)
-                val colorTheme = ContextCompat.getColor(context!!, R.color.colorTheme)
-                strUserName?.let {
-                    spannable.setSpan(ForegroundColorSpan(colorTheme), 0, it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    spannable.setSpan(StyleSpan(android.graphics.Typeface.BOLD), 0, it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                }
-
-                itemView.text_content.setText(spannable, TextView.BufferType.SPANNABLE)
             }
 
             Notification.NOTIFICATION_TOOK -> {
                 // icon
                 itemView.text_icon.text = "\uf00c"
-
-                // content
-                itemView.text_content.text = strContent
             }
 
             Notification.NOTIFICATION_COMMENT -> {
                 // icon
                 itemView.text_icon.text = "\uf075"
+            }
 
-                // content
-                val strUserName = data.userPosted?.userFullName()
-                val spannable = SpannableString(strContent)
-                val colorTheme = ContextCompat.getColor(context!!, R.color.colorTheme)
-                strUserName?.let {
-                    spannable.setSpan(ForegroundColorSpan(colorTheme), 0, it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    spannable.setSpan(StyleSpan(android.graphics.Typeface.BOLD), 0, it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                }
-
-                itemView.text_content.setText(spannable, TextView.BufferType.SPANNABLE)
+            Notification.NOTIFICATION_MESSAGE -> {
+                // icon
+                itemView.text_icon.text = "\uf086"
             }
         }
+
+        // content
+        itemView.text_content.text = getContentSpannable(data)
+    }
+
+    private fun getContentSpannable(data: Notification): SpannableString {
+        val strUserName = data.userPosted?.userFullName()
+        val strContent = data.getDescription()
+
+        val spannable = SpannableString(strContent)
+        val colorTheme = ContextCompat.getColor(context!!, R.color.colorTheme)
+        strUserName?.let {
+            spannable.setSpan(ForegroundColorSpan(colorTheme), 0, it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannable.setSpan(StyleSpan(android.graphics.Typeface.BOLD), 0, it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        return spannable
     }
 }

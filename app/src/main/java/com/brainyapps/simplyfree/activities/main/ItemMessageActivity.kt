@@ -395,6 +395,14 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
 
         sendPushNotification(userTo?.token, Notification.NOTIFICATION_MESSAGE, item!!.id, strMessage)
 
+        // send notification to user
+        val user = User.currentUser!!
+        val newNotification = Notification(notificationType = Notification.NOTIFICATION_MESSAGE)
+        newNotification.itemId = item!!.id
+        newNotification.userId = user.id
+
+        userTo?.addNotification(newNotification)
+
         // clear edit & hide keyboard
         edit_message.setText("")
         edit_message.clearFocus()
