@@ -120,6 +120,9 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
         })
 
         swiperefresh.setOnRefreshListener(this)
+
+        // mark notification as read
+        Globals.selectedNotification?.markAsRead(User.currentUser!!.id)
     }
 
     override fun onStart() {

@@ -52,6 +52,9 @@ class ItemDetailActivity : BaseItemActivity(), SwipeRefreshLayout.OnRefreshListe
         }
 
         reportHelper = ReportHelper(this)
+
+        // mark notification as read
+        Globals.selectedNotification?.markAsRead(User.currentUser!!.id)
     }
 
     private fun initView() {

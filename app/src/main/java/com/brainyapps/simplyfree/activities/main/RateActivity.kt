@@ -46,6 +46,9 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
 
         but_submit.setOnClickListener(this)
 
+        // mark notification as read
+        Globals.selectedNotification?.markAsRead(User.currentUser!!.id)
+
         getReviewCount(userId)
     }
 
@@ -128,12 +131,6 @@ class RateActivity : BaseActivity(), User.FetchDatabaseListener, View.OnClickLis
 
             // push notification
             sendPushNotification(it.token, Notification.NOTIFICATION_RATED)
-
-            // mark notification as read
-            val notify = Globals.selectedNotification!!
-            notify.readAt = Utils.getServerLongTime()
-            notify.saveToDatabaseChild(Notification.FIELD_READ_AT, Utils.getServerLongTime(), userCurrent.id)
-            userCurrent.notifications.remove(notify)
 
             // done, back to prev page
             finish()

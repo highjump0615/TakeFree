@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -111,7 +112,14 @@ class MainNotificationFragment : MainBaseFragment(), View.OnClickListener, Swipe
             override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
             }
 
-            override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
+            override fun onChildChanged(dataSnapshot: DataSnapshot?, p1: String?) {
+                val notifi = dataSnapshot?.getValue(Notification::class.java)
+                if (notifi?.readAt != null) {
+                    // remove read notifications
+                    user.notifications.remove(user.notifications.first { it.id == dataSnapshot.key})
+
+                    updateList(false)
+                }
             }
 
             override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {

@@ -14,6 +14,7 @@ import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.models.Review
 import com.brainyapps.simplyfree.models.User
+import com.brainyapps.simplyfree.utils.Globals
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -47,6 +48,9 @@ class ReviewListActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener 
         list.setItemAnimator(DefaultItemAnimator())
 
         this.swiperefresh.setOnRefreshListener(this)
+
+        // mark notification as read
+        Globals.selectedNotification?.markAsRead(User.currentUser!!.id)
 
         // load data
         getReviews(false, true)

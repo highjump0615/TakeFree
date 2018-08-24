@@ -7,7 +7,6 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
-import android.widget.TextView
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.models.Notification
 import com.brainyapps.simplyfree.utils.FontManager
@@ -27,8 +26,6 @@ class ViewHolderNotification(itemView: View, ctx: Context) : ViewHolderBase(item
     }
 
     fun fillContent(data: Notification) {
-        val strContent = data.getDescription()
-
         when (data.type) {
             Notification.NOTIFICATION_RATED -> {
                 // icon
@@ -57,7 +54,7 @@ class ViewHolderNotification(itemView: View, ctx: Context) : ViewHolderBase(item
 
     private fun getContentSpannable(data: Notification): SpannableString {
         val strUserName = data.userPosted?.userFullName()
-        val strContent = data.getDescription()
+        val strContent = data.displayDescription()
 
         val spannable = SpannableString(strContent)
         val colorTheme = ContextCompat.getColor(context!!, R.color.colorTheme)

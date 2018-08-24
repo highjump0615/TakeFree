@@ -10,6 +10,7 @@ import com.brainyapps.simplyfree.activities.main.RateActivity
 import com.brainyapps.simplyfree.activities.main.ReviewListActivity
 import com.brainyapps.simplyfree.helpers.UserDetailHelper
 import com.brainyapps.simplyfree.utils.Globals
+import com.brainyapps.simplyfree.utils.Utils
 import com.google.firebase.database.Exclude
 
 /**
@@ -97,6 +98,8 @@ class Notification() : BaseModel(), Parcelable {
 
     fun getIntentForDetail(ctx: Context?) : Intent {
 
+        Globals.selectedNotification = this
+
         val intent: Intent?
 
         if (type == Notification.NOTIFICATION_RATED) {
@@ -105,7 +108,6 @@ class Notification() : BaseModel(), Parcelable {
         }
         else if (type == Notification.NOTIFICATION_TOOK) {
             intent = Intent(ctx, RateActivity::class.java)
-            Globals.selectedNotification = this
             intent.putExtra(UserDetailHelper.KEY_USER_ID, userId)
             intent.putExtra(ItemDetailActivity.KEY_ITEM_ID, itemId)
         }
@@ -123,7 +125,7 @@ class Notification() : BaseModel(), Parcelable {
         return intent
     }
 
-    fun getDescription() : String {
+    fun displayDescription() : String {
         var strDesc = "You took an item. Rate owner!"
 
         when (type) {
@@ -145,5 +147,10 @@ class Notification() : BaseModel(), Parcelable {
         }
 
         return strDesc
+    }
+
+    fun markAsRead(userId: String) {
+        readAt = Utils.getServerLongTime()
+        saveToDatabaseChild(Notification.FIELD_READ_AT, Utils.getServerLongTime(), userId)
     }
 }

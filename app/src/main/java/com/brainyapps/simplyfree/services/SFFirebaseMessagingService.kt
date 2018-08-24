@@ -1,10 +1,8 @@
 package com.brainyapps.simplyfree.services
 
-import android.app.Notification
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import android.app.NotificationManager
-import com.brainyapps.simplyfree.R.mipmap.ic_launcher
 import android.graphics.BitmapFactory
 import android.media.RingtoneManager
 import android.app.PendingIntent
@@ -15,7 +13,6 @@ import android.text.TextUtils
 import android.util.Log
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.BaseActivity
-import com.brainyapps.simplyfree.activities.SignupProfileActivity
 import com.brainyapps.simplyfree.activities.SplashActivity
 import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.Globals
@@ -94,7 +91,7 @@ class SFFirebaseMessagingService : FirebaseMessagingService() {
                 val notificationBuilder = NotificationCompat.Builder(this@SFFirebaseMessagingService, "100")
                         .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher))
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle(notifyNew.getDescription())
+                        .setContentTitle(notifyNew.displayDescription())
                         .setContentText(if (TextUtils.isEmpty(strMessage)) "Tap to check details" else strMessage)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
