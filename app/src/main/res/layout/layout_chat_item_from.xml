@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="@dimen/chat_item_margin_left"
+    android:paddingBottom="@dimen/chat_item_margin_left">
+
+    <!-- user photo -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgview_user"
+        android:layout_width="@dimen/chat_item_photo_size"
+        android:layout_height="@dimen/chat_item_photo_size"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/text_message"
+        android:layout_marginBottom="2dp"
+        android:src="@drawable/user_default"/>
+
+    <!-- text -->
+    <TextView
+        android:id="@+id/text_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_default="wrap"
+        android:text="@string/dummy_text"
+        android:paddingLeft="@dimen/chat_item_text_padding_hori"
+        android:paddingRight="12dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="@dimen/chat_item_margin_right"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toRightOf="@id/imgview_user"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/bubble_bg_white"/>
+
+    <!-- time -->
+    <TextView
+        android:id="@+id/text_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10:00 am 3.03.18"
+        android:layout_marginLeft="@dimen/chat_item_time_margin"
+        app:layout_constraintLeft_toLeftOf="@id/text_message"
+        app:layout_constraintTop_toBottomOf="@id/text_message"
+        android:textSize="@dimen/chat_item_time_text_size"
+        android:textColor="@color/colorGrey"/>
+
+
+</android.support.constraint.ConstraintLayout>

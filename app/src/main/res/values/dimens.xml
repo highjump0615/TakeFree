@@ -2,4 +2,127 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- landing page -->
+    <dimen name="landing_button_margin">36dp</dimen>
+    <dimen name="landing_button_height">42dp</dimen>
+    <dimen name="landing_button_corner_radius">12dp</dimen>
+    <dimen name="landing_social_button_size">38dp</dimen>
+
+    <dimen name="landing_circle_corner_radius">120dp</dimen>
+
+    <!-- signup landing page -->
+    <dimen name="signup_but_padding_top">10dp</dimen>
+    <dimen name="signup_but_padding_bottom">22dp</dimen>
+    <dimen name="signup_but_padding_horiz">12dp</dimen>
+    <dimen name="signup_but_margin">10dp</dimen>
+    <dimen name="signup_but_line_height">40dp</dimen>
+    <dimen name="signup_but_title_size">26sp</dimen>
+    <dimen name="signup_but_title_desc_size">11sp</dimen>
+    <dimen name="signup_but_price_size">30sp</dimen>
+    <dimen name="signup_but_price_desc_size">10sp</dimen>
+    <dimen name="signup_but_currency_size">18sp</dimen>
+    <dimen name="signup_but_next_padding_horiz">36dp</dimen>
+    <dimen name="signup_but_next_margin">20dp</dimen>
+
+    <!-- signup page -->
+    <dimen name="signup_edit_margin">20dp</dimen>
+    <dimen name="signup_edit_padding_vert">10dp</dimen>
+    <dimen name="signup_edit_padding_horiz">12dp</dimen>
+    <dimen name="signup_edit_text_margin">12dp</dimen>
+    <dimen name="signup_edit_margin_top">8dp</dimen>
+
+    <!-- login page -->
+    <dimen name="login_but_margin_horiz">54dp</dimen>
+
+    <!-- profile setup page -->
+    <dimen name="profile_photo_size">96dp</dimen>
+
+    <!-- admin home page -->
+    <dimen name="admin_home_item_padding_horiz">20dp</dimen>
+    <dimen name="admin_home_item_padding_vert">14dp</dimen>
+    <dimen name="admin_home_item_text_margin">20dp</dimen>
+    <dimen name="admin_home_item_text_title_size">18sp</dimen>
+
+    <!-- admin users page -->
+    <dimen name="admin_users_search_item_margin">10dp</dimen>
+    <dimen name="admin_users_search_item_padding_horiz">14dp</dimen>
+    <dimen name="admin_users_search_item_padding_vert">12dp</dimen>
+    <dimen name="admin_users_item_padding">12dp</dimen>
+    <dimen name="admin_users_item_margin_left">20dp</dimen>
+
+    <dimen name="admin_user_list_margin">10dp</dimen>
+
+    <!-- admin user detail page -->
+    <dimen name="admin_user_name_font_size">18sp</dimen>
+
+    <!-- loading list layout -->
+    <dimen name="loading_progress_size">30dp</dimen>
+
+    <dimen name="notice_top_margin">50dp</dimen>
+
+    <!-- admin edit profile page -->
+    <dimen name="user_profile_but_margin">46dp</dimen>
+
+    <!-- home page -->
+    <dimen name="bottom_nav_padding">6dp</dimen>
+    <dimen name="home_search_margin">16dp</dimen>
+    <dimen name="home_map_but_padding">12dp</dimen>
+    <dimen name="home_cateogry_item_padding">5dp</dimen>
+    <dimen name="home_cateogry_item_cateogry_padding_vert">4dp</dimen>
+    <dimen name="home_cateogry_item_cateogry_padding_horiz">8dp</dimen>
+    <dimen name="home_item_list_item_size">130dp</dimen>
+
+    <!-- item detail page -->
+    <dimen name="item_detail_content_margin">12dp</dimen>
+    <dimen name="item_detail_content_title_margin">4dp</dimen>
+    <dimen name="item_detail_content_font_size">11sp</dimen>
+    <dimen name="item_detail_content_small_img_margin">4dp</dimen>
+    <dimen name="item_detail_content_user_img_size">20dp</dimen>
+    <dimen name="item_detail_content_msg_but_margin_horiz">20dp</dimen>
+    <dimen name="item_detail_content_msg_but_margin_vert">12dp</dimen>
+    <dimen name="item_detail_comment_user_img_size">32dp</dimen>
+    <dimen name="item_detail_comment_input_margin">8dp</dimen>
+    <dimen name="item_detail_comment_input_padding_hori">12dp</dimen>
+    <dimen name="item_detail_comment_input_padding_vert">7dp</dimen>
+
+    <!-- profile page -->
+    <dimen name="main_profile_photo_size">130dp</dimen>
+    <dimen name="main_profile_tab_height">46dp</dimen>
+    <dimen name="profile_item_margin_margin">10dp</dimen>
+    <dimen name="profile_item_button_width">60dp</dimen>
+    <dimen name="profile_item_button_font_size">10sp</dimen>
+
+    <!-- item post page -->
+    <dimen name="item_post_edit_height">42dp</dimen>
+
+    <!-- notification page -->
+    <dimen name="notification_item_padding_horiz">12dp</dimen>
+    <dimen name="notification_item_padding_vert">10dp</dimen>
+
+    <!-- message page -->
+    <dimen name="message_item_height">74dp</dimen>
+    <dimen name="message_item_padding_horiz">12dp</dimen>
+    <dimen name="message_item_padding_vert">12dp</dimen>
+    <dimen name="message_item_photo_size">50dp</dimen>
+
+    <!-- settings page -->
+    <dimen name="setting_menu_height">44dp</dimen>
+    <dimen name="setting_menu_margin">16dp</dimen>
+    <dimen name="line_height">0.5dp</dimen>
+
+    <!-- rate page -->
+    <dimen name="rate_review_margin">14dp</dimen>
+
+    <!-- message page -->
+    <dimen name="message_item_img_size">70dp</dimen>
+    <dimen name="message_item_img_margin">12dp</dimen>
+    <dimen name="chat_item_margin_left">10dp</dimen>
+    <dimen name="chat_item_margin_right">60dp</dimen>
+    <dimen name="chat_item_margin_bottom">6dp</dimen>
+    <dimen name="chat_item_text_padding_hori">20dp</dimen>
+    <dimen name="chat_item_photo_size">26dp</dimen>
+    <dimen name="chat_item_time_text_size">10sp</dimen>
+    <dimen name="chat_item_time_margin">12dp</dimen>
+
 </resources>

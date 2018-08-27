@@ -3,4 +3,36 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <string name="dummy_text">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </string>
+
+    <string-array name="onboard_contents">
+        <item>Arts and Crafts\nProject Suppliers\nFurniture\nHousehold Goods\nOutdoor and Garden\nLocal Advertisement</item>
+        <item>Each category will be described vividly in the screen</item>
+        <item>Upon posting your item\nyou can choose one\nor more category</item>
+        <item>Categories make your items\neasier to find! Start now!</item>
+    </string-array>
+
+    <string-array name="item_category_array">
+        <item>Arts &amp; Crafts</item>
+        <item>Project Supplies</item>
+        <item>Furniture</item>
+        <item>Household Goods</item>
+        <item>Outdoor &amp; Garden</item>
+        <item>Local Advertisement</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="item_condition_array">
+        <item>Excellent</item>
+        <item>Good</item>
+        <item>Fair</item>
+        <item>Bad</item>
+    </string-array>
+
+    <string name="title_activity_home_map">Map</string>
+
+    <string name="error_oldpassword">Current Password is not correct</string>
 </resources>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.brainyapps.simplyfree.activities.admin.AdminHomeActivity">
+
+    <!-- background -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_bg_toolbar_admin"
+        android:scaleType="fitXY"/>
+
+    <!-- toolbar -->
+    <include
+        layout="@layout/layout_admin_app_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingTop="6dp"
+        android:background="@color/colorBackground"
+        android:orientation="vertical">
+
+        <!-- users -->
+        <LinearLayout
+            android:id="@+id/layout_users"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/admin_home_item_padding_horiz"
+            android:paddingRight="@dimen/admin_home_item_padding_horiz"
+            android:paddingTop="@dimen/admin_home_item_padding_vert"
+            android:paddingBottom="@dimen/admin_home_item_padding_vert"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_admin_menu_users"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/admin_home_item_text_margin"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Users"
+                    android:textSize="@dimen/admin_home_item_text_title_size"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="All users, including banned users"
+                    android:textColor="@color/colorGreen" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- reported users -->
+        <LinearLayout
+            android:id="@+id/layout_reported_users"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/admin_home_item_padding_horiz"
+            android:paddingRight="@dimen/admin_home_item_padding_horiz"
+            android:paddingTop="@dimen/admin_home_item_padding_vert"
+            android:paddingBottom="@dimen/admin_home_item_padding_vert"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_admin_menu_reported_users"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/admin_home_item_text_margin"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reported Users"
+                    android:textSize="@dimen/admin_home_item_text_title_size"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reported Users and Reasons"
+                    android:textColor="@color/colorGreen" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- settings -->
+        <LinearLayout
+            android:id="@+id/layout_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/admin_home_item_padding_horiz"
+            android:paddingRight="@dimen/admin_home_item_padding_horiz"
+            android:paddingTop="@dimen/admin_home_item_padding_vert"
+            android:paddingBottom="@dimen/admin_home_item_padding_vert"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_admin_menu_settings"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/admin_home_item_text_margin"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Settings"
+                    android:textSize="@dimen/admin_home_item_text_title_size"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edit Profile and Log out"
+                    android:textColor="@color/colorGreen" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

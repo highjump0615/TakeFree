@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/view_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        app:contentPadding="@dimen/item_detail_content_margin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <!-- content -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!-- title -->
+                <TextView
+                    android:id="@+id/text_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textStyle="bold"
+                    android:textSize="14sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorGrey"
+                    android:layout_marginTop="@dimen/item_detail_content_title_margin"
+                    android:layout_marginBottom="@dimen/item_detail_content_title_margin" />
+
+                <!-- date -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Date Posted: "
+                        android:textSize="@dimen/item_detail_content_font_size"/>
+                    <TextView
+                        android:id="@+id/text_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="@dimen/item_detail_content_font_size"/>
+                </LinearLayout>
+
+                <!-- condition -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Condition: "
+                        android:textSize="@dimen/item_detail_content_font_size"/>
+                    <TextView
+                        android:id="@+id/text_condition"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="@dimen/item_detail_content_font_size"/>
+                </LinearLayout>
+
+                <!-- category -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Category: "
+                        android:textSize="@dimen/item_detail_content_font_size"/>
+                    <TextView
+                        android:id="@+id/text_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="@dimen/item_detail_content_font_size"/>
+                </LinearLayout>
+
+                <!-- item description -->
+                <TextView
+                    android:id="@+id/text_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="@dimen/item_detail_content_font_size" />
+
+                <!-- user info -->
+                <LinearLayout
+                    android:id="@+id/layout_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imgview_user"
+                        android:layout_width="@dimen/item_detail_content_user_img_size"
+                        android:layout_height="@dimen/item_detail_content_user_img_size"
+                        android:src="@drawable/user_default"/>
+                    <TextView
+                        android:id="@+id/text_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="9sp"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <!-- images -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/item_detail_content_margin"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imgview_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/img_item_default"
+                    android:scaleType="centerCrop"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="6dp"
+                    android:visibility="gone">
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/img_item_default"
+                        android:scaleType="centerCrop"/>
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/item_detail_content_small_img_margin"
+                        android:src="@drawable/img_item_default"
+                        android:scaleType="centerCrop"/>
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/item_detail_content_small_img_margin"
+                        android:src="@drawable/img_item_default"
+                        android:scaleType="centerCrop"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <!-- message button -->
+    <Button
+        android:id="@+id/but_message"
+        style="@style/ButtonWhiteRound"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/item_detail_content_msg_but_margin_horiz"
+        android:layout_marginRight="@dimen/item_detail_content_msg_but_margin_horiz"
+        android:layout_marginBottom="@dimen/item_detail_content_msg_but_margin_vert"
+        android:layout_marginTop="@dimen/item_detail_content_msg_but_margin_vert"
+        android:text="Message the owner" />
+
+</LinearLayout>

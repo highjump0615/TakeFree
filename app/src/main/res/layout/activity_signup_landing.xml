@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context="com.brainyapps.simplyfree.activities.SignupLandingActivity">
+
+    <!-- background -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_bg_landing"
+        android:scaleType="fitXY"/>
+
+    <!-- premium button -->
+    <LinearLayout
+        android:id="@+id/layout_but_premium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="@dimen/signup_but_margin"
+        android:layout_marginRight="@dimen/signup_but_margin"
+        android:paddingTop="@dimen/signup_but_padding_top"
+        android:paddingBottom="@dimen/signup_but_padding_bottom"
+        android:paddingLeft="@dimen/signup_but_padding_horiz"
+        android:paddingRight="@dimen/signup_but_padding_horiz"
+        android:background="@drawable/ripple_but_round_shadow"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/signup_but_line_height">
+            <TextView
+                android:id="@+id/text_premium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Premium"
+                android:textSize="@dimen/signup_but_title_size"
+                android:textColor="@color/colorTheme"
+                android:layout_alignParentBottom="true"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/signup_but_price_size"
+                    android:text="1.99"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTheme" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorTheme"
+                    android:text="$"
+                    android:textSize="@dimen/signup_but_currency_size"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unlimited access, ADs free"
+                android:textSize="@dimen/signup_but_title_desc_size"
+                android:textColor="@color/colorTheme" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="lifetime"
+                android:textSize="@dimen/signup_but_price_desc_size"
+                android:textColor="@color/colorTheme"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!-- free button -->
+    <LinearLayout
+        android:id="@+id/layout_but_free"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_but_premium"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="@dimen/signup_but_margin"
+        android:layout_marginRight="@dimen/signup_but_margin"
+        android:paddingTop="@dimen/signup_but_padding_top"
+        android:paddingBottom="@dimen/signup_but_padding_bottom"
+        android:paddingLeft="@dimen/signup_but_padding_horiz"
+        android:paddingRight="@dimen/signup_but_padding_horiz"
+        android:background="@drawable/ripple_but_round_shadow"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/signup_but_line_height">
+            <TextView
+                android:id="@+id/text_free"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Free"
+                android:textSize="@dimen/signup_but_title_size"
+                android:textColor="@color/colorTheme"
+                android:layout_alignParentBottom="true"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/signup_but_price_size"
+                    android:text="0"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTheme" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorTheme"
+                    android:text="$"
+                    android:textSize="@dimen/signup_but_currency_size"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unlimited access, ADs free"
+                android:textSize="@dimen/signup_but_title_desc_size"
+                android:textColor="@color/colorTheme" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="completely free"
+                android:textSize="@dimen/signup_but_price_desc_size"
+                android:textColor="@color/colorTheme"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!-- next button -->
+    <Button
+        android:id="@+id/but_next"
+        style="@style/ButtonWhiteRound"
+        android:paddingLeft="@dimen/signup_but_next_padding_horiz"
+        android:paddingRight="@dimen/signup_but_next_padding_horiz"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="@dimen/signup_but_next_margin"
+        android:layout_marginRight="@dimen/signup_but_margin"
+        android:text="Next"
+        android:visibility="gone"/>
+
+</android.support.constraint.ConstraintLayout>

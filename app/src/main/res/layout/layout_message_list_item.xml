@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/message_item_height">
+
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Bottom View Start -->
+        <RelativeLayout
+            android:layout_width="@dimen/message_item_height"
+            android:layout_height="match_parent"
+            android:background="@color/colorRed">
+
+            <!-- delete button -->
+            <Button
+                android:id="@+id/but_delete"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="&#xf1f8;"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:background="?attr/selectableItemBackground"/>
+
+        </RelativeLayout>
+        <!-- Bottom View End -->
+
+        <!-- Surface View Start -->
+        <RelativeLayout
+            android:id="@+id/layout_surface"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:paddingLeft="@dimen/message_item_padding_horiz"
+                android:paddingRight="@dimen/message_item_padding_horiz"
+                android:paddingTop="@dimen/message_item_padding_vert"
+                android:paddingBottom="@dimen/message_item_padding_vert">
+
+                <ImageView
+                    android:id="@+id/imgview_user"
+                    android:layout_width="@dimen/message_item_photo_size"
+                    android:layout_height="@dimen/message_item_photo_size"
+                    android:src="@drawable/user_default"
+                    android:scaleType="centerCrop"/>
+
+                <!-- content -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/message_item_padding_horiz">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerVertical="true">
+
+                        <!-- user name -->
+                        <TextView
+                            android:id="@+id/text_username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mary Lean"
+                            android:textStyle="bold"/>
+
+                        <!-- message -->
+                        <TextView
+                            android:id="@+id/text_msg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="I would like to thank you a lot for being so effective "
+                            android:textSize="12sp"
+                            android:ellipsize="marquee"
+                            android:singleLine="true"/>
+
+                    </LinearLayout>
+
+                    <!-- time -->
+                    <TextView
+                        android:id="@+id/text_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="Yesterday 07:32 a.m."
+                        android:textSize="10sp" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </com.daimajia.swipe.SwipeLayout>
+
+</RelativeLayout>

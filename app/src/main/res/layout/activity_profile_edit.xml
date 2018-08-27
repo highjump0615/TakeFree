@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.brainyapps.simplyfree.activities.SignupProfileActivity"
+    android:background="@color/colorBackground">
+
+    <!-- background -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_bg_signup"
+        android:scaleType="fitXY"/>
+
+    <!-- toolbar -->
+    <include
+        layout="@layout/layout_admin_app_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <!-- photo button -->
+    <RelativeLayout
+        android:id="@+id/layout_photo"
+        android:layout_width="@dimen/profile_photo_size"
+        android:layout_height="@dimen/profile_photo_size"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/bg_but_profile_photo">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/but_profile_photo"
+            android:scaleType="center"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgview_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/user_default"
+            app:civ_border_color="@android:color/white"
+            app:civ_border_width="2dp"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+    <!-- first name -->
+    <RelativeLayout
+        android:id="@+id/layout_firstname"
+        style="@style/SignupEditStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <EditText
+            android:id="@+id/edit_firstname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="First Name"
+            android:maxLines="1"
+            android:singleLine="true"/>
+    </RelativeLayout>
+
+    <!-- last name -->
+    <LinearLayout
+        android:id="@+id/layout_lastname"
+        style="@style/SignupEditStyle"
+        android:layout_marginTop="@dimen/signup_edit_margin_top"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_firstname">
+        <EditText
+            android:id="@+id/edit_lastname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="Last Name"
+            android:maxLines="1"
+            android:singleLine="true"/>
+    </LinearLayout>
+
+    <!-- done button -->
+    <Button
+        android:id="@+id/but_done"
+        style="@style/ButtonWhiteRound"
+        android:paddingLeft="@dimen/signup_but_next_padding_horiz"
+        android:paddingRight="@dimen/signup_but_next_padding_horiz"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="@dimen/signup_but_next_margin"
+        android:layout_marginRight="@dimen/signup_but_margin"
+        android:text="Done" />
+
+</android.support.constraint.ConstraintLayout>

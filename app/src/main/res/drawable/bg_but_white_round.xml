@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:startColor="#ffffff"
+        android:endColor="#e5e5e5" />
+
+    <corners android:radius="@dimen/landing_button_corner_radius" />
+</shape>
