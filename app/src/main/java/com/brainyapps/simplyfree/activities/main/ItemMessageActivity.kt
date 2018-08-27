@@ -21,6 +21,10 @@ import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_item_message.*
 
@@ -47,6 +51,9 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
 
     private var mDbItemQuery: DatabaseReference? = null
     private var mItemChildListener: ChildEventListener? = null
+
+    // admob
+    private lateinit var mInterstitialAd: InterstitialAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,6 +130,35 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
 
         // mark notification as read
         Globals.selectedNotification?.markAsRead(User.currentUser!!.id)
+
+        // init admob
+        MobileAds.initialize(this, resources.getString(R.string.admob_id))
+
+        mInterstitialAd = InterstitialAd(this)
+        mInterstitialAd.adUnitId = resources.getString(R.string.admob_unit_id)
+        mInterstitialAd.adListener = object: AdListener() {
+            override fun onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+                Log.d(TAG, "The interstitial has been loaded.")
+            }
+
+            override fun onAdFailedToLoad(errorCode: Int) {
+                // Code to be executed when an ad request fails.
+            }
+
+            override fun onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            override fun onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            override fun onAdClosed() {
+            }
+        }
+
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
     }
 
     override fun onStart() {
@@ -329,6 +365,11 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
         newMsg.addMessageTo(item!!, userToId!!, "", Message.MESSAGE_TYPE_ACCEPT)
 
         updateTakeButton()
+
+        if (user.paymentType == User.PAYMENT_TYPE_NONE) {
+            // show ads
+            showAds()
+        }
     }
 
     override fun onClick(view: View?) {
@@ -367,7 +408,8 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
 
     private fun doSendRequest() {
         // if item is his own, skip
-        if (item?.userId == User.currentUser!!.id) {
+        val userCurrent = User.currentUser!!
+        if (item?.userId == userCurrent.id) {
             return
         }
 
@@ -379,6 +421,19 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
         newMsg.addMessageTo(item!!, userToId!!, "", Message.MESSAGE_TYPE_REQUEST)
 
         sendPushNotification(userTo?.token, Notification.NOTIFICATION_MESSAGE, item!!.id, "Sent request for your item")
+
+        if (userCurrent.paymentType == User.PAYMENT_TYPE_NONE) {
+            // show ads
+            showAds()
+        }
+    }
+
+    fun showAds() {
+        if (mInterstitialAd.isLoaded) {
+            mInterstitialAd.show()
+        } else {
+            Log.d("TAG", "The interstitial wasn't loaded yet.")
+        }
     }
 
     /**

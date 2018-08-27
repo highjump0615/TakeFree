@@ -61,8 +61,6 @@ class HomeActivity : BaseHomeActivity(),
     lateinit var mBadgeNotification: Badge
     lateinit var mBadgeMessage: Badge
 
-    // admob
-    private lateinit var mInterstitialAd: InterstitialAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,37 +79,6 @@ class HomeActivity : BaseHomeActivity(),
 
         // init location
         initLocation()
-
-        // init admob
-        MobileAds.initialize(this, resources.getString(R.string.admob_id))
-
-        mInterstitialAd = InterstitialAd(this)
-        mInterstitialAd.adUnitId = resources.getString(R.string.admob_unit_id)
-        mInterstitialAd.adListener = object: AdListener() {
-            override fun onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-            }
-
-            override fun onAdFailedToLoad(errorCode: Int) {
-                // Code to be executed when an ad request fails.
-            }
-
-            override fun onAdOpened() {
-                // Code to be executed when the ad is displayed.
-            }
-
-            override fun onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-            }
-
-            override fun onAdClosed() {
-                // Code to be executed when when the interstitial ad is closed.
-                if (fragCurrent is MainHomeFragment) {
-                    // post new item
-                    (fragCurrent as MainHomeFragment).showPostItem()
-                }
-            }
-        }
 
         // get device token
         val userCurrent = User.currentUser!!
@@ -189,8 +156,6 @@ class HomeActivity : BaseHomeActivity(),
 
         // Initiating the connection
         googleApiClient.connect()
-
-        mInterstitialAd.loadAd(AdRequest.Builder().build())
 
         Globals.activityMain = this
     }
@@ -334,14 +299,6 @@ class HomeActivity : BaseHomeActivity(),
                 .setBadgeNumber(-1)
                 .setGravityOffset(16.0F, 4.0F, true)
                 .bindTarget(navigation.getBottomNavigationItemView(position))
-    }
-
-    fun showAds() {
-        if (mInterstitialAd.isLoaded) {
-            mInterstitialAd.show()
-        } else {
-            Log.d("TAG", "The interstitial wasn't loaded yet.")
-        }
     }
 
     /**

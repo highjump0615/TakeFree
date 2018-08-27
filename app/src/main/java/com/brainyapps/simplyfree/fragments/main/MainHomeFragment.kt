@@ -288,15 +288,7 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
             }
 
             R.id.but_new -> {
-                val userCurrent = User.currentUser!!
-
-                if (userCurrent.paymentType == User.PAYMENT_TYPE_NONE) {
-                    // show ads
-                    (activity as HomeActivity).showAds()
-                }
-                else {
-                    showPostItem()
-                }
+                showPostItem()
             }
         }
     }
