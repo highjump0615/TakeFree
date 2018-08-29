@@ -39,13 +39,14 @@ Contact to owner, chatting ...
   - [GeoFire for location saving & querying](https://github.com/firebase/geofire-java)  
 - Implemented Parcelable for all model for passing between activities  
 - Push notification using Firebase Clound Messaging(FCM)
-  - [Sending push notification from App](https://firebase.google.com/docs/cloud-messaging/send-message?authuser=0#send_messages_using_the_legacy_app_server_protocols
-https://firebase.google.com/docs/cloud-messaging/auth-server?authuser=0)
+  - Sending push notification from App  
+[https://firebase.google.com/docs/cloud-messaging/send-message?authuser=0#send_messages_using_the_legacy_app_server_protocols](https://firebase.google.com/docs/cloud-messaging/send-message?authuser=0#send_messages_using_the_legacy_app_server_protocols)  
+[https://firebase.google.com/docs/cloud-messaging/auth-server?authuser=0](https://firebase.google.com/docs/cloud-messaging/auth-server?authuser=0)
 
 #### 2.3 Code tricks  
 - Copying object using ``copy()`` function in Kotlin data class  
 [https://kotlinlang.org/docs/reference/data-classes.html](https://kotlinlang.org/docs/reference/data-classes.html)  
-- Passing function as parameter using lambada expression, replacing traditional Interface
+- Passing function as parameter using lambda expression, replacing traditional Interface
 ``BaseModel.readFromDatabaseChild()``  
 
 #### 2.4 Third-Party Libraries
