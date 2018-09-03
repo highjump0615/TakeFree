@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import com.brainyapps.simplyfree.R
@@ -17,6 +18,10 @@ import com.brainyapps.simplyfree.utils.FirebaseManager
 import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
 import com.facebook.login.LoginManager
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
@@ -28,11 +33,16 @@ import java.io.IOException
  */
 open class BaseActivity : AppCompatActivity() {
 
+    private val TAG = BaseActivity::class.java.simpleName
+
     companion object {
         const val KEY_NOTIFICATION = "notification"
     }
 
     var notificationPending: Notification? = null
+
+    // admob
+    private lateinit var mInterstitialAd: InterstitialAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +97,62 @@ open class BaseActivity : AppCompatActivity() {
             toolbar.setNavigationOnClickListener { onBackPressed() }
         }
     }
+
+    fun initAdmob(onClose:() -> Unit) {
+        // init admob
+        MobileAds.initialize(this, resources.getString(R.string.admob_id))
+
+        mInterstitialAd = InterstitialAd(this)
+        mInterstitialAd.adUnitId = resources.getString(R.string.admob_unit_id)
+        mInterstitialAd.adListener = object: AdListener() {
+            override fun onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+                Log.d(TAG, "The interstitial has been loaded.")
+            }
+
+            override fun onAdFailedToLoad(errorCode: Int) {
+                // Code to be executed when an ad request fails.
+            }
+
+            override fun onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            override fun onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            override fun onAdClosed() {
+                Log.d(TAG, "The interstitial has been closed.")
+
+                onClose()
+
+                // load again
+                mInterstitialAd.loadAd(AdRequest.Builder().build())
+            }
+        }
+
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
+    }
+
+    /**
+     * Show google ads when it is free membership
+     */
+    fun showAds(): Boolean {
+        if (User.currentUser?.paymentType == User.PAYMENT_TYPE_PAY) {
+            return false
+        }
+
+        if (mInterstitialAd.isLoaded) {
+            mInterstitialAd.show()
+
+            return true
+        }
+
+        Log.d(TAG, "The interstitial wasn't loaded yet.")
+        return false
+    }
+
 
     /**
      * go to main page according to user type
