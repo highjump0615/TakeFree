@@ -42,7 +42,7 @@ class ViewHolderNotification(itemView: View, ctx: Context) : ViewHolderBase(item
                 itemView.text_icon.text = "\uf075"
             }
 
-            Notification.NOTIFICATION_MESSAGE -> {
+            else -> {
                 // icon
                 itemView.text_icon.text = "\uf086"
             }

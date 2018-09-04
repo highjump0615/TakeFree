@@ -387,6 +387,14 @@ class ItemMessageActivity : BaseItemActivity(), Item.FetchDatabaseListener, View
 
         sendPushNotification(userTo?.token, Notification.NOTIFICATION_MESSAGE, item!!.id, "Sent request for your item")
 
+        // send notification to user
+        val user = User.currentUser!!
+        val newNotification = Notification(notificationType = Notification.NOTIFICATION_TAKE_REQUEST)
+        newNotification.itemId = item!!.id
+        newNotification.userId = user.id
+
+        userTo?.addNotification(newNotification)
+
         // show ads
         showAds()
     }
