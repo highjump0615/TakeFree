@@ -101,6 +101,14 @@ class HomeActivity : BaseHomeActivity(),
             val intent = it.getIntentForDetail(this)
             startActivity(intent)
         }
+
+        // admob
+        initAdmob {
+            // Show new item page
+            if (fragCurrent is MainHomeFragment) {
+                (fragCurrent as MainHomeFragment).showPostItem()
+            }
+        }
     }
 
     private fun signOutAndExit() {

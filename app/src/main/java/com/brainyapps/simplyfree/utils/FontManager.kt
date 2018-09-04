@@ -25,9 +25,8 @@ object FontManager {
 
     fun markAsIconContainer(v: View, typeface: Typeface) {
         if (v is ViewGroup) {
-            val vg = v as ViewGroup
-            for (i in 0 until vg.childCount) {
-                val child = vg.getChildAt(i)
+            for (i in 0 until v.childCount) {
+                val child = v.getChildAt(i)
                 markAsIconContainer(child, typeface)
             }
         } else if (v is TextView) {

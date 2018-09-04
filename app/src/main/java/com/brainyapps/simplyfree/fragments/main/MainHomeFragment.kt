@@ -288,7 +288,10 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
             }
 
             R.id.but_new -> {
-                showPostItem()
+                // show ads
+                if (!(activity as HomeActivity).showAds()) {
+                    showPostItem()
+                }
             }
         }
     }

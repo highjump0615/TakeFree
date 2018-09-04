@@ -25,6 +25,7 @@ class Notification() : BaseModel(), Parcelable {
         const val NOTIFICATION_COMMENT = 2
 
         const val NOTIFICATION_MESSAGE = 3
+        const val NOTIFICATION_TAKE_REQUEST = 4
 
         @JvmField
         val CREATOR: Parcelable.Creator<Notification> = object : Parcelable.Creator<Notification> {
@@ -111,7 +112,8 @@ class Notification() : BaseModel(), Parcelable {
             intent.putExtra(UserDetailHelper.KEY_USER_ID, userId)
             intent.putExtra(ItemDetailActivity.KEY_ITEM_ID, itemId)
         }
-        else if (type == Notification.NOTIFICATION_MESSAGE) {
+        else if (type == Notification.NOTIFICATION_MESSAGE ||
+                type == Notification.NOTIFICATION_TAKE_REQUEST) {
             intent = Intent(ctx, ItemMessageActivity::class.java)
             intent.putExtra(UserDetailHelper.KEY_USER_ID, userId)
             intent.putExtra(ItemMessageActivity.KEY_ITEM_ID, itemId)
@@ -127,21 +129,23 @@ class Notification() : BaseModel(), Parcelable {
 
     fun displayDescription() : String {
         var strDesc = "You took an item. Rate owner!"
+        val strUserName = userPosted?.userFullName()
 
         when (type) {
             Notification.NOTIFICATION_RATED -> {
-                val strUserName = userPosted?.userFullName()
                 strDesc = "$strUserName left you a rating"
             }
 
             Notification.NOTIFICATION_MESSAGE -> {
-                val strUserName = userPosted?.userFullName()
                 strDesc = "$strUserName sent you a message"
+            }
+
+            Notification.NOTIFICATION_TAKE_REQUEST -> {
+                strDesc = "$strUserName sent request for your item"
             }
 
             Notification.NOTIFICATION_COMMENT -> {
                 // content
-                val strUserName = userPosted?.userFullName()
                 strDesc = "$strUserName commented on your posted item. Check it out!"
             }
         }
