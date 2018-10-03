@@ -135,9 +135,9 @@ class SignupProfileActivity : BaseActivity(), View.OnClickListener, SFUpdateImag
                     user.id = FirebaseManager.mAuth.currentUser!!.uid
 
                     // save photo image
-                    user.updateProfilePhoto(this, this.helper!!.byteData, {
+                    user.updateProfilePhoto(this, this.helper!!.byteData) {
                         saveUserData(user)
-                    })
+                    }
                 })
     }
 

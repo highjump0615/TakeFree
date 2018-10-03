@@ -74,6 +74,7 @@ class User() : BaseModel(), Parcelable {
         const val FIELD_BANNED = "banned"
         const val FIELD_RATING = "rating"
         const val FIELD_TOKEN = "token"
+        const val FIELD_PAYMENTTYPE = "paymentType"
     }
 
     var type: Int = USER_TYPE_CUSTOMER

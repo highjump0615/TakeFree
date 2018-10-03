@@ -18,6 +18,7 @@ import android.util.Log
 import android.view.View
 import com.brainyapps.simplyfree.activities.BaseHomeActivity
 import com.brainyapps.simplyfree.activities.LandingActivity
+import com.brainyapps.simplyfree.activities.SignupLandingActivity
 import com.brainyapps.simplyfree.fragments.main.MainHomeFragment
 import com.brainyapps.simplyfree.fragments.main.MainMessageFragment
 import com.brainyapps.simplyfree.fragments.main.MainNotificationFragment
@@ -108,6 +109,11 @@ class HomeActivity : BaseHomeActivity(),
             if (fragCurrent is MainHomeFragment) {
                 (fragCurrent as MainHomeFragment).showPostItem()
             }
+        }
+
+        // if not a premium user, go to subscription page first
+        if (userCurrent.paymentType == User.PAYMENT_TYPE_NONE) {
+            Utils.moveNextActivity(this, SignupLandingActivity::class.java)
         }
     }
 
