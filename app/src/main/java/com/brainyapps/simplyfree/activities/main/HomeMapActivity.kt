@@ -77,96 +77,67 @@ class HomeMapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraId
 
     override fun onCameraIdle() {
 
-        val visibleRegion = mMap.projection.visibleRegion
+        Globals.mLocation?.let {
+            Log.e(TAG, "location: (${it.latitude}, ${it.longitude})")
 
-        val farRight = visibleRegion.farRight
-        val farLeft = visibleRegion.farLeft
-        val nearRight = visibleRegion.nearRight
-        val nearLeft = visibleRegion.nearLeft
+            //
+            // query items
+            //
 
-        val distanceWidth = FloatArray(2)
-        Location.distanceBetween(
-                (farRight.latitude + nearRight.latitude) / 2,
-                (farRight.longitude + nearRight.longitude) / 2,
-                (farLeft.latitude + nearLeft.latitude) / 2,
-                (farLeft.longitude + nearLeft.longitude) / 2,
-                distanceWidth
-        )
+            geoQuery?.removeAllListeners()
 
+            // geofire
+            val geoFire = GeoFire(FirebaseDatabase.getInstance().getReference(Item.TABLE_NAME_GEOLOCATION))
 
-        val distanceHeight = FloatArray(2)
-        Location.distanceBetween(
-                (farRight.latitude + nearRight.latitude) / 2,
-                (farRight.longitude + nearRight.longitude) / 2,
-                (farLeft.latitude + nearLeft.latitude) / 2,
-                (farLeft.longitude + nearLeft.longitude) / 2,
-                distanceHeight
-        )
-
-        var distance = distanceHeight[0]
-        if (distanceWidth[0] > distanceHeight[0]) {
-            distance = distanceWidth[0]
-        }
-
-        val location = mMap.cameraPosition.target;
-
-        Log.e(TAG, "location: (${location.latitude}, ${location.longitude}), distance: $distance")
-
-        //
-        // query items
-        //
-
-        geoQuery?.removeAllListeners()
-
-        // geofire
-        val geoFire = GeoFire(FirebaseDatabase.getInstance().getReference(Item.TABLE_NAME_GEOLOCATION))
-        geoQuery = geoFire.queryAtLocation(GeoLocation(location.latitude, location.longitude), distance / 1000.0)
-        geoQuery?.addGeoQueryDataEventListener(object: GeoQueryDataEventListener {
-            override fun onGeoQueryReady() {
-                Log.d(TAG, "addGeoQueryEventListener:onGeoQueryReady")
-            }
-
-            override fun onDataExited(dataSnapshot: DataSnapshot?) {
-                Log.d(TAG, "addGeoQueryEventListener:onDataExited $dataSnapshot")
-            }
-
-            override fun onDataChanged(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
-                Log.d(TAG, "addGeoQueryEventListener:onDataChanged$dataSnapshot")
-            }
-
-            override fun onDataEntered(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
-                Log.d(TAG, "addGeoQueryEventListener:onDataEntered$dataSnapshot")
-
-                // get item id
-                val itemId = dataSnapshot?.key
-
-                // fetch item
-                if (TextUtils.isEmpty(itemId)) {
-                    return
+            // find goods in 300 km
+            geoQuery = geoFire.queryAtLocation(GeoLocation(it.latitude, it.longitude), 300.0)
+            geoQuery?.addGeoQueryDataEventListener(object : GeoQueryDataEventListener {
+                override fun onGeoQueryReady() {
+                    Log.d(TAG, "addGeoQueryEventListener:onGeoQueryReady")
                 }
 
-                Item.readFromDatabase(itemId!!, object : Item.FetchDatabaseListener {
-                    override fun onFetchedItem(i: Item?) {
-                        addItem(i, location)
+                override fun onDataExited(dataSnapshot: DataSnapshot?) {
+                    Log.d(TAG, "addGeoQueryEventListener:onDataExited $dataSnapshot")
+                }
+
+                override fun onDataChanged(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
+                    Log.d(TAG, "addGeoQueryEventListener:onDataChanged$dataSnapshot")
+                }
+
+                override fun onDataEntered(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
+                    Log.d(TAG, "addGeoQueryEventListener:onDataEntered$dataSnapshot")
+
+                    // get item id
+                    val itemId = dataSnapshot?.key
+
+                    // fetch item
+                    if (TextUtils.isEmpty(itemId)) {
+                        return
                     }
 
-                    override fun onFetchedUser(success: Boolean) {
-                    }
+                    Item.readFromDatabase(itemId!!, object : Item.FetchDatabaseListener {
+                        override fun onFetchedItem(i: Item?) {
+                            addItem(i, location)
+                        }
 
-                    override fun onFetchedComments(success: Boolean) {
-                    }
-                })
-            }
+                        override fun onFetchedUser(success: Boolean) {
+                        }
 
-            override fun onDataMoved(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
-                Log.d(TAG, "addGeoQueryEventListener:onDataMoved$dataSnapshot")
-            }
+                        override fun onFetchedComments(success: Boolean) {
+                        }
+                    })
+                }
 
-            override fun onGeoQueryError(error: DatabaseError?) {
-                Log.w(TAG, "addGeoQueryEventListener:failure", error?.toException())
-            }
+                override fun onDataMoved(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
+                    Log.d(TAG, "addGeoQueryEventListener:onDataMoved$dataSnapshot")
+                }
 
-        })
+                override fun onGeoQueryError(error: DatabaseError?) {
+                    Log.w(TAG, "addGeoQueryEventListener:failure", error?.toException())
+                }
+
+            })
+        }
     }
 
     private fun addItem(data: Item?, location: GeoLocation?) {
