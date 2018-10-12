@@ -38,6 +38,7 @@ open class LoginBaseActivity : BaseActivity(), GoogleApiClient.OnConnectionFaile
         const val LOGIN_TYPE_EMAIL = 0
         const val LOGIN_TYPE_FACEBOOK = 1
         const val LOGIN_TYPE_GOOGLE = 2
+        const val LOGIN_PAYMENT_FROM_HOME = 3
 
         const val KEY_PAYMENT_TYPE = "paymentType"
 

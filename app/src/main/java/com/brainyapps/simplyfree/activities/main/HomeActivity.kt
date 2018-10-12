@@ -18,6 +18,7 @@ import android.util.Log
 import android.view.View
 import com.brainyapps.simplyfree.activities.BaseHomeActivity
 import com.brainyapps.simplyfree.activities.LandingActivity
+import com.brainyapps.simplyfree.activities.LoginBaseActivity
 import com.brainyapps.simplyfree.activities.SignupLandingActivity
 import com.brainyapps.simplyfree.fragments.main.MainHomeFragment
 import com.brainyapps.simplyfree.fragments.main.MainMessageFragment
@@ -48,6 +49,13 @@ class HomeActivity : BaseHomeActivity(),
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
+    companion object {
+        const val KEY_PAGE_FROM = "pageFrom"
+
+        const val PAGE_FROM_NORMAL = 0
+        const val PAGE_FROM_SIGNUP = 1
+    }
+
     private val TAG = HomeActivity::class.java.getSimpleName()
     private val FRAG_HOME = "home_frag"
     private val FRAG_PROFILE = "profile_frag"
@@ -61,6 +69,8 @@ class HomeActivity : BaseHomeActivity(),
 
     lateinit var mBadgeNotification: Badge
     lateinit var mBadgeMessage: Badge
+
+    private var fromPage: Int = PAGE_FROM_NORMAL
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,9 +121,19 @@ class HomeActivity : BaseHomeActivity(),
             }
         }
 
+        // get from page from intent
+        val bundle = intent.extras
+        if (bundle != null) {
+            fromPage = bundle.getInt(KEY_PAGE_FROM)
+        }
+
         // if not a premium user, go to subscription page first
-        if (userCurrent.paymentType == User.PAYMENT_TYPE_NONE) {
-            Utils.moveNextActivity(this, SignupLandingActivity::class.java)
+        if (userCurrent.paymentType == User.PAYMENT_TYPE_NONE && fromPage == PAGE_FROM_NORMAL) {
+            val intent = Intent(this, SignupLandingActivity::class.java)
+
+            // set parameter that informs from home page
+            intent.putExtra(LoginBaseActivity.KEY_LOGIN_TYPE, LoginBaseActivity.LOGIN_PAYMENT_FROM_HOME)
+            startActivity(intent)
         }
     }
 

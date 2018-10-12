@@ -1,5 +1,6 @@
 package com.brainyapps.simplyfree.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -77,7 +78,13 @@ class SignupBoardActivity : BaseActivity(), View.OnClickListener {
                     container.setCurrentItem(currentIndex + 1, true)
                 }
                 else {
-                    Utils.moveNextActivity(this, HomeActivity::class.java, true)
+                    // go to home page
+                    val intent = Intent(this, HomeActivity::class.java)
+                    intent.putExtra(HomeActivity.KEY_PAGE_FROM, HomeActivity.PAGE_FROM_SIGNUP)
+
+                    startActivity(intent)
+
+                    finish()
                 }
             }
         }

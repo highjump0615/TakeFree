@@ -90,7 +90,7 @@ class HomeMapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraId
             val geoFire = GeoFire(FirebaseDatabase.getInstance().getReference(Item.TABLE_NAME_GEOLOCATION))
 
             // find goods in 300 km
-            geoQuery = geoFire.queryAtLocation(GeoLocation(it.latitude, it.longitude), 300.0)
+            geoQuery = geoFire.queryAtLocation(GeoLocation(it.latitude, it.longitude), 160.0)
             geoQuery?.addGeoQueryDataEventListener(object : GeoQueryDataEventListener {
                 override fun onGeoQueryReady() {
                     Log.d(TAG, "addGeoQueryEventListener:onGeoQueryReady")

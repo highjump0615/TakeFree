@@ -106,14 +106,13 @@ class SignupLandingActivity : LoginBaseActivity(), View.OnClickListener {
                     mBillingManager.initiatePurchaseFlow(BillingConstants.SKU_PREMIUM, BillingClient.SkuType.INAPP)
                 }
                 else {
-                    val intent = getNextIntent()
-
                     // if it is prompt, finish it
-                    User.currentUser?.let {
+                    if (loginType == LOGIN_PAYMENT_FROM_HOME) {
                         finish()
                         return
                     }
 
+                    val intent = getNextIntent()
                     intent.putExtra(LoginBaseActivity.KEY_PAYMENT_TYPE, User.PAYMENT_TYPE_NONE)
                     startActivity(intent)
                 }
