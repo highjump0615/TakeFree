@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.text.TextUtils
 import android.util.Log
 import com.brainyapps.simplyfree.models.User.FetchDatabaseListener
+import com.firebase.geofire.GeoLocation
 import com.google.firebase.database.*
 import java.util.*
 
@@ -91,6 +92,9 @@ class Item() : BaseModel(), Parcelable {
 
     @get:Exclude
     var comments = ArrayList<Comment>()
+
+    @get:Exclude
+    var location: GeoLocation? = null
 
     override fun tableName() = TABLE_NAME
 

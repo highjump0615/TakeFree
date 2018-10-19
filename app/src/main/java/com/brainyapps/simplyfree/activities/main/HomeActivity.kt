@@ -156,8 +156,17 @@ class HomeActivity : BaseHomeActivity(),
     }
 
     private fun gotNewLocation(location: Location?) {
+        val locationOld = Globals.mLocation
         Globals.mLocation = location
         Log.w(TAG, "Location: ${location?.latitude}, ${location?.longitude}")
+
+        // if updated location is different than old one
+        if (locationOld == null || locationOld.distanceTo(location) > 500) {
+            // item list
+            if (fragCurrent is MainHomeFragment) {
+                (fragCurrent as MainHomeFragment).getItems(false, true)
+            }
+        }
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -233,7 +242,7 @@ class HomeActivity : BaseHomeActivity(),
         showBadge()
 
         // check user availability
-        User.currentUser?.readFromDatabaseChild(User.FIELD_BANNED, {
+        User.currentUser?.readFromDatabaseChild(User.FIELD_BANNED) {
             it?.let {
                 val banned = it as Boolean
                 User.currentUser?.banned = banned
@@ -252,7 +261,7 @@ class HomeActivity : BaseHomeActivity(),
                             .show()
                 }
             }
-        })
+        }
     }
 
     private val mLocationCallback = object : LocationCallback() {

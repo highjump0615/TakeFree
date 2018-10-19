@@ -28,14 +28,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 
 
-class HomeMapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnMarkerClickListener {
+class HomeMapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private val TAG = HomeMapActivity::class.java.simpleName
 
     private lateinit var mMap: GoogleMap
 
     private val maryMarker = ArrayList<Marker>()
-    private val maryItem = ArrayList<Item>()
     private var geoQuery: GeoQuery? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,100 +70,30 @@ class HomeMapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraId
             }
         }
 
-        mMap.setOnCameraIdleListener(this)
         mMap.setOnMarkerClickListener(this)
-    }
 
-    override fun onCameraIdle() {
+        // add item markers on the map
+        for (item in Globals.items) {
+            var latlng = LatLng(0.0, 0.0)
 
-        Globals.mLocation?.let {
-            Log.e(TAG, "location: (${it.latitude}, ${it.longitude})")
-
-            //
-            // query items
-            //
-
-            geoQuery?.removeAllListeners()
-
-            // geofire
-            val geoFire = GeoFire(FirebaseDatabase.getInstance().getReference(Item.TABLE_NAME_GEOLOCATION))
-
-            // find goods in 300 km
-            geoQuery = geoFire.queryAtLocation(GeoLocation(it.latitude, it.longitude), 160.0)
-            geoQuery?.addGeoQueryDataEventListener(object : GeoQueryDataEventListener {
-                override fun onGeoQueryReady() {
-                    Log.d(TAG, "addGeoQueryEventListener:onGeoQueryReady")
-                }
-
-                override fun onDataExited(dataSnapshot: DataSnapshot?) {
-                    Log.d(TAG, "addGeoQueryEventListener:onDataExited $dataSnapshot")
-                }
-
-                override fun onDataChanged(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
-                    Log.d(TAG, "addGeoQueryEventListener:onDataChanged$dataSnapshot")
-                }
-
-                override fun onDataEntered(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
-                    Log.d(TAG, "addGeoQueryEventListener:onDataEntered$dataSnapshot")
-
-                    // get item id
-                    val itemId = dataSnapshot?.key
-
-                    // fetch item
-                    if (TextUtils.isEmpty(itemId)) {
-                        return
-                    }
-
-                    Item.readFromDatabase(itemId!!, object : Item.FetchDatabaseListener {
-                        override fun onFetchedItem(i: Item?) {
-                            addItem(i, location)
-                        }
-
-                        override fun onFetchedUser(success: Boolean) {
-                        }
-
-                        override fun onFetchedComments(success: Boolean) {
-                        }
-                    })
-                }
-
-                override fun onDataMoved(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
-                    Log.d(TAG, "addGeoQueryEventListener:onDataMoved$dataSnapshot")
-                }
-
-                override fun onGeoQueryError(error: DatabaseError?) {
-                    Log.w(TAG, "addGeoQueryEventListener:failure", error?.toException())
-                }
-
-            })
-        }
-    }
-
-    private fun addItem(data: Item?, location: GeoLocation?) {
-        data?.let {
-            if (data.deletedAt != null) {
-                // deleted item, skip it
-                return
+            item.location?.let {
+                // add on map
+                latlng = LatLng(it.latitude, it.longitude)
             }
 
-            // add on map
-            location?.let {
-                val latlng = LatLng(it.latitude, it.longitude)
-                val marker = mMap.addMarker(MarkerOptions().position(latlng).title(data.name))
+            val marker = mMap.addMarker(MarkerOptions().position(latlng).title(item.name))
 
-                // add to list
-                maryMarker.add(marker)
-                maryItem.add(data)
-            }
+            // add to list
+            maryMarker.add(marker)
         }
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         // get item for the marker
-        var item = maryItem[0]
+        var item = Globals.items[0]
         for (i in 0 until maryMarker.size) {
             if (maryMarker[i] == marker) {
-                item = maryItem[i]
+                item = Globals.items[i]
             }
         }
 

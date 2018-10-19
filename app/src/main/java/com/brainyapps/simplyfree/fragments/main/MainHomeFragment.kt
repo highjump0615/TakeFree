@@ -11,9 +11,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 
 import com.brainyapps.simplyfree.R
 import com.brainyapps.simplyfree.activities.main.HomeActivity
@@ -26,6 +28,12 @@ import com.brainyapps.simplyfree.models.User
 import com.brainyapps.simplyfree.utils.FontManager
 import com.brainyapps.simplyfree.utils.Globals
 import com.brainyapps.simplyfree.utils.Utils
+import com.firebase.geofire.GeoFire
+import com.firebase.geofire.GeoLocation
+import com.firebase.geofire.GeoQuery
+import com.firebase.geofire.GeoQueryDataEventListener
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -51,9 +59,11 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
     private var mParam1: String? = null
     private var mParam2: String? = null
 
-    var aryItemAll = ArrayList<Item>()
     var aryCategory = ArrayList<Category>()
     var adapter: HomeCategoryAdapter? = null
+
+    // geo query for searching around user
+    private var geoQuery: GeoQuery? = null
 
     private var mListener: OnFragmentInteractionListener? = null
 
@@ -89,9 +99,6 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
         // search keyword
         viewMain.edit_search.addTextChangedListener(mTextWatcher)
 
-        // load data
-        Handler().postDelayed({ getItems(true, true) }, 500)
-
         // Inflate the layout for this fragment
         return viewMain
     }
@@ -115,45 +122,104 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
         getItems(true, false)
     }
 
+
     /**
      * get User data
      */
-    private fun getItems(bRefresh: Boolean, bAnimation: Boolean) {
+    fun getItems(bRefresh: Boolean, bAnimation: Boolean) {
+
+        if (Globals.mLocation == null) {
+            Toast.makeText(activity, "Cannot get location", Toast.LENGTH_LONG).show()
+            updateList()
+
+            return
+        }
+
         if (bAnimation) {
             if (!this.swiperefresh.isRefreshing) {
                 this.swiperefresh.isRefreshing = true
             }
         }
 
-        val database = FirebaseDatabase.getInstance().reference
-        val query = database.child(Item.TABLE_NAME)
-                .orderByChild(Item.FIELD_TAKEN)
-                .equalTo(false)
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // store all items
-                aryItemAll.clear()
-                for (iItem in dataSnapshot.children) {
-                    val item = iItem.getValue(Item::class.java)
-                    item!!.id = iItem.key
+        Log.e(TAG, "location: (${Globals.mLocation?.latitude}, ${Globals.mLocation?.longitude})")
 
-                    if (item.deletedAt != null) {
-                        // deleted item, skip it
-                        continue
-                    }
+        //
+        // query items
+        //
+        Globals.clearItems()
 
-                    aryItemAll.add(item)
+        geoQuery?.removeAllListeners()
+
+        // geofire
+        val geoFire = GeoFire(FirebaseDatabase.getInstance().getReference(Item.TABLE_NAME_GEOLOCATION))
+
+        var nItemCount = 0
+        var nFetchedCount = 0
+
+        // find goods in 300 km
+        geoQuery = geoFire.queryAtLocation(GeoLocation(Globals.mLocation!!.latitude, Globals.mLocation!!.longitude), 160.0)
+        geoQuery?.addGeoQueryDataEventListener(object : GeoQueryDataEventListener {
+            override fun onGeoQueryReady() {
+                Log.d(TAG, "addGeoQueryEventListener:onGeoQueryReady")
+
+                // query over
+                if (nItemCount == 0) {
+                    updateList(bAnimation)
+                }
+            }
+
+            override fun onDataExited(dataSnapshot: DataSnapshot?) {
+                Log.d(TAG, "addGeoQueryEventListener:onDataExited $dataSnapshot")
+            }
+
+            override fun onDataChanged(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
+                Log.d(TAG, "addGeoQueryEventListener:onDataChanged$dataSnapshot")
+            }
+
+            override fun onDataEntered(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
+                Log.d(TAG, "addGeoQueryEventListener:onDataEntered$dataSnapshot")
+
+                // get item id
+                val itemId = dataSnapshot?.key
+
+                // fetch item
+                if (TextUtils.isEmpty(itemId)) {
+                    return
                 }
 
-                // sort
-                Collections.sort(aryItemAll, Collections.reverseOrder())
+                Item.readFromDatabase(itemId!!, object : Item.FetchDatabaseListener {
+                    override fun onFetchedItem(i: Item?) {
+                        Globals.addItem(i, location)
 
-                updateList(bAnimation)
+                        nFetchedCount++
+
+                        // fetched all
+                        if (nItemCount == nFetchedCount) {
+                            // sort
+                            Collections.sort(Globals.items, Collections.reverseOrder())
+
+                            updateList(bAnimation)
+                        }
+                    }
+
+                    override fun onFetchedUser(success: Boolean) {
+                    }
+
+                    override fun onFetchedComments(success: Boolean) {
+                    }
+                })
+
+                nItemCount++
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                stopRefresh()
+            override fun onDataMoved(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
+                Log.d(TAG, "addGeoQueryEventListener:onDataMoved$dataSnapshot")
             }
+
+            override fun onGeoQueryError(error: DatabaseError?) {
+                Log.w(TAG, "addGeoQueryEventListener:failure", error?.toException())
+            }
+
         })
     }
 
@@ -194,7 +260,7 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
         aryCategory.clear()
 
         // categorize the items
-        for (item in aryItemAll) {
+        for (item in Globals.items) {
             // add match-keyword only
             if (TextUtils.isEmpty(strSearch) || item.name.contains(strSearch, ignoreCase = true)) {
                 val category = getCategoryFromIndex(item.category)
@@ -314,7 +380,7 @@ class MainHomeFragment : MainBaseFragment(), View.OnClickListener, SwipeRefreshL
 
     // add item listener
     private fun onAddedItem(item: Item) {
-        aryItemAll.add(0, item)
+        Globals.addNewItem(item)
         updateList()
     }
 
