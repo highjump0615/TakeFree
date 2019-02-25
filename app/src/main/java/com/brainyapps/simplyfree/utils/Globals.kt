@@ -7,6 +7,7 @@ import com.brainyapps.simplyfree.activities.main.HomeActivity
 import com.brainyapps.simplyfree.models.Category
 import com.brainyapps.simplyfree.models.Item
 import com.brainyapps.simplyfree.models.Notification
+import com.firebase.geofire.GeoLocation
 
 /**
  * Created by Administrator on 5/11/18.
@@ -23,6 +24,8 @@ object Globals {
     var hasNewNotification = false
     var hasNewMessage = false
 
+    val items = ArrayList<Item>()
+
     fun initCategories(ctx: Context) {
         val aryCategoryName = ctx.resources.getStringArray(R.array.item_category_array);
 
@@ -33,5 +36,32 @@ object Globals {
 
             nIndex++
         }
+    }
+
+    fun clearItems() {
+        items.clear()
+    }
+
+    fun addItem(data: Item?, location: GeoLocation?) {
+        if (data == null) {
+            return
+        }
+
+        if (data.deletedAt != null) {
+            // deleted item, skip it
+            return
+        }
+
+        data.location = location
+
+        items.add(data)
+    }
+
+    fun addNewItem(data: Item) {
+        mLocation?.let {
+            data.location = GeoLocation(it.latitude, it.longitude)
+        }
+
+        Globals.items.add(0, data)
     }
 }

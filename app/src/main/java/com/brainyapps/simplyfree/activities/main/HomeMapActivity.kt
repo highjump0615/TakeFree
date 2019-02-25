@@ -28,14 +28,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 
 
-class HomeMapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnMarkerClickListener {
+class HomeMapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private val TAG = HomeMapActivity::class.java.simpleName
 
     private lateinit var mMap: GoogleMap
 
     private val maryMarker = ArrayList<Marker>()
-    private val maryItem = ArrayList<Item>()
     private var geoQuery: GeoQuery? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,129 +70,30 @@ class HomeMapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraId
             }
         }
 
-        mMap.setOnCameraIdleListener(this)
         mMap.setOnMarkerClickListener(this)
-    }
 
-    override fun onCameraIdle() {
+        // add item markers on the map
+        for (item in Globals.items) {
+            var latlng = LatLng(0.0, 0.0)
 
-        val visibleRegion = mMap.projection.visibleRegion
-
-        val farRight = visibleRegion.farRight
-        val farLeft = visibleRegion.farLeft
-        val nearRight = visibleRegion.nearRight
-        val nearLeft = visibleRegion.nearLeft
-
-        val distanceWidth = FloatArray(2)
-        Location.distanceBetween(
-                (farRight.latitude + nearRight.latitude) / 2,
-                (farRight.longitude + nearRight.longitude) / 2,
-                (farLeft.latitude + nearLeft.latitude) / 2,
-                (farLeft.longitude + nearLeft.longitude) / 2,
-                distanceWidth
-        )
-
-
-        val distanceHeight = FloatArray(2)
-        Location.distanceBetween(
-                (farRight.latitude + nearRight.latitude) / 2,
-                (farRight.longitude + nearRight.longitude) / 2,
-                (farLeft.latitude + nearLeft.latitude) / 2,
-                (farLeft.longitude + nearLeft.longitude) / 2,
-                distanceHeight
-        )
-
-        var distance = distanceHeight[0]
-        if (distanceWidth[0] > distanceHeight[0]) {
-            distance = distanceWidth[0]
-        }
-
-        val location = mMap.cameraPosition.target;
-
-        Log.e(TAG, "location: (${location.latitude}, ${location.longitude}), distance: $distance")
-
-        //
-        // query items
-        //
-
-        geoQuery?.removeAllListeners()
-
-        // geofire
-        val geoFire = GeoFire(FirebaseDatabase.getInstance().getReference(Item.TABLE_NAME_GEOLOCATION))
-        geoQuery = geoFire.queryAtLocation(GeoLocation(location.latitude, location.longitude), distance / 1000.0)
-        geoQuery?.addGeoQueryDataEventListener(object: GeoQueryDataEventListener {
-            override fun onGeoQueryReady() {
-                Log.d(TAG, "addGeoQueryEventListener:onGeoQueryReady")
+            item.location?.let {
+                // add on map
+                latlng = LatLng(it.latitude, it.longitude)
             }
 
-            override fun onDataExited(dataSnapshot: DataSnapshot?) {
-                Log.d(TAG, "addGeoQueryEventListener:onDataExited $dataSnapshot")
-            }
+            val marker = mMap.addMarker(MarkerOptions().position(latlng).title(item.name))
 
-            override fun onDataChanged(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
-                Log.d(TAG, "addGeoQueryEventListener:onDataChanged$dataSnapshot")
-            }
-
-            override fun onDataEntered(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
-                Log.d(TAG, "addGeoQueryEventListener:onDataEntered$dataSnapshot")
-
-                // get item id
-                val itemId = dataSnapshot?.key
-
-                // fetch item
-                if (TextUtils.isEmpty(itemId)) {
-                    return
-                }
-
-                Item.readFromDatabase(itemId!!, object : Item.FetchDatabaseListener {
-                    override fun onFetchedItem(i: Item?) {
-                        addItem(i, location)
-                    }
-
-                    override fun onFetchedUser(success: Boolean) {
-                    }
-
-                    override fun onFetchedComments(success: Boolean) {
-                    }
-                })
-            }
-
-            override fun onDataMoved(dataSnapshot: DataSnapshot?, location: GeoLocation?) {
-                Log.d(TAG, "addGeoQueryEventListener:onDataMoved$dataSnapshot")
-            }
-
-            override fun onGeoQueryError(error: DatabaseError?) {
-                Log.w(TAG, "addGeoQueryEventListener:failure", error?.toException())
-            }
-
-        })
-    }
-
-    private fun addItem(data: Item?, location: GeoLocation?) {
-        data?.let {
-            if (data.deletedAt != null) {
-                // deleted item, skip it
-                return
-            }
-
-            // add on map
-            location?.let {
-                val latlng = LatLng(it.latitude, it.longitude)
-                val marker = mMap.addMarker(MarkerOptions().position(latlng).title(data.name))
-
-                // add to list
-                maryMarker.add(marker)
-                maryItem.add(data)
-            }
+            // add to list
+            maryMarker.add(marker)
         }
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         // get item for the marker
-        var item = maryItem[0]
+        var item = Globals.items[0]
         for (i in 0 until maryMarker.size) {
             if (maryMarker[i] == marker) {
-                item = maryItem[i]
+                item = Globals.items[i]
             }
         }
 
